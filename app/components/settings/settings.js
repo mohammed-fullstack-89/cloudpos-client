@@ -1,7 +1,7 @@
 
 const electron = require('electron')
 const { remote } = electron
-const Store = require('../app/js/store.js')
+const Store = require('../app/js/store/store.js')
 
 
 

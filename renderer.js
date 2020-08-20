@@ -1,7 +1,7 @@
 
 const electron = require('electron')
 const remote = electron.remote;
-const Print = require('./app/services/print.js')
+const Print = require('./app/services/print/print.js')
 
 var print = new Print().getInstance();
 

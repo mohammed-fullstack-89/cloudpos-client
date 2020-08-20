@@ -3,7 +3,7 @@ const url = require('url')
 const path = require('path')
 // const { dialog } = require('electron')
 const Menu = electron.Menu
-const PrintService = require('./app/services/print.js')
+const PrintService = require('./app/services/print/print.js')
 const customContextMenu = require('./app/components/menu/context_menu');
 const { app, BrowserWindow } = electron
 
