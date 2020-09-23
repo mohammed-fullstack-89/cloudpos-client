@@ -10,10 +10,11 @@
   "author": "Hamza alfawaer",
   "license": "Licensed",
   "devDependencies": {
-    "electron": "^8.1.1",
+    "devtron": "^1.4.0",
     "electron-builder": "^22.8.0"
   },
   "dependencies": {
+    "electron": "^10.1.1",
     "sequelize": "^6.3.4",
     "sqlite3": "^5.0.0"
   }

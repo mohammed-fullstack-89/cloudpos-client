@@ -5,10 +5,12 @@
   <meta charset="UTF-8">
   <script src="../../../lib/MDB-Pro-4.9.0/MDB-Pro/js/bootstrap.min.js"></script>
   <script src="../../../lib/MDB-Pro-4.9.0/MDB-Pro/js/jquery.min.js"></script>
+  <script src="../../../lib/MDB-Pro-4.9.0/MDB-Pro/js/jquery.min.js"></script>
   <script src="../../../lib/MDB-Pro-4.9.0/MDB-Pro/js/mdb.min.js"></script>
+  <script src="./settings.js"></script>
   <link href="../../../lib/MDB-Pro-4.9.0/MDB-Pro/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../../lib/MDB-Pro-4.9.0/MDB-Pro/css/mdb.min.css" rel="stylesheet" type="text/css">
-  <link href="../../../app/style/css/settings.css" rel="stylesheet" type="text/css">
+  <link href="./settings.css" rel="stylesheet" type="text/css">
   <title>Settings</title>
 
 </head>
@@ -105,11 +107,11 @@
                               <tfoot>
                                 <tr>
                                   <th scope="row">
-                                    <button type="button" class="btn btn-secondary  btn-lg" id="cancel">cancel</button>
+                                    <button type="button" class="btn btn-secondary  btn-lg" id="cancel"
+                                      onclick="cancel()">cancel</button>
                                   </th>
-                                  <td><button type="button" type="button" class="btn btn-primary btn-lg " id="save">Save
-                                      changes</button></td>
-
+                                  <td><button type="button" type="button" class="btn btn-primary btn-lg " id="save"
+                                      onclick="save()">changes</button></td>
                                 </tr>
                               </tfoot>
                             </table>
@@ -152,8 +154,6 @@
 
   </div>
 
-  <script src="js/settings.js">
-  </script>
 
 </body>
 

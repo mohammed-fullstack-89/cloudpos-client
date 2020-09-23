@@ -1,1 +1,0 @@
-const sequlize=require('sequlize');
