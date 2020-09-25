@@ -23,12 +23,12 @@ module.exports = {
     }],
     columnsIndex: {
         indexes: [{
-            name: 'terms_name_en_foreign',
+            name: 'terms_name_ar_foreign',
             fields: [`name_ar`]
         },
         {
             name: 'terms_name_en_foreign',
-            fields: [`name_ar`]
+            fields: [`name_en`]
         },
         ]
     }

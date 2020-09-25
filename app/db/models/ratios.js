@@ -14,8 +14,8 @@ module.exports = {
         type: 'belongsToMany',
         related_to: 'companies',
         relationOptions: {
-            // as: 'get_ratio',
-            through: 'companies_ratio',
+            as: 'get_ratios',
+            through: 'companies_ratios',
             foreignKey: 'ratio_id',
             otherKey: 'company_id',
         },

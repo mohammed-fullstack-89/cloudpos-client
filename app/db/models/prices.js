@@ -20,20 +20,31 @@ module.exports = {
         expire_date: { type: Seq.STRING, defualtValue: null, allowNull: true },
 
     },
+    relations: [{
 
+    
+        type: 'hasMany',
+        related_to: 'prices',
+        relationOptions: {
+            as: 'get_prices',
+            foreignKey: 'variant_id',
+            otherKey: 'prices_id',
+        },
+
+    }],
     columnsIndex: {
         indexes: [{
-            name: 'customers_name_foreign',
-            fields: [`name`]
+            name: 'prices_item_id_foreign',
+            fields: [`item_id`]
         }, {
-            name: 'customers_phone_number_1_foreign',
-            fields: [`phone_number_1`]
+            name: 'prices_variance_id_foreign',
+            fields: [`variance_id`]
         }, {
-            name: 'customers_phone_number_2_foreign',
-            fields: [`phone_number_2`]
+            name: 'prices_store_id_foreign',
+            fields: [`store_id`]
         }, {
-            name: 'customers_tier_id_foreign',
-            fields: [`tier_id`]
+            name: 'prices_branch_id_foreign',
+            fields: [`branch_id`]
         }]
     },
 

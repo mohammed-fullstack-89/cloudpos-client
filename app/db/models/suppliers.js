@@ -20,12 +20,34 @@ module.exports = {
     relations: [{
 
         type: 'belongsToMany',
-        related_to: 'items',
+        related_to: 'variants',
         relationOptions: {
             // as: 'get_suppliers',
-            through: 'items_suppliers',
+            through: 'variants_suppliers',
             foreignKey: 'supplier_id',
-            otherKey: 'item_id',
+            otherKey: 'variant_id',
         },
     }],
+    columnsIndex: {
+        indexes: [{
+            name: 'suppliers_name_ar_foreign',
+            fields: [`name_ar`]
+        },
+        {
+            name: 'suppliers_name_en_foreign',
+            fields: [`name_en`]
+        }, {
+            name: 'suppliers_mobile_foreign',
+            fields: [`mobile`]
+        }, {
+            name: 'suppliers_mobile2_foreign',
+            fields: [`mobile2`]
+        }, {
+            name: 'suppliers_email_foreign',
+            fields: [`email`]
+        }, {
+            name: 'suppliers_address_foreign',
+            fields: [`address`]
+        }]
+    }
 }

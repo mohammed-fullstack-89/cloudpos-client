@@ -19,19 +19,19 @@ module.exports = {
 
     relations: [{
         type: 'belongsToMany',
-        related_to: 'ratio',
+        related_to: 'ratios',
         relationOptions: {
-            as: 'get_ratio',
-            through: 'companies_ratio',
+            as: 'get_ratios',
+            through: 'companies_ratios',
             foreignKey: 'company_id',
             otherKey: 'ratio_id',
         },
     },
     {
         type: 'belongsToMany',
-        related_to: 'companies',
+        related_to: 'terms',
         relationOptions: {
-            // as: 'get_term',
+            as: 'get_terms',
             through: 'companies_terms',
             foreignKey: 'company_id',
             otherKey: 'term_id',

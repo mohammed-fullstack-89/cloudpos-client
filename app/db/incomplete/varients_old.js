@@ -62,7 +62,7 @@ module.exports = {
         relationOptions: {
             as: 'get_prices',
             through: 'items_prices',
-            foreignKey: 'varient_id',
+            foreignKey: 'variant_id',
             otherKey: 'prices_id',
         },
 

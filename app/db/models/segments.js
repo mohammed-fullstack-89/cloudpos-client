@@ -17,4 +17,40 @@ module.exports = {
         item_id: { type: Seq.BIGINT, defualtValue: null, allowNull: false },
 
     },
+    relations: [{
+
+        type: 'belongsToMany',
+        related_to: 'variants',
+        relationOptions: {
+            // as: 'get_segments',
+            through: 'variants_segments',
+            foreignKey: 'segment_id',
+            otherKey: 'variant_id',
+        },
+    }],
+    columnsIndex: {
+        indexes: [{
+            name: 'segments_nick_name_ar_foreign',
+            fields: [`nick_name_ar`]
+        },
+        {
+            name: 'segments_nick_name_en_foreign',
+            fields: [`nick_name_en`]
+        },{
+            name: 'segments_barcode_foreign',
+            fields: [`barcode`]
+        },{
+            name: 'segments_unit_id_foreign',
+            fields: [`unit_id`]
+        }, {
+            name: 'segments_parent_id_foreign',
+            fields: [`parent_id`]
+        }, {
+            name: 'segments_variance_id_foreign',
+            fields: [`variance_id`]
+        }, {
+            name: 'segments_item_id_foreign',
+            fields: [`item_id`]
+        }]
+    }
 }
