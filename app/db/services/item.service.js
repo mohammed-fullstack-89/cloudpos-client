@@ -12,7 +12,7 @@ var itemService = function itemService() {
         console.log("items : " + items);
         return items;
     }
-    this.searchItems = async function (val) {
+    this.searchItems = async function (type, val) {
         var itemTable = db.model('items');
         var items = [];
         items = await itemTable.findAll({

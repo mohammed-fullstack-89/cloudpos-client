@@ -3,36 +3,52 @@ var dbStore = function dbStore() {
 
 
     this.setCategories = async function (categoriesList) {
-        var categoryService = require('../db/services/category.service');
+        let categoryService = require('../db/services/category.service');
         await categoryService.setCategories(categoriesList);
     }
 
     this.getCategories = async function () {
-        var categoryService = require('../db/services/category.service');
-        var categories = await categoryService.getCategories();
+        let categoryService = require('../db/services/category.service');
+        let categories = await categoryService.getCategories();
         return categories;
     }
 
 
     this.setCustomers = async function (customersList) {
-        var customerService = require('../db/services/customer.service');
+        let customerService = require('../db/services/customer.service');
         await customerService.setCustomers(customersList);
     }
 
 
     this.getCustomers = async function (val) {
-        var customerService = require('../db/services/customer.service');
-        var customers = await customerService.searchCustomers(val);
+        let customerService = require('../db/services/customer.service');
+        let customers = await customerService.searchCustomers(val);
         return customers;
     }
-    this.getCustomers = async function () {
-        var customerService = require('../db/services/customer.service');
-        var customers = await customerService.getCustomers();
+    this.searchCustomers = async function () {
+        let customerService = require('../db/services/customer.service');
+        let customers = await customerService.searchCustomers();
         return customers;
     }
 
-    this.setItems = function () { }
-    this.getItems = function () { }
+    this.setItems = function (items) {
+        let itemsService = require('../db/services/item.service');
+        await itemsService.setItems(items);
+    }
+
+    this.getItems = async function () {
+        let itemsService = require('../db/services/item.service');
+        let items = await itemsService.getItems(items);
+        return items
+    }
+
+    this.searchItems = function (type, value) {
+        let itemsService = require('../db/services/item.service');
+        let items = await itemsService.searchItems(type, value);
+        return items
+    }
+
+
 
 
     if (dbStore.caller != dbStore.getInstance) {
