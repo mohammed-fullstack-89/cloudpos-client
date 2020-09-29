@@ -11,16 +11,15 @@ module.exports = {
 
     },
     relations: [{
-
         type: 'belongsToMany',
-        related_to: 'variants',
+        related_to: 'taxes',
         relationOptions: {
-            // as: 'get_suppliers',
+            as: 'get_taxes',
             through: 'variants_taxes',
             foreignKey: 'tax_id',
             otherKey: 'variant_id',
         },
-    }],
+    },],
     columnsIndex: {
         indexes: [{
             name: 'taxes_name_ar_foreign',
@@ -30,7 +29,7 @@ module.exports = {
             name: 'taxes_name_en_foreign',
             fields: [`name_en`]
         }, {
-            name: 'taxes_mobile_foreign',
+            name: 'taxes_type_foreign',
             fields: [`type`]
         }]
     }

@@ -1,6 +1,7 @@
 
 
-var db = require('../db.manager');
+var db = require('../db.manager')
+    , Seq = db.Seq();
 var customerService = function customerService() {
 
 
@@ -12,15 +13,22 @@ var customerService = function customerService() {
         console.log("customers : " + customers);
         return customers;
     }
+
     this.searchCustomers = async function (val) {
         var customerTable = db.model('customers');
         var customers = [];
-        customers = await customerTable.findAll({
-            include: { all: true, nested: true },
-            where: {
-                name: { [db.Seq().like]: '%${val}%' },
-            }
-        });
+        if (val == null || val == undefined || val == "undefined") {
+            customers = await customerTable.findAll({ include: { all: true, nested: true } });
+        }
+        else {
+            customers = await customerTable.findAll({
+                include: { all: true, nested: true },
+
+                where: {
+                    name: { [Seq.Op.like]: `%${val}%` },
+                }
+            });
+        }
         customers = JSON.stringify(customers);
         console.log("customers : " + customers);
         return customers;
@@ -29,7 +37,7 @@ var customerService = function customerService() {
     this.setCustomers = async function (customersList) {
         console.log(customersList);
         var customerTable = db.model("customers");
-        await customerTable.bulkCreate(JSON.parse(customersList), { returning: true });
+        await customerTable.bulkCreate(JSON.parse(customersList), { include: { all: true, nested: true }, returning: true, nested: true });
     }
 
     if (customerService.caller != customerService.getInstance) {

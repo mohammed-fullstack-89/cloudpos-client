@@ -3,19 +3,31 @@ const url = require('url');
 const path = require('path');
 const customContextMenu = require('./app/components/menu/context_menu');
 const { app, BrowserWindow } = electron;
+const ipc = electron.ipcMain;
 const Menu = electron.Menu;
 const enviroment = require('./enviroment');
-require('./app/db/services/category.service')
-const db = require('./app/db/db.manager');
+var db = require('./app/db/db.manager');
+var communicator = require('./app/services/communicator.service')
+var splashWindow;
+const dbStore = require('./app/services/service.db')
 
+
+
+
+// ipc.on('setCategories', (event, args) => {
+//    dbStore.setCategories(args);
+// });
 
 app.on('ready', async function () {
-   init().then((ini) => createWindow());
-   db.setup();
+   dbStore.init();
+   createSplashWindow();
+   await db.setup().then(() => {
+      createWindow();
 
-   // var categoryTable = db.model("categories");
-   // console.log("wddwd44 " + categoryTable);
-})
+   }).catch((error) => {
+      console.log(`error : ${error}`);
+   });
+});
 
 app.on('closed', function () {
    db.close()
@@ -51,7 +63,6 @@ function createWindow() {
    // Create the browser window.
    const mainWindow = new BrowserWindow({
       focusable: true,
-
       fullscreenWindowTitle: true,
       fullscreenable: true,
       maximizable: true,
@@ -67,7 +78,7 @@ function createWindow() {
       // contextIsolation: false, //block website loaded to access electron preload script (false)
       webPreferences: {
          enableBlinkFeatures: true,
-         nativeWindowOpen: false,
+         nativeWindowOpen: true,
          nodeIntegration: true,
          safeDialogs: false,
 
@@ -75,6 +86,11 @@ function createWindow() {
       }
 
    });
+   // const dbStore = require('./app/services/service.db');
+   // dbStore.getCategories();
+   // const dbStore = require('./app/services/service.db');
+   // mainWindow.webContents.send('store-data', JSON.stringify(dbStore));
+
 
    //init menu and context menu
    const customMenu = [
@@ -102,7 +118,7 @@ function createWindow() {
                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
                async click() {
                   var customerTable = db.model('customers');
-                  console.log("customers " + JSON.stringify(await customerTable.findAll({ include: { all: true, nested: true }})));
+                  console.log("customers " + JSON.stringify(await customerTable.findAll({ include: { all: true, nested: true } })));
                }
             },
          ]
@@ -278,17 +294,37 @@ function createWindow() {
    mainWindow.webContents.on('context-menu', function (e, params) {
       ctxmenu.popup(mainWindow, params.x, params.y)
    });
-   mainWindow.webContents.on('did-finish-load', function () {
+   // mainWindow.webContents.on('did-finish-load', function () {
 
 
-   });
-
-   // load html in the window.
+   // });
+   // mainWindow.loadFile(path.join(__dirname, 'app/windows/loading/loading.html'));
    mainWindow.loadURL(url.format({
       pathname: enviroment.development.url,
       protocol: 'http',
       slashes: true,
    }));
+   // ipc.once('db-initiating', (event, args) => {
+   //    init().then(() => {
+   //       // load html in the window.
+   //       // console.log("init" + args);
+   //       mainWindow.webContents.loadURL(url.format({
+   //          pathname: enviroment.development.url,
+   //          protocol: 'http',
+   //          slashes: true,
+   //       }));
+   //    }).catch((error) => {
+   //       console.log(`error : ${error}`);
+   //    });
+   // })
+
+
+
+   console.log("closing");
+   //close splash screen 
+   splashWindow.close();
+   splashWindow = null;
+
 
 }
 
@@ -302,7 +338,7 @@ function createSettingsWindow() {
       title: "Settings",
       webPreferences: {
          nodeIntegration: true,
-         contextIsolation: false,
+
          // preload: path.join(__dirname, 'app/components/settings/settings.js')
       },
       // backgroundColor: '#2e2c29' 
@@ -310,8 +346,27 @@ function createSettingsWindow() {
    // win.openDevTools();
    win.removeMenu();
    win.menu = null;
-   win.loadFile(path.join(__dirname, 'app/components/settings/settings.html'));
+   win.loadFile(path.join(__dirname, 'app/windows/settings/settings.html'));
 
+}
+
+function createSplashWindow() {
+   splashWindow = new BrowserWindow(
+      {
+         height: 300,
+         width: 300,
+         frame: false,
+
+         webPreferences: {
+            nodeIntegration: false,
+            devTools: false
+         }
+      }
+   );
+   // splashWindow.webContents.openDevTools();
+   splashWindow.removeMenu();
+   splashWindow.menu = null;
+   splashWindow.loadFile(path.join(__dirname, 'app/windows/loading/loading.html'));
 }
 
 

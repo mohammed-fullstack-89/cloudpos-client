@@ -13,7 +13,7 @@ Customer.init({
     customer_type: { type: DataTypes.ENUM('individual', 'entity'), allowNull: false },
     allow_discount: { type: DataTypes.TINYINT(4), defualtValue: null, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE(10, 4), defualtValue: null, allowNull: true },
-    discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: false },
+    discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: true },
     ban_customer: { type: DataTypes.TINYINT(4), defualtValue: null, allowNull: true },
     ban_customer_reasons: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     allow_tax_exemption: { type: DataTypes.TINYINT(4), defualtValue: null, allowNull: true },

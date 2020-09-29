@@ -1,0 +1,15 @@
+.main-container {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-status {
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    color: cornflowerblue;
+    font-weight: 600;
+
+}

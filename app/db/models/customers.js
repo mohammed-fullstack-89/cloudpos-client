@@ -12,53 +12,58 @@ module.exports = {
         customer_type: { type: Seq.ENUM('individual', 'entity'), defualtValue: null, allowNull: false },
         discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), defualtValue: null, allowNull: true },
         discount_value: { type: Seq.DOUBLE, defualtValue: 0, allowNull: true },
-        allow_discount: { type: Seq.BIGINT, defualtValue: 0, allowNull: false },
-        ban_customer: { type: Seq.BIGINT, defualtValue: 0, allowNull: false },
+        allow_discount: { type: Seq.BIGINT, defualtValue: 0, allowNull: true },
+        ban_customer: { type: Seq.BIGINT, defualtValue: 0, allowNull: true },
         ban_customer_reasons: { type: Seq.STRING, defualtValue: null, allowNull: true },
-        allow_tax_exemption: { type: Seq.BIGINT, defualtValue: 0, allowNull: false },
+        allow_tax_exemption: { type: Seq.BIGINT, defualtValue: 0, allowNull: true },
         tax_exemption_number: { type: Seq.BIGINT, defualtValue: 0, allowNull: true },
         tier_id: { type: Seq.BIGINT, defualtValue: null, allowNull: true },
         upload_file: { type: Seq.BLOB, defualtValue: null, allowNull: true },
         note: { type: Seq.TEXT, defualtValue: null, allowNull: true },
     },
-    relations: [{
-        type: 'belongsTo',
-        related_to: 'customer_tiers',
-        relationOptions: {
-            foreignKey: {
-                field: 'tier_id',
-                name: 'tierId',
-            },
-            as: 'get_customer_tier'
-        }
+    relations: [
 
-    },
-    {
-        type: 'hasMany',
-        related_to: 'customer_addresses',
-        relationOptions: {
-            as: 'get_customer_address',
-            foreignKey: {
-                field: 'customer_id',
-                name: 'customerId',
+        {
+            type: 'belongsTo',
+            related_to: 'customer_tiers',
+            relationOptions: {
+                foreignKey: {
+                    field: 'tier_id',
+                    name: 'tierId',
+                },
+                as: 'get_customer_tier'
+            }
+        },
+
+        {
+            type: 'hasMany',
+            related_to: 'customer_addresses',
+            relationOptions: {
+                as: 'get_customer_address',
+                foreignKey: {
+                    field: 'customer_id',
+                    name: 'customerId',
+
+
+                }
 
             }
 
+        },
+        {
+            type: 'belongsToMany',
+            related_to: 'customer_entities',
+            relationOptions: {
+                as: 'get_customer_entity',
+                through: 'entites_customers',
+                foreignKey: 'customer_id',
+                otherKey: 'entity_id',
+            },
+
+
         }
 
-    },
-    {
-        type: 'belongsToMany',
-        related_to: 'customer_entities',
-        relationOptions: {
-            as: 'get_customer_entity',
-            through: 'entites_customers',
-            foreignKey: 'customer_id',
-            otherKey: 'entity_id',
-        },
-
-
-    }],
+    ],
     columnsIndex: {
         indexes: [{
             name: 'customers_name_foreign',
@@ -69,10 +74,12 @@ module.exports = {
         }, {
             name: 'customers_phone_number_2_foreign',
             fields: [`phone_number_2`]
-        }, {
-            name: 'customers_tier_id_foreign',
-            fields: [`tier_id`]
-        }]
+        },
+            // {
+            //     name: 'customers_tier_id_foreign',
+            //     fields: [`tier_id`]
+            // }
+        ]
     },
 
 }

@@ -12,7 +12,7 @@ module.exports = {
         mobile2: { type: Seq.INTEGER, defualtValue: null, allowNull: true },
         email: { type: Seq.STRING, defualtValue: null, allowNull: true },
         address: { type: Seq.STRING, defualtValue: null, allowNull: true },
-        discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: false },
+        discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'),  allowNull: true },
         discount_value: { type: Seq.STRING, defualtValue: null, allowNull: true },
         description: { type: Seq.STRING, defualtValue: null, allowNull: true },
 

@@ -22,13 +22,13 @@ module.exports = {
     },
     relations: [{
 
-    
+
         type: 'hasMany',
         related_to: 'prices',
         relationOptions: {
             as: 'get_prices',
-            foreignKey: 'variant_id',
-            otherKey: 'prices_id',
+            foreignKey: 'price_id',
+            otherKey: 'variant_id',
         },
 
     }],

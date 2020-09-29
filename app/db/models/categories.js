@@ -8,7 +8,7 @@ module.exports = {
         name_en: { type: Seq.STRING, defualtValue: null, allowNull: true },
         description: { type: Seq.STRING, defaultValue: null, allowNull: true },
         image: { type: Seq.STRING, allowNull: true },
-        discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: false },
+        discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: true },
         discount_value: { type: Seq.DOUBLE, defualtValue: null, allowNull: true },
         branch_id: { type: Seq.BIGINT, allowNull: false },
         tax_id: { type: Seq.BIGINT, defualtValue: null, allowNull: true },
@@ -22,7 +22,17 @@ module.exports = {
             foreignKey: 'parent'
         }
 
-    }],
+    },
+    {
+        type: 'belongsToMany',
+        related_to: 'variants',
+        relationOptions: {
+            as: 'get_item_categories',
+            through: 'variants_categories',
+            foreignKey: 'category_id',
+            otherKey: 'variant_id',
+        },
+    },],
     columnsIndex: {
         indexes: [{
             name: 'categories_branch_id_foreign',

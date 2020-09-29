@@ -28,7 +28,7 @@ module.exports = {
         shelf: { type: Seq.STRING, defualtValue: null, allowNull: true },
         max_order: { type: Seq.STRING, defualtValue: null, allowNull: true },
         min_order: { type: Seq.STRING, defualtValue: null, allowNull: true },
-        discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: false },
+        discount_type: { type: Seq.ENUM('percentage', 'value', 'undefined'), allowNull: true },
         discount_value: { type: Seq.STRING, defualtValue: null, allowNull: true },
         max_discoun: { type: Seq.STRING, defualtValue: null, allowNull: true },
         commission_type: { type: Seq.STRING, defualtValue: null, allowNull: true },
@@ -42,7 +42,7 @@ module.exports = {
         stop_sale: { type: Seq.TINYINT, allowNull: false, defaultValue: 0 },
         edit_price: { type: Seq.TINYINT, allowNull: false, defaultValue: 0 },
         item_segmented: { type: Seq.TINYINT, allowNull: false, defaultValue: 0 },
-        allow_discount: { type: Seq.TINYINT, allowNull: false, defaultValue: 0 },
+        allow_discount: { type: Seq.TINYINT, allowNull: true, defaultValue: 0 },
         item_id: { type: Seq.BIGINT, defaultValue: null, allowNull: true },
         is_main_item: { type: Seq.INTEGER, allowNull: true, defaultValue: 0 },
         has_expire_date: { type: Seq.INTEGER, allowNull: true, defaultValue: 0 },
@@ -80,7 +80,7 @@ module.exports = {
         related_to: 'categories',
         relationOptions: {
             as: 'get_item_categories',
-            through: 'categories_variants',
+            through: 'variants_categories',
             foreignKey: 'variant_id',
             otherKey: 'category_id',
         },
@@ -99,7 +99,7 @@ module.exports = {
         related_to: 'segments',
         relationOptions: {
             as: 'get_segment',
-            through: 'segments_variants',
+            through: 'variants_segments',
             foreignKey: 'variant_id',
             otherKey: 'segment_id',
         },
@@ -110,7 +110,7 @@ module.exports = {
         related_to: 'serials',
         relationOptions: {
             as: 'get_serials',
-            through: 'serials_variants',
+            through: 'variants_serials',
             foreignKey: 'variant_id',
             otherKey: 'serial_id',
         },
@@ -141,14 +141,7 @@ module.exports = {
             name: 'variants_brand_id_foreign',
             fields: [`brand_id`]
         },
-        // {
-        //     name: 'variants_item_id_foreign',
-        //     fields: [`item_id`]
-        // },
-        // {
-        //     name: 'variants_name_ar_foreign',
-        //     fields: [`name_ar`]
-        // },
+
         {
             name: 'variants_name_en_foreign',
             fields: [`name_en`]

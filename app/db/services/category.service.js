@@ -1,22 +1,30 @@
 
+// const remote = require('electron').remote;
 
-var db = require('../db.manager');
+// const db = remote.getGlobal('db');
+var db = require('../db.manager')
+    , Seq = db.Seq();
 var categoryService = function categoryService() {
 
 
-    this.getCategories = async function () {
+    this.getCategories = async function (parentId) {
+
         var categoryTable = db.model('categories');
         var categories = [];
-        categories = await categoryTable.findAll();
+        categories = await categoryTable.findAll({
+            where: {
+                parent: parentId
+            }
+        });
         categories = JSON.stringify(categories);
         console.log("categories : " + categories);
         return categories;
     }
 
     this.setCategories = async function (categoriesList) {
-        console.log(categoriesList);
         var categoryTable = db.model("categories");
         await categoryTable.bulkCreate(JSON.parse(categoriesList), { returning: true });
+        console.log("insert is complete");
     }
 
     if (categoryService.caller != categoryService.getInstance) {
