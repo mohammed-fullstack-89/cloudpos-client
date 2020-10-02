@@ -1,5 +1,5 @@
 
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -7,14 +7,14 @@ module.exports = {
         id: { type: Seq.BIGINT, primaryKey: true, autoIncrement: true },
         name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
         name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        trade_name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        trade_name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        scientific_name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        scientific_name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        brief_name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        brief_name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
-        description: { type: Seq.TEXT, allowNull: true, defaultValue: null },
-        id: { type: Seq.BIGINT, primaryKey: true, autoIncrement: true },
+        // trade_name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
+        // trade_name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
+        // scientific_name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
+        // scientific_name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
+        // brief_name_ar: { type: Seq.STRING, allowNull: true, defaultValue: null },
+        // brief_name_en: { type: Seq.STRING, allowNull: true, defaultValue: null },
+        // description: { type: Seq.TEXT, allowNull: true, defaultValue: null },
+        // id: { type: Seq.BIGINT, primaryKey: true, autoIncrement: true },
         nick_name_ar: { type: Seq.STRING, defualtValue: null, allowNull: true },
         nick_name_en: { type: Seq.STRING, defualtValue: null, allowNull: true },
         barcode: { type: Seq.STRING, defualtValue: null, allowNull: true },
@@ -46,22 +46,48 @@ module.exports = {
         item_id: { type: Seq.BIGINT, defaultValue: null, allowNull: true },
         is_main_item: { type: Seq.INTEGER, allowNull: true, defaultValue: 0 },
         has_expire_date: { type: Seq.INTEGER, allowNull: true, defaultValue: 0 },
-        side_effects: { type: Seq.STRING, defualtValue: null, allowNull: true },
-        precations: { type: Seq.STRING, defualtValue: null, allowNull: true },
-        alternative_items_ids: { type: Seq.STRING, defualtValue: null, allowNull: true },
+        // // side_effects: { type: Seq.STRING, defualtValue: null, allowNull: true },
+        // // precations: { type: Seq.STRING, defualtValue: null, allowNull: true },
+        // alternative_items_ids: { type: Seq.STRING, defualtValue: null, allowNull: true },
+        // category_id: { type: DataTypes.BIGINT, allowNull: true, defaultValue: null },
+
     },
 
     relations: [{
-
-        type: 'belongsToMany',
-        related_to: 'suppliers',
+        type: "belongsTo",
+        related_to: "items",
         relationOptions: {
-            as: 'get_suppliers',
-            through: 'variants_suppliers',
-            foreignKey: 'variant_id',
-            otherKey: 'supplier_id',
-        },
+            foreignKey: {
+                field: 'item_id',
+                name: 'itemId',
+
+            }
+        }
     },
+    // {
+    //     type: 'belongsToMany',
+    //     related_to: 'suppliers',
+    //     relationOptions: {
+    //         as: 'get_suppliers',
+    //         through: 'variants_suppliers',
+    //         foreignKey: 'variant_id',
+    //         otherKey: 'supplier_id',
+    //     },
+    // },
+
+
+    // {
+    //     type: 'belongsToMany',
+    //     related_to: 'variants',
+    //     relationOptions: {
+    //         as: 'get_item_alternativs',
+    //         through: 'variants_alternatives',
+    //         foreignKey: 'variant_id',
+    //         otherKey: 'alternative_id',
+    //     },
+
+    // },
+
 
 
     {
@@ -95,27 +121,28 @@ module.exports = {
         },
 
     }, {
-        type: 'belongsToMany',
+        type: 'hasMany',
         related_to: 'segments',
         relationOptions: {
             as: 'get_segment',
-            through: 'variants_segments',
             foreignKey: 'variant_id',
             otherKey: 'segment_id',
         },
 
     },
     {
-        type: 'belongsToMany',
+        type: 'hasMany',
         related_to: 'serials',
         relationOptions: {
             as: 'get_serials',
-            through: 'variants_serials',
             foreignKey: 'variant_id',
             otherKey: 'serial_id',
         },
 
-    }],
+    }
+
+
+    ],
     columnsIndex: {
 
         indexes: [{
@@ -143,23 +170,13 @@ module.exports = {
         },
 
         {
+            name: 'variants_name_ar_foreign',
+            fields: [`name_ar`]
+        },
+        {
             name: 'variants_name_en_foreign',
             fields: [`name_en`]
-        }, {
-            name: 'variants_trade_name_ar_foreign',
-            fields: [`trade_name_ar`]
-        }, {
-            name: 'variants_trade_name_en_foreign',
-            fields: [`trade_name_ar`]
-        },
-        {
-            name: 'variants_scientific_name_ar_foreign',
-            fields: [`scientific_name_ar`]
-        },
-        {
-            name: 'variants_scientific_name_en_foreign',
-            fields: [`scientific_name_en`]
-        }]
+        },]
     },
 
 };

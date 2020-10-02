@@ -1,6 +1,7 @@
 const communicator = require('./app/services/communicator.service');
 window.obj = communicator;
-
+// window.jQuery = require('jquery');
+// window.$ = window.jQuery = require('jquery');
 // const dbStore = require('./app/services/service.db');
 
 // db.setup().then(() => {

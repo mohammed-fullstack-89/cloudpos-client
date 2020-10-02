@@ -1,20 +1,18 @@
 
 
-var db = require('../db.manager');
-var itemService = function itemService() {
+let db = require('../../../models/index');
+let itemService = function itemService() {
 
 
     this.getItems = async function () {
-        var itemTable = db.model('items');
-        var items = [];
+        let itemTable = db.model('items');
+        let items = [];
         items = await itemTable.findAll();
-        items = JSON.stringify(items);
-        console.log("items : " + items);
         return items;
     }
     this.searchItems = async function (type, val) {
-        var itemTable = db.model('variants');
-        var items = [];
+        let itemTable = db.model('letiants');
+        let items = [];
         items = await itemTable.findAll({
             where: {
                 name: { [db.Seq().like]: '%val%' },
@@ -26,9 +24,13 @@ var itemService = function itemService() {
     }
 
     this.setItems = async function (itemsList) {
-        console.log(itemsList);
-        var itemTable = db.model("variants");
-        await itemTable.bulkCreate(itemsList);
+        try {
+            let itemTable = db.model("items");
+            await itemTable.bulkCreate(JSON.parse(itemsList), { include: { all: true, nested: true, updateOnDuplicate:[]}, returning: true, nested: true });
+        } catch (error) {
+            console.log("error " + error);
+        }
+
     }
 
     if (itemService.caller != itemService.getInstance) {

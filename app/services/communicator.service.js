@@ -1,5 +1,4 @@
 const ipc = require('electron').ipcRenderer;
-const dbStore = require('./service.db')
 var communicator = function communicator() {
 
 
@@ -17,39 +16,33 @@ var communicator = function communicator() {
     }
 
 
-    this.setCustomers = async function (customersList) {
-        let customers = await ipc.invoke('setCustomers', customersList)
+    this.setCustomers = async function (customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
+        console.log("set cust1")
+        await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
 
 
     this.getCustomers = async function (val) {
-        let customers = await ipc.invoke('getCustomers');
-        return customers;
+        return ipc.invoke('getCustomers');
     }
 
     this.searchCustomers = async function (val) {
-        let customers = await ipc.invoke('searchCustomers', val)
+        const customers = await ipc.invoke('searchCustomers', val)
         return customers;
     }
-    // this.searchCustomers = async function () {
-    //     let customerService = require('../db/services/customer.service');
-    //     let customers = await customerService.searchCustomers();
-    //     return customers;
-    // }
 
-    this.setItems = async function (data) {
-        await ipc.invoke('setItems', JSON.parse(data[0]).get_variants);
-        return items;
+
+    this.setItems = async function (items) {
+        await ipc.invoke('setItems', items);
 
         // let itemsService = require('../db/services/item.service');
         // await itemsService.setItems(items);
     }
 
-    // this.getItems = async function () {
-    //     let itemsService = require('../db/services/item.service');
-    //     let items = await itemsService.getItems(items);
-    //     return items
-    // }
+    this.getItems = async function () {
+        const items = ipc.invoke('getItems');
+        return items
+    }
 
     // this.searchItems = async function (type, value) {
     //     let itemsService = require('../db/services/item.service');
@@ -58,26 +51,24 @@ var communicator = function communicator() {
     // }
 
 
-    // this.setCompanies = async function (items) {
-    //     let companiesService = require('../db/services/company.service');
-    //     await companiesService.setItems(items);
-    // }
+    this.setInsuranceCompany = async function (companies, companiesRatios, companiesTerms, companyRatiosRel, companyTermsRel) {
+        await ipc.invoke('setCompanies', JSON.parse(companies), JSON.parse(companiesRatios), JSON.parse(companiesTerms), JSON.parse(companyRatiosRel), JSON.parse(companyTermsRel));
+    }
+    // obj.setInsuranceCompany(JSON.stringify(sqllightobject.companies),JSON.stringify(sqllightobject.companiesRatios),JSON.stringify(sqllightobject.companiesTerms),JSON.stringify(sqllightobject.companyTermsRel),JSON.stringify(sqllightobject.companyRatiosRel))
+    this.getInsuranceCompany = async function () {
+        let companies = await ipc.invoke('getCompanies');
+        return companies;
 
-    // this.getCompanies = async function () {
-    //     let companiesService = require('../db/services/company.service');
-    //     let companies = await companiesService.getItems(items);
-    //     return companies
-    // }
-    // this.setCards = async function (items) {
-    //     let cardsService = require('../db/services/card.service');
-    //     await cardsService.setItems(cards);
-    // }
+    }
+    this.setCards = async function (cards) {
+        await ipc.invoke('setCards', cards);
 
-    // this.getCards = async function () {
-    //     let cardsService = require('../db/services/card.service');
-    //     let cards = await cardsService.getItems(items);
-    //     return cards
-    // }
+    }
+
+    this.getCards = async function () {
+        let cards = await ipc.invoke('getCards');
+        return cards;
+    }
 
     if (communicator.caller != communicator.getInstance) {
         throw new Error("This object cannot be instanciated");

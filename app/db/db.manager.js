@@ -32,6 +32,7 @@ var dbManager = function dbManager() {
         }).catch((error) => {
             reject(`error : ${error}`)
         });
+        
     }
     this.model = function (name) {
         return models[name];
@@ -69,18 +70,22 @@ var dbManager = function dbManager() {
                         var type = relation.type;
                         var related = relation.related_to;
                         var options = relation.relationOptions;
+                        console.log('related' + related);
 
                         models[name][related] = models[name][type](models[related], options);
+                        console.log("models[name][related] " + JSON.stringify(models[name][related]))
                     });
 
 
                 }
+                // console.log("models" + JSON.stringify(Object.keys(models['customers'].associations.get_customer_entity)));
+                // console.log("models" + JSON.stringify(Object.values(models['customers'].associations.get_customer_entity)));
                 sequelize.authenticate().then(async () => {
                     console.log("connected" + sequelize.config);
 
-                    await sequelize.drop();
+                    // await sequelize.drop();
                     sequelize.sync({ force: true }).catch((error) => {
-                    // sequelize.sync().catch((error) => {
+                        // sequelize.sync().catch((error) => {
                         console.log("error : ! " + error);
                     }).then(() => {
                         resolve("done");

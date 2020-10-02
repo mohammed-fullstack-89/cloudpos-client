@@ -1,6 +1,6 @@
 
 
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
         phone: { type: Seq.STRING, defualtValue: null, allowNull: true },
         fax: { type: Seq.STRING, defualtValue: null, allowNull: true },
         email: { type: Seq.STRING, defualtValue: null, allowNull: true },
-        get_ratio: { type: Seq.STRING, defualtValue: null, allowNull: true },
+        // get_ratio: { type: Seq.STRING, defualtValue: null, allowNull: true },
 
 
     },
@@ -21,10 +21,12 @@ module.exports = {
         type: 'belongsToMany',
         related_to: 'ratios',
         relationOptions: {
-            as: 'get_ratios',
+            as: 'get_ratio',
             through: 'companies_ratios',
             foreignKey: 'company_id',
             otherKey: 'ratio_id',
+            onDelete: 'cascade'
+            // constraints: false
         },
     },
     {
@@ -35,6 +37,8 @@ module.exports = {
             through: 'companies_terms',
             foreignKey: 'company_id',
             otherKey: 'term_id',
+            onDelete: 'cascade',
+            onUpdate: 'cascade'
         }
     }],
     columnsIndex: {

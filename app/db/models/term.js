@@ -1,6 +1,6 @@
 
 
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {

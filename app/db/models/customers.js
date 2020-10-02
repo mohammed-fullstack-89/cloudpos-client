@@ -1,4 +1,4 @@
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -52,10 +52,10 @@ module.exports = {
         },
         {
             type: 'belongsToMany',
-            related_to: 'customer_entities',
+            related_to: 'entities',
             relationOptions: {
-                as: 'get_customer_entity',
-                through: 'entites_customers',
+                as: 'Customers',
+                through: 'entities_customers',
                 foreignKey: 'customer_id',
                 otherKey: 'entity_id',
             },

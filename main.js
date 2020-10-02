@@ -1,13 +1,13 @@
 const electron = require('electron');
 const url = require('url');
+// const worker = require('worker_threads');
 const path = require('path');
 const customContextMenu = require('./app/components/menu/context_menu');
 const { app, BrowserWindow } = electron;
 const ipc = electron.ipcMain;
 const Menu = electron.Menu;
 const enviroment = require('./enviroment');
-var db = require('./app/db/db.manager');
-var communicator = require('./app/services/communicator.service')
+var db = require('./models/index');
 var splashWindow;
 const dbStore = require('./app/services/service.db')
 
@@ -75,13 +75,17 @@ function createWindow() {
       parent: true,
       frame: true,
       paintWhenInitiallyHidden: true,
+
+
       // contextIsolation: false, //block website loaded to access electron preload script (false)
       webPreferences: {
          enableBlinkFeatures: true,
          nativeWindowOpen: true,
          nodeIntegration: true,
          safeDialogs: false,
-
+         javascript: true,
+         webgl: false,
+         nodeIntegrationInWorker: true,
          preload: path.join(__dirname, 'renderer.js')
       }
 
@@ -338,7 +342,7 @@ function createSettingsWindow() {
       title: "Settings",
       webPreferences: {
          nodeIntegration: true,
-
+         nodeIntegrationInWorker: true,
          // preload: path.join(__dirname, 'app/components/settings/settings.js')
       },
       // backgroundColor: '#2e2c29' 
@@ -359,7 +363,8 @@ function createSplashWindow() {
 
          webPreferences: {
             nodeIntegration: false,
-            devTools: false
+            devTools: false,
+            nodeIntegrationInWorker: true,
          }
       }
    );

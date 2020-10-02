@@ -1,4 +1,4 @@
-var orm = require("../db.manager")
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -15,24 +15,24 @@ module.exports = {
         printer_id: { type: Seq.BIGINT, defualtValue: null, allowNull: true },
         parent: { type: Seq.BIGINT, defualtValue: null, allowNull: true },
     },
-    relations: [{
-        type: "belongsTo",
-        related_to: "categories",
-        relationOptions: {
-            foreignKey: 'parent'
-        }
+    relations: [
+        //     type: "belongsTo",
+        //     related_to: "categories",
+        //     relationOptions: {
+        //         foreignKey: 'parent'
+        //     }
 
-    },
-    {
-        type: 'belongsToMany',
-        related_to: 'variants',
-        relationOptions: {
-            as: 'get_item_categories',
-            through: 'variants_categories',
-            foreignKey: 'category_id',
-            otherKey: 'variant_id',
-        },
-    },],
+        // },
+        {
+            type: 'belongsToMany',
+            related_to: 'variants',
+            relationOptions: {
+                as: 'get_item_categories',
+                through: 'variants_categories',
+                foreignKey: 'category_id',
+                otherKey: 'variant_id',
+            },
+        },],
     columnsIndex: {
         indexes: [{
             name: 'categories_branch_id_foreign',

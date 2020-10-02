@@ -1,5 +1,5 @@
 
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -21,14 +21,15 @@ module.exports = {
 
     },
     relations: [{
-
-        type: 'belongsToMany',
-        related_to: 'variants',
+        type: 'belongsTo',
+        related_to: 'items',
         relationOptions: {
-            // as: 'get_serials',
-            through: 'variants_serials',
-            foreignKey: 'serial_id',
-            otherKey: 'variant_id',
+            foreignKey: {
+                field: 'item_id',
+                name: 'itemId',
+
+            },
+
         },
     }],
     columnsIndex: {

@@ -1,23 +1,22 @@
 
 
-var db = require('../db.manager');
-var cardService = function cardService() {
+let db = require('../../../models/index');
+let cardService = function cardService() {
 
 
     this.getCards = async function () {
-        var cardTable = db.model('cards');
-        var cards = [];
-        cards = await cardTable.findAll({ include: { all: true, nested: true } });
+        let cardTable = db.model('card');
+        let cards = [];
+        cards = await cardTable.findAll();
         cards = JSON.stringify(cards);
-        console.log("cards : " + cards);
         return cards;
     }
 
 
     this.setCards = async function (cardsList) {
         console.log(cardsList);
-        var cardTable = db.model("cards");
-        await cardTable.bulkCreate(JSON.parse(cardsList), { returning: true });
+        let cardTable = db.model('card');
+        await cardTable.bulkCreate(JSON.parse(cardsList), { updateOnDuplicate: Object.keys(cardTable.rawAttributes) });
     }
 
     if (cardService.caller != cardService.getInstance) {

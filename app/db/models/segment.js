@@ -1,6 +1,6 @@
 
 
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -27,6 +27,18 @@ module.exports = {
             foreignKey: 'segment_id',
             otherKey: 'variant_id',
         },
+    },
+    {
+
+        type: 'belongsTo',
+        related_to: 'items',
+        relationOptions: {
+            foreignKey: {
+                field: 'item_id',
+                name: 'itemId',
+
+            },
+        }
     }],
     columnsIndex: {
         indexes: [{
@@ -36,10 +48,10 @@ module.exports = {
         {
             name: 'segments_nick_name_en_foreign',
             fields: [`nick_name_en`]
-        },{
+        }, {
             name: 'segments_barcode_foreign',
             fields: [`barcode`]
-        },{
+        }, {
             name: 'segments_unit_id_foreign',
             fields: [`unit_id`]
         }, {

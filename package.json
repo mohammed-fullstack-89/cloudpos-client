@@ -8,7 +8,7 @@
     "post-install": "electron-builder install-app-deps",
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
-    "migrate":"sequelize-cli db:migrate"
+    "migrate": "sequelize-cli db:migrate"
   },
   "author": "Hamza alfawaer",
   "license": "Licensed",
@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "electron": "^10.1.1",
-    "sequelize": "^6.3.4",
+    "jquery": "^3.5.1",
+    "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"
   }
 }

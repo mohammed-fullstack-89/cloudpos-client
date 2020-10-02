@@ -1,6 +1,6 @@
 
 
-var orm = require('../db.manager')
+var orm = require('./index')
     , Seq = orm.Seq();
 
 module.exports = {
@@ -14,10 +14,12 @@ module.exports = {
         type: 'belongsToMany',
         related_to: 'companies',
         relationOptions: {
-            as: 'get_ratios',
+            as: 'get_ratio',
             through: 'companies_ratios',
             foreignKey: 'ratio_id',
             otherKey: 'company_id',
+            onDelete: 'cascade',
+            onUpdate: 'cascade'
         },
     }],
     columnsIndex: {
