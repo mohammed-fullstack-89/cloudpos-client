@@ -3,42 +3,43 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class CompanyTerms extends Model {
+    class ItemTax extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            CompanyTerms.belongsTo(models.company, { foreignKey: 'company_id', targetKey: 'id' });
-            CompanyTerms.belongsTo(models.term, { foreignKey: 'term_id', targetKey: 'id' });
+            ItemTax.belongsTo(models.item, { foreignKey: 'item_id', targetKey: 'id' });
+            ItemTax.belongsTo(models.tax, { foreignKey: 'tax_id', targetKey: 'id' });
 
         }
     };
-    CompanyTerms.init({
+    ItemTax.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        company_id: {
-            type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'company',
-                key: 'id'
-            },
-            // onDelete: 'cascade',
-            // onUpdate: 'cascade',
-            unique: 'unique-genre-per-company'
-        },
-        term_id: {
-            type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'term',
-                key: 'id'
-            },
-            // onDelete: 'cascade',
-            // onUpdate: 'cascade',
-            unique: 'unique-genre-per-term'
-        },
+        item_id: {
+            type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
+            references: {
+                model: 'item',
+                key: 'id'
+            },
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
+            unique: 'unique-genre-per-item'
+        },
+        tax_id: {
+            type: DataTypes.BIGINT, allowNull: false, references: {
+                model: 'tax',
+                key: 'id'
+            },
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
+            unique: 'unique-genre-per-tax'
+        },
     }, {
         sequelize,
-        modelName: 'company_terms',
+        modelName: 'item_taxes',
     });
-    return CompanyTerms;
+    return ItemTax;
 };

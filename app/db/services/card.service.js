@@ -13,10 +13,10 @@ let cardService = function cardService() {
     }
 
 
-    this.setCards = async function (cardsList) {
+    this.setCards =  function (cardsList) {
         console.log(cardsList);
         let cardTable = db.model('card');
-        await cardTable.bulkCreate(JSON.parse(cardsList), { updateOnDuplicate: Object.keys(cardTable.rawAttributes) });
+        cardTable.bulkCreate(JSON.parse(cardsList), { updateOnDuplicate: Object.keys(cardTable.rawAttributes) });
     }
 
     if (cardService.caller != cardService.getInstance) {

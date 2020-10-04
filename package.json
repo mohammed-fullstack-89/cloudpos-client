@@ -1,20 +1,27 @@
 {
   "name": "rposclientapp",
+  "productName": "Rpos",
   "version": "0.1.0",
   "description": "Client app for rpos website :) enjoy",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "post-install": "electron-builder install-app-deps",
+    "rebuild-sqlite3-modules": "electron-rebuild -f -w sqlite3",
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
-    "migrate": "sequelize-cli db:migrate"
+    "migrate": "sequelize-cli db:migrate",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . RposClientApp --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Rpos\"",
+    "package-linux": "electron-packager . RposClientApp --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
   },
   "author": "Hamza alfawaer",
   "license": "Licensed",
   "devDependencies": {
     "devtron": "^1.4.0",
     "electron-builder": "^22.8.0",
+    "electron-packager": "^15.1.0",
+    "electron-rebuild": "^2.0.3",
     "sequelize-cli": "^6.2.0"
   },
   "dependencies": {

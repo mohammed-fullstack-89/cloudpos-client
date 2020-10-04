@@ -3,42 +3,43 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class CompanyTerms extends Model {
+    class ItemAlternative extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            CompanyTerms.belongsTo(models.company, { foreignKey: 'company_id', targetKey: 'id' });
-            CompanyTerms.belongsTo(models.term, { foreignKey: 'term_id', targetKey: 'id' });
+            ItemAlternative.belongsTo(models.item, { foreignKey: 'item_id', targetKey: 'id' });
+            ItemAlternative.belongsTo(models.item, { foreignKey: 'alternative_id', targetKey: 'id' });
 
         }
     };
-    CompanyTerms.init({
+    ItemAlternative.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        company_id: {
-            type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'company',
-                key: 'id'
-            },
-            // onDelete: 'cascade',
-            // onUpdate: 'cascade',
-            unique: 'unique-genre-per-company'
-        },
-        term_id: {
-            type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'term',
-                key: 'id'
-            },
-            // onDelete: 'cascade',
-            // onUpdate: 'cascade',
-            unique: 'unique-genre-per-term'
-        },
+        item_id: {
+            type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
+            references: {
+                model: 'item',
+                key: 'id'
+            },
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
+            unique: 'unique-genre-per-item'
+        },
+        alternative_id: {
+            type: DataTypes.BIGINT, allowNull: false, references: {
+                model: 'alternative',
+                key: 'id'
+            },
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
+            unique: 'unique-genre-per-alternative'
+        },
     }, {
         sequelize,
-        modelName: 'company_terms',
+        modelName: 'item_alternatives',
     });
-    return CompanyTerms;
+    return ItemAlternative;
 };

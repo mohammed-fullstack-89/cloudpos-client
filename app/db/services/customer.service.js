@@ -13,7 +13,7 @@ let customerService = function customerService() {
     }
 
     this.searchCustomers = async function (val) {
-        let customerTable = db.model('customers');
+        let customerTable = db.model('customer');
         let customers = [];
         if (val == null || val == undefined || val == "undefined") {
             customers = await customerTable.findAll({ include: { all: true, nested: true } });
@@ -28,7 +28,7 @@ let customerService = function customerService() {
             });
         }
         customers = JSON.stringify(customers);
-        console.log("customers : " + customers);
+        console.log("customer : " + customers);
         return customers;
     }
     this.setCustomers = async function (args) {
@@ -44,18 +44,36 @@ let customerService = function customerService() {
         let entitesTable = db.model("entity");
         let customerEntitesRelTable = db.model("customer_entities");
 
-        if (tiers_list != [] && tiers_list != undefined)
-            await tiersTable.bulkCreate(tiers_list, { updateOnDuplicate: [...Object.keys(tiersTable.rawAttributes)] });
-        if (customersList != [] && customersList != undefined)
-            await customerTable.bulkCreate(customersList, { updateOnDuplicate: [...Object.keys(customerTable.rawAttributes)] });
-        if (addresss_list != [] && addresss_list != undefined)
-            await addressesTable.bulkCreate(addresss_list, { updateOnDuplicate: [...Object.keys(addressesTable.rawAttributes)] });
-        if (entites_list != [] && entites_list != undefined)
-            await entitesTable.bulkCreate(entites_list, { updateOnDuplicate: [...Object.keys(entitesTable.rawAttributes)] });
+        if (tiers_list != [] && tiers_list != undefined) {
+            tiersTable.destroy({ truncate: true }).then(() => {
+                tiersTable.bulkCreate(tiers_list);
+
+            });
+        }
+
+        if (customersList != [] && customersList != undefined) {
+            customerTable.destroy({ truncate: true }).then(() => {
+                customerTable.bulkCreate(customersList);
+            });
+        }
+
+        if (addresss_list != [] && addresss_list != undefined) {
+            addressesTable.destroy({ truncate: true }).then(() => {
+                addressesTable.bulkCreate(addresss_list);
+            });
+        }
+        if (entites_list != [] && entites_list != undefined) {
+            entitesTable.destroy({ truncate: true }).then(() => {
+                entitesTable.bulkCreate(entites_list);
+            });
+        }
+
 
         if (entity_rel_list != [] && entity_rel_list != undefined) {
-            await customerEntitesRelTable.destroy({ truncate: true });
-            await customerEntitesRelTable.bulkCreate(entity_rel_list);
+            customerEntitesRelTable.destroy({ truncate: true }).then(() => {
+                customerEntitesRelTable.bulkCreate(entity_rel_list);
+            });
+
         }
 
 

@@ -20,9 +20,9 @@ var categoryService = function categoryService() {
         return categories;
     }
 
-    this.setCategories = async function (categoriesList) {
+    this.setCategories = function (categoriesList) {
         let categoryTable = db.model("category");
-        await categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
+        categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
         console.log("insert is complete");
     }
 

@@ -12,10 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
 
       this.belongsToMany(models.ratio, {
+        as: 'get_ratio',
         through: models.company_ratios,
         foreignKey: 'company_id',
       });
       this.belongsToMany(models.term, {
+        as: 'get_terms',
         through: models.company_terms,
         foreignKey: 'company_id',
       });

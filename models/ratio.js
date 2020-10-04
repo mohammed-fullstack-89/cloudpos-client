@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsToMany(models.company, {
+        as: 'get_ratio',
         through: models.company_ratios,
         foreignKey: 'ratio_id',
       })

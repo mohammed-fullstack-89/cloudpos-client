@@ -17,7 +17,7 @@ var communicator = function communicator() {
 
 
     this.setCustomers = async function (customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
-        console.log("set cust1")
+
         await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
 
@@ -31,24 +31,26 @@ var communicator = function communicator() {
         return customers;
     }
 
-
-    this.setItems = async function (items) {
-        await ipc.invoke('setItems', items);
+    this.setItems = async function (itemsInfo, serialsList, alternatives, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, categoryAlternativesRel) {
+        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(alternatives), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(categoryAlternativesRel),);
 
         // let itemsService = require('../db/services/item.service');
         // await itemsService.setItems(items);
     }
 
     this.getItems = async function () {
-        const items = ipc.invoke('getItems');
+        return ipc.invoke('getItems');
+
+    }
+    this.getItemsByCategory = async function (parentId, limit, offset) {
+        const items = await ipc.invoke('getItemsByCategory', parentId, limit, offset);
         return items
     }
 
-    // this.searchItems = async function (type, value) {
-    //     let itemsService = require('../db/services/item.service');
-    //     let items = await itemsService.searchItems(type, value);
-    //     return items
-    // }
+    this.searchItems = async function (type, value) {
+        const items = await ipc.invoke('searchItems', type, value);
+        return items
+    }
 
 
     this.setInsuranceCompany = async function (companies, companiesRatios, companiesTerms, companyRatiosRel, companyTermsRel) {

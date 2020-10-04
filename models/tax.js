@@ -10,11 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsToMany(models.variant, {
-        through: 'variant_taxes',
+      // this.belongsToMany(models.item, {
+      //   through: 'item_taxes',
+      //   foreignKey: 'tax_id',
+      //   otherKey: 'item_id',
+      // });
+
+      this.belongsToMany(models.tax, {
+        as: 'get_tax',
+        through: models.item_taxes,
         foreignKey: 'tax_id',
-        otherKey: 'variant_id',
-      });
+        otherKey: 'item_id',
+      })
     }
   };
   Tax.init({

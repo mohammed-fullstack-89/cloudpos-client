@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { Sequelize } = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
@@ -46,12 +47,12 @@ class DbManager {
       //connection instance 
       this.db.sequelize = this.sequelize;
       //sequelize instance  
-      this.db.Sequelize = this.Sequelize;
+      this.db.Sequelize = Sequelize;
       // resolve("done");
       this.db.sequelize.authenticate().then(async () => {
 
         // await this.db.sequelize.drop();
-        this.db.sequelize.sync({ force: false }).catch((error) => {
+        this.db.sequelize.sync({ force: true }).catch((error) => {
           // sequelize.sync().catch((error) => {
           console.log("error : ! " + error);
         }).then(() => {

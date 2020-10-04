@@ -8,11 +8,13 @@ var companyService = function companyService() {
         let companyTable = db.model('company');
         let companies = [];
         companies = await companyTable.findAll({ include: { all: true, nested: true } });
+        companies = JSON.stringify(companies);
+        console.log("companierss s" + companies);
         return companies;
     }
 
 
-    this.setCompanies = async function (args) {
+    this.setCompanies = function (args) {
         companies = args[0];
         companiesRatios = args[1];
         companiesTerms = args[2];
@@ -26,14 +28,17 @@ var companyService = function companyService() {
         let companyTermsRelTable = db.model('company_terms');
         let companyRatiosRelTable = db.model('company_ratios');
 
-        console.log("sdds " + Object.keys(companyTable.rawAttributes));
-        await companyTable.bulkCreate(companies, { updateOnDuplicate: [...Object.keys(companyTable.rawAttributes)] });
-        await ratioTable.bulkCreate(companiesRatios, { updateOnDuplicate: [...Object.keys(ratioTable.rawAttributes)] });
-        await termTable.bulkCreate(companiesTerms, { updateOnDuplicate: [...Object.keys(termTable.rawAttributes)] });
-        await companyTermsRelTable.destroy({ truncate: true });
-        await companyRatiosRelTable.destroy({ truncate: true });
-        await companyTermsRelTable.bulkCreate(companyRatiosRel);
-        await companyRatiosRelTable.bulkCreate(companyTermsRel);
+        companyTable.bulkCreate(companies, { updateOnDuplicate: [...Object.keys(companyTable.rawAttributes)] });
+        ratioTable.bulkCreate(companiesRatios, { updateOnDuplicate: [...Object.keys(ratioTable.rawAttributes)] });
+        termTable.bulkCreate(companiesTerms, { updateOnDuplicate: [...Object.keys(termTable.rawAttributes)] });
+
+        companyTermsRelTable.destroy({ truncate: true }).then(() => {
+            companyTermsRelTable.bulkCreate(companyRatiosRel)
+
+        })
+        companyRatiosRelTable.destroy({ truncate: true }).then(() => {
+            companyRatiosRelTable.bulkCreate(companyTermsRel)
+        })
 
         // await companyTable.bulkCreate();
         // await companyTable.bulkCreate();

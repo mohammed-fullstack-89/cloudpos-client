@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'company',
                 key: 'id'
             },
-            onDelete: 'cascade',
-            onUpdate: 'cascade',
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
             unique: 'unique-genre-per-company'
         },
         ratio_id: {
@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'ratio',
                 key: 'id'
             },
-            onDelete: 'cascade',
-            onUpdate: 'cascade',
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
             unique: 'unique-genre-per-ratio'
         },
     }, {

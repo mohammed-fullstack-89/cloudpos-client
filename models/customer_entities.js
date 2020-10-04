@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'customer',
                 key: 'id'
             },
-            onDelete: 'cascade',
-            onUpdate: 'cascade',
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
             unique: 'unique-genre-per-customer'
         },
         entity_id: {
@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'entity',
                 key: 'id'
             },
-            onDelete: 'cascade',
-            onUpdate: 'cascade',
+            // onDelete: 'cascade',
+            // onUpdate: 'cascade',
             unique: 'unique-genre-per-entity'
         },
     }, {

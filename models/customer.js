@@ -10,19 +10,24 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+
       this.belongsTo(models.tier, {
         foreignKey: {
           field: 'tier_id',
           name: 'tierId',
-        }
+        },
+        as: 'get_customer_tier'
       });
+      
       this.hasMany(models.address, {
+        as: 'get_customer_address',
         // foreignKey: {
         //   field: 'customer_id',
         //   name: 'customerId',
         // }
       });
       this.belongsToMany(models.entity, {
+        as: 'get_customer_entity',
         through: models.customer_entities,
         foreignKey: 'customer_id',
       });

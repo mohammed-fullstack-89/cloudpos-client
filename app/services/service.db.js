@@ -20,14 +20,15 @@ var dbStore = function dbStore() {
             return categories;
 
         })
+
         ipc.handle('setItems', async (event, ...args) => {
-            // try {
-            //     let itemsService = require('../db/services/item.service');
-            //     await itemsService.setItems(args[0]);
-            //     return;
-            // } catch (error) {
-            //     console.log("dsadsd " + error);
-            // }
+            try {
+                let itemsService = require('../db/services/item.service');
+                await itemsService.setItems(args);
+
+            } catch (error) {
+                console.log("dsadsd " + error);
+            }
 
         });
 
@@ -100,6 +101,11 @@ var dbStore = function dbStore() {
         //     return items
         // }
 
+        ipc.handle('searchItems', async (event, ...args) => {
+            let itemsService = require('../db/services/item.service');
+            let items = await itemsService.searchItems(args);
+            return items
+        })
         ipc.handle('setCompanies', async (event, ...args) => {
             let companiesService = require('../db/services/company.service');
             await companiesService.setCompanies(args);
@@ -121,7 +127,21 @@ var dbStore = function dbStore() {
             let cards = await cardsService.getCards();
             return cards
         })
+        ipc.handle('getItemsByCategory', async (event, ...args) => {
+            let itemsService = require('../db/services/item.service');
+            let items = await itemsService.getItemsByCategory(args);
+            return items
+        })
+        // ipc.handle('getItems', async (event, ...args) => {
+        //     let itemsService = require('../db/services/item.service');
+        //     let items = await itemsService.getItems( parentId, limit, offset);
+        //     return items
+        // })
 
+        // this.getItemsByCategory = async function (parentId, limit, offset) {
+        //     const items = ipc.invoke('getItems', parentId, limit, offset);
+        //     return items
+        // }
     }
     if (dbStore.caller != dbStore.getInstance) {
         throw new Error("This object cannot be instanciated");

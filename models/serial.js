@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.item, {
-        foreignKey: {
-          field: 'item_id',
-          name: 'itemId',
+        foreignKey: 'item_id',
+        //   field: 'item_id',
+        //   name: 'itemId',
 
-        },
+        // },
       });
     }
   };

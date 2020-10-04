@@ -11,15 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.category, {
+
         foreignKey: 'parent'
       });
 
-      this.belongsToMany(models.variant, {
-        through: 'variants_categories',
+      this.belongsToMany(models.item, {
+        through: models.item_categories,
         foreignKey: 'category_id',
-        otherKey: 'variant_id',
+
       });
 
+      this.hasMany(models.item, {
+        as: 'main_category'
+
+      })
     }
   };
   Category.init({
@@ -30,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     image: { type: DataTypes.STRING, allowNull: true },
     discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
-    branch_id: { type: DataTypes.BIGINT, allowNull: false },
+    branch_id: { type: DataTypes.BIGINT, allowNull: true },
     tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     printer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },

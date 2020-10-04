@@ -35,7 +35,7 @@ app.on('closed', function () {
 });
 
 app.on('window-all-closed', function () {
-   db.close()
+   // db.close()
    app.quit();
 });
 
@@ -44,7 +44,11 @@ app.on('window-all-closed', function () {
 
    // On macOS it is common for applications and their menu bar
    // to stay active until the user quits explicitly with Cmd + Q
-   if (process.platform !== 'darwin') { db.close(); app.quit(); }
+   if (process.platform !== 'darwin') {
+
+      // db.close();
+      app.quit();
+   }
 })
 
 app.on('activate', function () {
@@ -74,6 +78,7 @@ function createWindow() {
       thickFrame: true,
       parent: true,
       frame: true,
+      modal: true,
       paintWhenInitiallyHidden: true,
 
 
@@ -84,11 +89,12 @@ function createWindow() {
          nodeIntegration: true,
          safeDialogs: false,
          javascript: true,
+         // sandbox: true,
          webgl: false,
+         webSecurity: false,
          nodeIntegrationInWorker: true,
          preload: path.join(__dirname, 'renderer.js')
       }
-
    });
    // const dbStore = require('./app/services/service.db');
    // dbStore.getCategories();
@@ -121,8 +127,7 @@ function createWindow() {
                label: 'Quit',
                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
                async click() {
-                  var customerTable = db.model('customers');
-                  console.log("customers " + JSON.stringify(await customerTable.findAll({ include: { all: true, nested: true } })));
+
                }
             },
          ]
@@ -198,92 +203,8 @@ function createWindow() {
             {
                label: 'Learn More',
                click() {
-                  try {
-                     var customersTable = db.model("customers");
-                     customersTable.create({
-                        name: "hamza",
-                        nick_name: "alfawaer",
-                        phone_number_1: "1111111111",
-                        phone_number_2: "1111111111",
-                        email: "hammza.alfawaer@rubikomm.com",
-                        customer_type: "individual",
-                        allow_discount: 0,
-                        discount_value: null,
-                        discount_type: null,
-                        ban_customer: 0,
-                        ban_customer_reasons: null,
-                        allow_tax_exemption: 0,
-                        tax_exemption_number: null,
-                        debit_limit: null,
-                        upload_file: null,
-                        note: null,
-                        get_customer_entity: [{
-                           allow_discount: 0,
-                           allow_tax_exemption: 0,
-                           discount_type: "undefined",
-                           discount_value: 0,
-                           name_ar: "asdasd",
-                           name_en: "asdasd",
-                           tax_exemption_value: 0
-                        }, {
-                           allow_discount: 0,
-                           allow_tax_exemption: 0,
-                           discount_type: "undefined",
-                           discount_value: 0,
-                           name_ar: "asdasd",
-                           name_en: "asdasd",
-                           tax_exemption_value: 0
-                        }],
-                        get_customer_address: [
-                           {
-
-                              address: null,
-                              governorate: null,
-                              zone: null,
-                              street: null,
-                              building: null,
-                              floor: null,
-                              office_flat_number: null,
-                              longitude: "خط الطول",
-                              latitude: "خط العرض",
 
 
-                           },
-                           {
-
-                              address: null,
-                              governorate: null,
-                              zone: null,
-                              street: null,
-                              building: null,
-                              floor: null,
-                              office_flat_number: null,
-                              longitude: "خط الطول",
-                              latitude: "خط العرض",
-
-
-                           }
-                        ],
-                        get_customer_tier: {
-
-                           name_ar: "cccc",
-                           name_en: "cccc",
-                           allow_discount: 0,
-                           discount_value: 0,
-                           discount_type: "undefined",
-                        }
-                     }, {
-                        include: [
-                           { association: customersTable.customer_tiers },
-                           { association: customersTable.customer_addresses },
-                           {
-                              association: customersTable.customer_entities,
-                              include: customersTable.customer_addresses
-                           }]
-                     });
-                  } catch (error) {
-                     console.log(error);
-                  }
                   // shell.openExternal('http://Rubikomm.com')
                }
 
