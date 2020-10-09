@@ -13,7 +13,8 @@ let cardService = function cardService() {
     }
 
 
-    this.setCards =  function (cardsList) {
+    this.setCards = function (cardsList) {
+        console.log("2s2s2s2ss22s2s2s");
         console.log(cardsList);
         let cardTable = db.model('card');
         cardTable.bulkCreate(JSON.parse(cardsList), { updateOnDuplicate: Object.keys(cardTable.rawAttributes) });

@@ -7,6 +7,7 @@ const currentWindow = remote.getCurrentWindow();
 const printers = currentWindow.webContents.getPrinters();
 
 $(document).ready(() => {
+    console.log("ready");
     store = new Store(
         {
             configName: 'user-preferences',

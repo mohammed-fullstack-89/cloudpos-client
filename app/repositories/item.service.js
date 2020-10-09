@@ -1,6 +1,6 @@
 
 
-let db = require('../../../models/index');
+let db = require('../../models/index');
 let itemService = function itemService() {
 
 
@@ -18,28 +18,36 @@ let itemService = function itemService() {
         // offset = args[2];
         let itemCategoriesTable = db.model('item_categories');
         let itemTable = db.model('item');
-
-
-        console.log("dwwwwwwwwww " + args);
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? args[0] : null;
         let limit = args[1];
         let offset = args[2];
-        items = await itemTable.findAll({
 
+
+        let filter = parentId != null && parentId != undefined ? {
             where: {
-                main_category_id: parentId,
-                categoryId: parentId
-            },
-            // include: { all: true },
+                category_id: parentId,
+                // categoryId: parentId
+            }
+        } : null
+        items = await itemCategoriesTable.findAll({
+            filter,
+            // where: {
+            //     category_id: parentId,
+            //     // categoryId: parentId
+            // },
+            // include: { itemTable },
             include: [
-                { model: db.model('price'), as: 'get_prices', },
-                { model: db.model('segment'), as: 'get_segment' },
-                { model: db.model('serial'), as: 'get_serials' },
-                { model: db.model('tax'), as: 'get_tax' },
-                // { model: db.model('item_categories'), as: 'get_item_categories', nested: true },
-                { model: db.model('supplier'), as: 'get_suppliers' },
-
+                {
+                    model: itemTable, include: [
+                        { model: db.model('price'), as: 'get_prices', },
+                        { model: db.model('segment'), as: 'get_segment' },
+                        { model: db.model('serial'), as: 'get_serials' },
+                        { model: db.model('tax'), as: 'get_tax' },
+                        // { model: db.model('item_categories'), as: 'get_item_categories', nested: true },
+                        { model: db.model('supplier'), as: 'get_suppliers' },
+                    ]
+                }
             ],
 
             offset: offset,
@@ -174,7 +182,6 @@ let itemService = function itemService() {
                 await segmentTable.bulkCreate(segmantsList);
 
             }
-            console.log('asdsa ' + serialsList);
             if (serialsList != [] && serialsList != undefined) {
                 await serialTable.destroy({ truncate: true })
                 await serialTable.bulkCreate(serialsList);
@@ -189,21 +196,21 @@ let itemService = function itemService() {
 
 
             if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
-                itemAlternativeTable.destroy({ truncate: true }).then(() => {
-                    itemAlternativeTable.bulkCreate(itemAlternativesRel);
-                })
+                await itemAlternativeTable.destroy({ truncate: true })
+                await itemAlternativeTable.bulkCreate(itemAlternativesRel);
+
             }
 
             if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
-                itemCategoriesTable.destroy({ truncate: true }).then(() => {
-                    itemCategoriesTable.bulkCreate(itemCategoriesRel);
-                })
+                await itemCategoriesTable.destroy({ truncate: true })
+                await itemCategoriesTable.bulkCreate(itemCategoriesRel);
+
             }
 
             if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
-                itemSupplierTable.destroy({ truncate: true }).then(() => {
-                    itemSupplierTable.bulkCreate(suppliersItemsRelation);
-                })
+                await itemSupplierTable.destroy({ truncate: true })
+                await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+
             }
 
         } catch (error) {

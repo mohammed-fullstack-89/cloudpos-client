@@ -9,7 +9,6 @@ var companyService = function companyService() {
         let companies = [];
         companies = await companyTable.findAll({ include: { all: true, nested: true } });
         companies = JSON.stringify(companies);
-        console.log("companierss s" + companies);
         return companies;
     }
 

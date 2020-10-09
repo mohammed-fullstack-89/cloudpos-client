@@ -1,4 +1,17 @@
 const communicator = require('./app/services/communicator.service');
+
+// const barcodeScanListener = require('./app/util/barcode')
+
+
+// const removeScanListener = barcodeScanListener.onScan({
+//     barcodePrefix: 'L%',
+//     barcodeValueTest: /^123$/,
+//     finishScanOnMatch: true,
+//     scanDuration: 500
+// }, function (barcode) {
+//     console.log("sadasd");
+// });
+
 window.obj = communicator;
 // window.jQuery = require('jquery');
 // window.$ = window.jQuery = require('jquery');
@@ -16,22 +29,22 @@ window.obj = communicator;
 
 
 
-// // const print = require('./app/services/service.print')
+const print = require('./app/services/service.print');
 // const dbStore = require('./app/services/service.db');
 // window.obj = dbStore;
 // // window.windowsPrinter = print;
 
 
-// // window.obj1 = {
-// //     browserPrintHtml(html) {
-// //         print.browserPrintHtml(html)
-// //         console.log("object --> windowsPrinter : browserPrintHtml")
-// //     },
-// //     printAndroidOrder(html, pchtml) {
-// //         print.printAndroidOrder(html, pchtml)
-// //         console.log("object --> windowsPrinter : printAndroidOrder")
-// //     }
-// // }
+window.obj1 = {
+    browserPrintHtml(html) {
+        print.browserPrintHtml(html)
+        console.log("object --> windowsPrinter : browserPrintHtml")
+    },
+    printAndroidOrder(html, pchtml) {
+        print.printAndroidOrder(html, pchtml)
+        console.log("object --> windowsPrinter : printAndroidOrder")
+    }
+}
 
 // // {
 // //     browserPrintHtml(html) {

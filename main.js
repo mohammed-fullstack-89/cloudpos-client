@@ -1,6 +1,5 @@
 const electron = require('electron');
 const url = require('url');
-// const worker = require('worker_threads');
 const path = require('path');
 const customContextMenu = require('./app/components/menu/context_menu');
 const { app, BrowserWindow } = electron;
@@ -10,9 +9,7 @@ const enviroment = require('./enviroment');
 var db = require('./models/index');
 var splashWindow;
 const dbStore = require('./app/services/service.db')
-
-
-
+var barcode = '';
 
 // ipc.on('setCategories', (event, args) => {
 //    dbStore.setCategories(args);
@@ -229,6 +226,10 @@ function createWindow() {
       protocol: 'http',
       slashes: true,
    }));
+   mainWindow.webContents.on("before-input-event", (event, input) => {
+
+      console.log(input.code == "Enter" || input.code == "NumpadEnter");
+   });
    // ipc.once('db-initiating', (event, args) => {
    //    init().then(() => {
    //       // load html in the window.
@@ -268,6 +269,7 @@ function createSettingsWindow() {
       },
       // backgroundColor: '#2e2c29' 
    });
+
    // win.openDevTools();
    win.removeMenu();
    win.menu = null;
