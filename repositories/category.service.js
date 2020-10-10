@@ -2,12 +2,13 @@
 // const remote = require('electron').remote;
 
 // const db = remote.getGlobal('db');
-var db = require('../../../models/index')
+var db = require('../models/index')
     , Seq = db.Seq();
-var categoryService = function categoryService() {
+
+class CategoriesService {
 
 
-    this.getCategories = async function (parentId) {
+    async getCategories(parentId) {
 
         let categoryTable = db.model('category');
         let categories = [];
@@ -20,24 +21,21 @@ var categoryService = function categoryService() {
         return categories;
     }
 
-    this.setCategories = function (categoriesList) {
+    setCategories(categoriesList) {
         let categoryTable = db.model("category");
         categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
         console.log("insert is complete");
     }
 
-    if (categoryService.caller != categoryService.getInstance) {
-        throw new Error("This object cannot be instanciated");
-    }
 
 }
 
-categoryService.instance = null;
-categoryService.getInstance = function () {
-    if (this.instance === null) {
-        this.instance = new categoryService();
+CategoriesService.instance = null;
+CategoriesService.getInstance = function () {
+    if (CategoriesService.instance === null) {
+        CategoriesService.instance = new CategoriesService();
     }
-    return this.instance;
+    return CategoriesService.instance;
 }
 
-module.exports = categoryService.getInstance();
+module.exports = CategoriesService.getInstance();

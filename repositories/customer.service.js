@@ -1,18 +1,18 @@
 
 
-let db = require('../../../models/index')
+let db = require('../models/index')
     , Seq = db.Seq();
-let customerService = function customerService() {
 
+class CustomerService {
 
-    this.getCustomers = async function () {
+    async getCustomers() {
         let customerTable = db.model('customers');
         let customers = [];
         customers = await customerTable.findAll({ include: { all: true, nested: true } });
         return customers;
     }
 
-    this.searchCustomers = async function (val) {
+    async searchCustomers(val) {
         let customerTable = db.model('customer');
         let customers = [];
         if (val == null || val == undefined || val == "undefined") {
@@ -31,12 +31,13 @@ let customerService = function customerService() {
         console.log("customer : " + customers);
         return customers;
     }
-    this.setCustomers = async function (args) {
-        customersList = args[0];
-        entites_list = args[1];
-        addresss_list = args[2];
-        tiers_list = args[3];
-        entity_rel_list = args[4];
+
+    async setCustomers(args) {
+        const customersList = args[0];
+        const entites_list = args[1];
+        const addresss_list = args[2];
+        const tiers_list = args[3];
+        const entity_rel_list = args[4];
 
         let customerTable = db.model("customer");
         let addressesTable = db.model("address");
@@ -81,18 +82,18 @@ let customerService = function customerService() {
         //     "INSERT INTO entities_customers (customer_id, entity_id) VALUES ?;", JSON.parse(entity_rel_list));
     }
 
-    if (customerService.caller != customerService.getInstance) {
-        throw new Error("This object cannot be instanciated");
-    }
+    // if (customerService.caller != customerService.getInstance) {
+    //     throw new Error("This object cannot be instanciated");
+    // }
 
 }
 
-customerService.instance = null;
-customerService.getInstance = function () {
-    if (this.instance === null) {
-        this.instance = new customerService();
+CustomerService.instance = null;
+CustomerService.getInstance = function () {
+    if (CustomerService.instance === null) {
+        CustomerService.instance = new CustomerService();
     }
-    return this.instance;
+    return CustomerService.instance;
 }
 
-module.exports = customerService.getInstance();
+module.exports = CustomerService.getInstance();

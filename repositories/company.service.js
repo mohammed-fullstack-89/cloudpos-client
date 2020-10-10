@@ -1,10 +1,13 @@
 
 
-var db = require('../../../models/index');
-var companyService = function companyService() {
+var db = require('../models/index');
 
 
-    this.getCompanies = async function () {
+
+class CompanyService {
+
+
+    async getCompanies() {
         let companyTable = db.model('company');
         let companies = [];
         companies = await companyTable.findAll({ include: { all: true, nested: true } });
@@ -13,19 +16,18 @@ var companyService = function companyService() {
     }
 
 
-    this.setCompanies = function (args) {
-        companies = args[0];
-        companiesRatios = args[1];
-        companiesTerms = args[2];
-        companyRatiosRel = args[3];
-        companyTermsRel = args[4];
-        console.log(companyRatiosRel);
-        console.log(companyTermsRel);
-        let companyTable = db.model('company');
-        let ratioTable = db.model('ratio');
-        let termTable = db.model('term');
-        let companyTermsRelTable = db.model('company_terms');
-        let companyRatiosRelTable = db.model('company_ratios');
+    setCompanies(args) {
+        const companies = args[0];
+        const companiesRatios = args[1];
+        const companiesTerms = args[2];
+        const companyRatiosRel = args[3];
+        const companyTermsRel = args[4];
+
+        const companyTable = db.model('company');
+        const ratioTable = db.model('ratio');
+        const termTable = db.model('term');
+        const companyTermsRelTable = db.model('company_terms');
+        const companyRatiosRelTable = db.model('company_ratios');
 
         companyTable.bulkCreate(companies, { updateOnDuplicate: [...Object.keys(companyTable.rawAttributes)] });
         ratioTable.bulkCreate(companiesRatios, { updateOnDuplicate: [...Object.keys(ratioTable.rawAttributes)] });
@@ -57,18 +59,18 @@ var companyService = function companyService() {
     }
 
 
-    if (companyService.caller != companyService.getInstance) {
-        throw new Error("This object cannot be instanciated");
-    }
+    // if (companyService.caller != companyService.getInstance) {
+    //     throw new Error("This object cannot be instanciated");
+    // }
 
 }
 
-companyService.instance = null;
-companyService.getInstance = function () {
-    if (this.instance === null) {
-        this.instance = new companyService();
+CompanyService.instance = null;
+CompanyService.getInstance = function () {
+    if (CompanyService.instance === null) {
+        CompanyService.instance = new CompanyService();
     }
-    return this.instance;
+    return CompanyService.instance;
 }
 
-module.exports = companyService.getInstance();
+module.exports = CompanyService.getInstance();

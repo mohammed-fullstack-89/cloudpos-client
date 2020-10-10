@@ -1,9 +1,9 @@
 module.exports = {
     "development": {
-        "url": "192.168.1.90:4200",
+        "url": "rpos.live/staff",
     },
     "production": {
-        "url": "192.168.1.90:4200",
+        "url": "rpos.live/staff",
 
     }
 }

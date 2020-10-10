@@ -1,13 +1,16 @@
-const store = require('./service.store')
+const store = require('./store.service')
 const electron = require('electron')
 const remote = electron.remote;
 
 
-var printService = function printService(opts) {
+class PrintService {
 
-    console.log("print created .....");
+    constructor() {
+        console.log("print created .....");
+    }
 
-    this.browserPrintHtml = function (html) {
+
+    browserPrintHtml(html) {
         console.log("printing");
         console.log(html);
         let printWindow = new remote.BrowserWindow({
@@ -58,7 +61,7 @@ var printService = function printService(opts) {
         })
 
     }
-    this.printAndroidOrder = function (html, pchtml) {
+    printAndroidOrder(html, pchtml) {
         console.log(pchtml)
         console.log(html)
         let printWindow = new remote.BrowserWindow({
@@ -110,19 +113,19 @@ var printService = function printService(opts) {
 
 
     }
-    if (printService.caller != printService.getInstance) {
-        throw new Error("This object cannot be instanciated");
-    }
+    //     if(printService.caller != printService.getInstance) {
+    //     throw new Error("This object cannot be instanciated");
+    // }
 }
 
-printService.instance = null;
+PrintService.instance = null;
 
-printService.getInstance = function () {
-    if (this.instance === null) {
-        this.instance = new printService();
+PrintService.getInstance = function () {
+    if (PrintService.instance === null) {
+        PrintService.instance = new PrintService();
     }
-    return this.instance;
+    return PrintService.instance;
 }
 
 
-module.exports = printService.getInstance();
+module.exports = PrintService.getInstance();

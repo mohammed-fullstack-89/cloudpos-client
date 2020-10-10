@@ -1,26 +1,44 @@
 const electron = require('electron');
-const url = require('url');
+const dialog = electron.dialog;
 const path = require('path');
-const customContextMenu = require('./app/components/menu/context_menu');
-const { app, BrowserWindow } = electron;
-const ipc = electron.ipcMain;
-const Menu = electron.Menu;
+const url = require('url');
 const enviroment = require('./enviroment');
-var db = require('./models/index');
-var splashWindow;
-const dbStore = require('./app/services/service.db')
-var barcode = '';
+const customContextMenu = require('./components/menu/context_menu');
+const db = require('./models/index');
+const dbStore = require('./services/db.service');
+const APP_HELPER = require('./util/appHelper');
+const { crashReporter } = require('electron')
 
-// ipc.on('setCategories', (event, args) => {
-//    dbStore.setCategories(args);
+const { app, BrowserWindow } = electron;
+const Menu = electron.Menu;
+
+
+var splashWindow;
+APP_HELPER.init();
+crashReporter.start({ submitURL: '' })
+
+
+// const fs = require('fs');
+// const Scanner = require('usb-barcode-transform/scanner');
+
+// const stream = fs.createReadStream("./s.txt",{
+//   flags: 'r',
+//   encoding: null,
+//   fd: null,
+//   autoClose: true
 // });
+
+// stream
+//   .pipe(new Scanner())
+//   .pipe(process.stdout);
+
+
 
 app.on('ready', async function () {
    dbStore.init();
    createSplashWindow();
    await db.setup().then(() => {
       createWindow();
-
    }).catch((error) => {
       console.log(`error : ${error}`);
    });
@@ -32,7 +50,6 @@ app.on('closed', function () {
 });
 
 app.on('window-all-closed', function () {
-   // db.close()
    app.quit();
 });
 
@@ -43,7 +60,7 @@ app.on('window-all-closed', function () {
    // to stay active until the user quits explicitly with Cmd + Q
    if (process.platform !== 'darwin') {
 
-      // db.close();
+      db.close();
       app.quit();
    }
 })
@@ -56,9 +73,12 @@ app.on('activate', function () {
    }
 });
 
+
+
 async function init() {
    app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 }
+
 
 function createWindow() {
    // Create the browser window.
@@ -93,11 +113,6 @@ function createWindow() {
          preload: path.join(__dirname, 'renderer.js')
       }
    });
-   // const dbStore = require('./app/services/service.db');
-   // dbStore.getCategories();
-   // const dbStore = require('./app/services/service.db');
-   // mainWindow.webContents.send('store-data', JSON.stringify(dbStore));
-
 
    //init menu and context menu
    const customMenu = [
@@ -113,10 +128,13 @@ function createWindow() {
             {
                label: 'Clear cache',
                click() {
+                  clearAppDataDialog();
                   console.log("clear cache")
-                  electron.webContents.webContents.session.clearStorageData(function () {
-                     electron.webContents.reload()
-                  });
+                  // mainWindow.webContents.session.clearCache(function(){console.log('cleared all cookies ');    electron.webContents.reload()});
+
+                  // electron.webContents.webContents.session.clearStorageData(function () {
+                  //    electron.webContents.reload()
+                  // });
                   //some callback.
                }
             },
@@ -216,64 +234,61 @@ function createWindow() {
    mainWindow.webContents.on('context-menu', function (e, params) {
       ctxmenu.popup(mainWindow, params.x, params.y)
    });
-   // mainWindow.webContents.on('did-finish-load', function () {
 
-
-   // });
-   // mainWindow.loadFile(path.join(__dirname, 'app/windows/loading/loading.html'));
    mainWindow.loadURL(url.format({
       pathname: enviroment.development.url,
       protocol: 'http',
       slashes: true,
    }));
+   // mainWindow.loadFile(path.join(__dirname, '/windows/main/main.html'));
    mainWindow.webContents.on("before-input-event", (event, input) => {
 
       console.log(input.code == "Enter" || input.code == "NumpadEnter");
    });
-   // ipc.once('db-initiating', (event, args) => {
-   //    init().then(() => {
-   //       // load html in the window.
-   //       // console.log("init" + args);
-   //       mainWindow.webContents.loadURL(url.format({
-   //          pathname: enviroment.development.url,
-   //          protocol: 'http',
-   //          slashes: true,
-   //       }));
-   //    }).catch((error) => {
-   //       console.log(`error : ${error}`);
-   //    });
-   // })
 
 
 
-   console.log("closing");
    //close splash screen 
    splashWindow.close();
    splashWindow = null;
 
 
 }
+function clearAppDataDialog() {
+   const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
+   const getAppPath = path.join(app.getPath('appData'), app.getName());
 
+   dialog.showMessageBox({
+      type: 'warning',
+      buttons: ['YES', 'NO'],
+      defaultId: 0,
+      message: 'Are you sure',
+      detail: clearAppDataMessage
+   }, response => {
+      if (response === 0) {
+         fs.remove(getAppPath);
+         setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
+      }
+   });
+}
 function createSettingsWindow() {
    let win = new BrowserWindow({
       alwaysOnTop: true,
       resizable: false,
       maxHeight: 200,
       maxWidth: 200,
+      modal: false,
       useContentSize: true,
       title: "Settings",
       webPreferences: {
          nodeIntegration: true,
-         nodeIntegrationInWorker: true,
-         // preload: path.join(__dirname, 'app/components/settings/settings.js')
       },
       // backgroundColor: '#2e2c29' 
    });
 
-   // win.openDevTools();
    win.removeMenu();
    win.menu = null;
-   win.loadFile(path.join(__dirname, 'app/windows/settings/settings.html'));
+   win.loadFile(path.join(__dirname, 'windows/settings/settings.html'));
 
 }
 
@@ -283,19 +298,16 @@ function createSplashWindow() {
          height: 300,
          width: 300,
          frame: false,
+         paintWhenInitiallyHidden: true,
 
          webPreferences: {
             nodeIntegration: false,
             devTools: false,
-            nodeIntegrationInWorker: true,
          }
       }
    );
    // splashWindow.webContents.openDevTools();
    splashWindow.removeMenu();
    splashWindow.menu = null;
-   splashWindow.loadFile(path.join(__dirname, 'app/windows/loading/loading.html'));
+   splashWindow.loadFile(path.join(__dirname, 'windows/loading/loading.html'));
 }
-
-
-

@@ -1,6 +1,6 @@
-const communicator = require('./app/services/communicator.service');
+const communicator = require('./services/communicator.service');
 
-// const barcodeScanListener = require('./app/util/barcode')
+// const barcodeScanListener = require('./util/barcode')
 
 
 // const removeScanListener = barcodeScanListener.onScan({
@@ -15,7 +15,7 @@ const communicator = require('./app/services/communicator.service');
 window.obj = communicator;
 // window.jQuery = require('jquery');
 // window.$ = window.jQuery = require('jquery');
-// const dbStore = require('./app/services/service.db');
+// const dbStore = require('./services/service.db');
 
 // db.setup().then(() => {
 //     window.obj = dbStore;
@@ -29,8 +29,8 @@ window.obj = communicator;
 
 
 
-const print = require('./app/services/service.print');
-// const dbStore = require('./app/services/service.db');
+const print = require('./services/print.service');
+// const dbStore = require('./services/service.db');
 // window.obj = dbStore;
 // // window.windowsPrinter = print;
 
