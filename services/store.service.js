@@ -1,18 +1,18 @@
 const path = require('path');
 const fs = require('fs');
-const ipc = require('electron').ipcRenderer;
+
 
 class appStore {
 
     constructor(opts) {
-        console.log(opts)
-        const userDataPath = ipc.sendSync('getAppPath');
-        console.log("dwd " + userDataPath);
-        this.path = path.join(userDataPath, opts.configName + '.json');
-        this.data = this.parseDataFile(this.path, opts.defaults);
+        this.opts = opts;
     }
 
-
+    init(userPath) {
+        this.userDataPath = userPath;
+        this.path = path.join(this.userDataPath, this.opts.configName + '.json');
+        this.data = this.parseDataFile(this.path, this.opts.defaults);
+    }
 
     getValue(key) {
         return this.data[key];

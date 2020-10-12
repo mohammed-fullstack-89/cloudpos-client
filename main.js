@@ -6,31 +6,42 @@ const enviroment = require('./enviroment');
 const customContextMenu = require('./components/menu/context_menu');
 const db = require('./models/index');
 const dbStore = require('./services/db.service');
+const appStore = require('./services/store.service');
+
 const APP_HELPER = require('./util/appHelper');
+const PRINT_HELPER = require('./util/printHelper');
 const { crashReporter } = require('electron')
 
 const { app, BrowserWindow } = electron;
 const Menu = electron.Menu;
 
 
-var splashWindow;
-APP_HELPER.init();
-crashReporter.start({ submitURL: '' })
+// const usbScanner = require('usb-barcode-scanner');
+
+// console.log(usbScanner.getDevices());
 
 
-// const fs = require('fs');
-// const Scanner = require('usb-barcode-transform/scanner');
-
-// const stream = fs.createReadStream("./s.txt",{
-//   flags: 'r',
-//   encoding: null,
-//   fd: null,
-//   autoClose: true
+// let scanner = new UsbScanner({
+//    vendorId: 1155,
+//    productId: 22352
+//    /** You could also initialize the scanner by giving entering the path variable:
+//     *  path: 'IOService:/AppleACPI etc...'
+//    **/
 // });
 
-// stream
-//   .pipe(new Scanner())
-//   .pipe(process.stdout);
+// scanner.on('data', (data) => {
+//    console.log(data);
+// });
+
+// scanner.startScanning();
+
+var splashWindow;
+
+// APP_HELPER.init();
+PRINT_HELPER.init();
+appStore.init(electron.app.getPath('userData'));
+
+crashReporter.start({ submitURL: '' })
 
 
 
