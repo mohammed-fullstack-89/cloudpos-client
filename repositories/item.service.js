@@ -3,34 +3,28 @@
 let db = require('../models/index');
 class ItemService {
 
-    async getItems() {
-        // let itemTable = db.model('item');
-        // let items = [];
-        // items = await itemTable.findAll({ include: { all: true, nested: true } });
-        // return items;
-    }
 
     async getItemsByCategory(args) {
         // console.log("asdas2 " + args);
         // parentId = args[0];
         // limit = args[1];
         // offset = args[2];
-        let itemTable = db.model('item');
+        let varianceTable = db.model('variance');
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
         let limit = args[1];
         let offset = args[2];
 
-        console.log("parentId " + parentId, " args " + args);
         let filter = (parentId != null && parentId != undefined) ?
             {
                 id: parentId
             } : null;
 
-        console.log("parentId112 " + JSON.stringify(filter));
 
-        items = await itemTable.findAll({
-
+        items = await varianceTable.findAll({
+            where: {
+                show_in_sale_screen: 1
+            },
             include: [
 
                 { model: db.model('price'), as: 'get_prices', },
@@ -57,12 +51,11 @@ class ItemService {
         let items = [];
         if (value == '' || value == null || value == undefined) {
             items = [];
-            console.log("items : " + items);
             return items;
         }
         else {
 
-            let itemTable = db.model('item');
+            let varianceTable = db.model('variance');
             let filter = null;
             let serialFilter = null;
             switch (type) {
@@ -71,8 +64,16 @@ class ItemService {
                     filter = {
                         [db.Seq().Op.or]: {
                             name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
-                            nick_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
+                            name_en: { [db.Seq().Op.like]: '%' + value + '%' },
                             nick_name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
+                            nick_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
+                            trade_name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
+                            trade_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
+                            scientific_name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
+                            scientific_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
+                            brief_name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
+                            brief_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
+                            description: { [db.Seq().Op.like]: '%' + value + '%' },
                         }
                     };
                     break;
@@ -98,8 +99,10 @@ class ItemService {
 
 
 
-            items = await itemTable.findAll({
-                where: filter,
+            items = await varianceTable.findAll({
+                where: {
+                    [db.Seq().Op.and]: filter, show_in_sale_screen: 1
+                },
                 include: [
                     { model: db.model('price'), as: 'get_prices', },
                     { model: db.model('segment'), as: 'get_segment' },
@@ -118,17 +121,16 @@ class ItemService {
             });
 
             items = JSON.stringify(items);
-            console.log("items : " + items);
             return items;
         }
     }
     async setItems(args) {
         try {
-
             let itemsInfo = args[0];
             let serialsList = args[1];
             let alternatives = args[2];
             let pricesList = args[3];
+
             let segmantsList = args[4];
             let suppliersList = args[5];
             let taxesList = args[6];
@@ -136,22 +138,20 @@ class ItemService {
             let suppliersItemsRelation = args[8];
             let itemAlternativesRel = args[9];
             let itemCategoriesRel = args[10];
-
-            const itemTable = db.model("item");
+            const varianceTable = db.model('variance');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
             const segmentTable = db.model("segment");
             const serialTable = db.model("serial");
             const priceTable = db.model("price");
-            const itemAlternativeTable = db.model("item_alternatives");
-            const itemCategoriesTable = db.model("item_categories");
-            const itemSupplierTable = db.model("item_suppliers");
+            const itemAlternativeTable = db.model("variance_alternatives");
+            const itemCategoriesTable = db.model("variance_categories");
+            const itemTaxesTable = db.model("variance_taxes");
+            const itemSupplierTable = db.model("variance_suppliers");
 
             if (itemsInfo != [] && itemsInfo != undefined) {
-                await itemTable.destroy({ truncate: true });
-                await itemTable.bulkCreate(itemsInfo)
-
-
+                await varianceTable.destroy({ truncate: true });
+                await varianceTable.bulkCreate(itemsInfo)
             }
 
             if (taxesList != [] && taxesList != undefined) {
@@ -174,15 +174,14 @@ class ItemService {
             if (serialsList != [] && serialsList != undefined) {
                 await serialTable.destroy({ truncate: true })
                 await serialTable.bulkCreate(serialsList);
-
             }
+
 
             if (pricesList != [] && pricesList != undefined) {
                 await priceTable.destroy({ truncate: true })
                 await priceTable.bulkCreate(pricesList);
 
             }
-
 
             if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
                 await itemAlternativeTable.destroy({ truncate: true })
@@ -193,13 +192,16 @@ class ItemService {
             if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
                 await itemCategoriesTable.destroy({ truncate: true })
                 await itemCategoriesTable.bulkCreate(itemCategoriesRel);
-
             }
 
             if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
                 await itemSupplierTable.destroy({ truncate: true })
                 await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+            }
 
+            if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
+                await itemTaxesTable.destroy({ truncate: true });
+                await itemTaxesTable.bulkCreate(taxesItemsRelation);
             }
 
         } catch (error) {

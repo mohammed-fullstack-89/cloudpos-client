@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         as: 'get_customer_tier'
       });
-      
+
       this.hasMany(models.address, {
         as: 'get_customer_address',
         // foreignKey: {
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     phone_number_1: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     phone_number_2: { type: DataTypes.STRING, allowNull: true },
     email: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    customer_type: { type: DataTypes.ENUM('individual', 'entity'), defualtValue: null, allowNull: false },
+    customer_type: { type: DataTypes.ENUM('individual', 'entity'), defualtValue: null, allowNull: true },
     discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), defualtValue: null, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
     allow_discount: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },

@@ -10,17 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // this.belongsToMany(models.item, {
+      // this.belongsToMany(models.variance, {
       //   through: 'item_taxes',
       //   foreignKey: 'tax_id',
-      //   otherKey: 'item_id',
+      //   otherKey: 'variance_id',
       // });
 
-      this.belongsToMany(models.tax, {
+      this.belongsToMany(models.variance, {
         as: 'get_tax',
-        through: models.item_taxes,
+        through: models.variance_taxes,
         foreignKey: 'tax_id',
-        otherKey: 'item_id',
+        otherKey: { name: 'variance_id', field: 'item_id' },
+
+
       })
     }
   };
@@ -28,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name_ar: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    percentage: { type: DataTypes.INTEGER, defualtValue: 0 },
     type: { type: DataTypes.INTEGER, defualtValue: null, allowNull: true }
 
   }, {

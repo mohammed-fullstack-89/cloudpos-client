@@ -16,15 +16,16 @@ module.exports = (sequelize, DataTypes) => {
       // });
 
 
-      this.belongsToMany(models.item, {
+      this.belongsToMany(models.variance, {
         as: 'get_item_categories',
-        through: models.item_categories,
+        through: models.variance_categories,
         foreignKey: 'category_id',
-        otherKey: 'item_id',
+        otherKey: { name: 'variance_id', field: 'item_id' },
+
 
       });
 
-      // this.hasMany(models.item, {
+      // this.hasMany(models.variance, {
       //   as: 'main_category',
       //   foreignKey: { name: 'categoryId', field: 'category_id' },
 

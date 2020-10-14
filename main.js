@@ -7,38 +7,67 @@ const customContextMenu = require('./components/menu/context_menu');
 const db = require('./models/index');
 const dbStore = require('./services/db.service');
 const appStore = require('./services/store.service');
-
+const ipc = electron.ipcMain;
 const APP_HELPER = require('./util/appHelper');
 const PRINT_HELPER = require('./util/printHelper');
 const { crashReporter } = require('electron')
-
 const { app, BrowserWindow } = electron;
 const Menu = electron.Menu;
+var usbScanner = require('usbscanner').usbScanner;
+var getDevices = require('usbscanner').getDevices;
+ 
+//get array of attached HID devices
+var connectedHidDevices = getDevices()
+ 
+//print devices
+console.log(connectedHidDevices)
+ 
+//initialize new usbScanner - takes optional parmeters vendorId and hidMap - check source for details
+var scanner = new usbScanner();
+ 
+//scanner emits a data event once a barcode has been read and parsed
+scanner.on("data", function(code){
+    console.log("recieved code : " + code);
+});
+// const escpos = require('escpos');
+// var usbDetect = require('usb-detection');
+// usbDetect.startMonitoring();
+// usbDetect.on('add', function (device) { console.log('add', device); });
+// usbDetect.on('add:vid', function (device) { console.log('add', device); });
+// usbDetect.on('add:vid:pid', function (device) { console.log('add', device); });
+
+// // Detect remove
+// usbDetect.on('remove', function (device) { console.log('remove', device); });
+// usbDetect.on('remove:vid', function (device) { console.log('remove', device); });
+// usbDetect.on('remove:vid:pid', function (device) { console.log('remove', device); });
+
+// // Detect add or remove (change)
+// usbDetect.on('change', function (device) { console.log('change', device); });
+// usbDetect.on('change:vid', function (device) { console.log('change', device); });
+// usbDetect.on('change:vid:pid', function (device) { console.log('change', device); });
+
+// // usbDetect.find(function (err, devices) { console.log('find', devices, err); });
+
+// escpos.USB = require('escpos-usb');
+// // Select the adapter based on your printer type
 
 
-// const usbScanner = require('usb-barcode-scanner');
+// const device = new escpos.USB();
 
-// console.log(usbScanner.getDevices());
+// // const device  = new escpos.Network('localhost');
+// // const device  = new escpos.Serial('/dev/usb/lp0');
 
+// const options = { encoding: "GB18030" /* default */ }
+// // encoding is optional
 
-// let scanner = new UsbScanner({
-//    vendorId: 1155,
-//    productId: 22352
-//    /** You could also initialize the scanner by giving entering the path variable:
-//     *  path: 'IOService:/AppleACPI etc...'
-//    **/
-// });
+// const printer = new escpos.Printer(device, options);
 
-// scanner.on('data', (data) => {
-//    console.log(data);
-// });
-
-// scanner.startScanning();
-
+// printer.cashdraw();
 var splashWindow;
 
 // APP_HELPER.init();
 PRINT_HELPER.init();
+
 appStore.init(electron.app.getPath('userData'));
 
 crashReporter.start({ submitURL: '' })
@@ -46,6 +75,8 @@ crashReporter.start({ submitURL: '' })
 
 
 app.on('ready', async function () {
+
+
    dbStore.init();
    createSplashWindow();
    await db.setup().then(() => {
@@ -153,6 +184,77 @@ function createWindow() {
                label: 'Quit',
                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
                async click() {
+                  // let printWindow = new BrowserWindow({
+                  //    webPreferences: {
+                  //       javascript: false,
+                  //       contextIsolation: true
+                  //    },
+                  //    parent: BrowserWindow.getFocusedWindow(),
+                  //    modal: true,
+                  //    show: false,
+                  // });
+
+                  // const options = { printBackground: true, copies: 0, silent: true, deviceName: appStore.getValue("mainPrinter") }
+
+                  // printWindow.loadURL('\x1b\x70\x00\x19\xfa');
+                  // printWindow.webContents.print(options, (success, errorType) => {
+                  //    if (!success) {
+                  //       console.log("check printer")
+                  //       console.log(errorType)
+                  //       printWindow.close()
+                  //    }
+                  //    else {
+                  //       console.log("success")
+                  //       console.log(errorType)
+                  //       printWindow.close()
+
+                  //    }
+                  // }, (failureReason, errorType) => {
+                  //    if (!failureReason == null || failureReason == '') {
+                  //       console.log("fail..unknown reason")
+                  //       console.log("error : " + errorType + " reason : " + failureReason)
+                  //       printWindow.close()
+
+                  //    }
+                  //    else {
+                  //       console.log("fail..")
+                  //       console.log(errorType)
+                  //       printWindow.close()
+
+                  //    }
+                  // })
+
+
+                  const { PosPrinter } = require("electron-pos-printer");
+                  const path = require("path");
+
+                  const options = {
+                     
+                             // Preview in window or print
+                     width: '170px',               //  width of content body
+                     margin: '0 0 0 0',            // margin of content body
+                     copies: 1,                    // Number of copies to print
+                     printerName: 'XPc2',        // printerName: string, check with webContent.getPrinters()
+                     timeOutPerLine: 400,
+
+                  }
+
+                  const data = [
+                     {
+                        type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+                        value: '\\x1b\\x70\\x00\\x19\\xfa',
+
+                     }
+                  ]
+
+                  PosPrinter.print(data, options)
+                     .then(() => { 
+                        console.log("data "+data);
+                     })
+                     .catch((error) => {
+                        console.error(error);
+                     });
+
 
                }
             },
@@ -283,15 +385,20 @@ function clearAppDataDialog() {
    });
 }
 function createSettingsWindow() {
+   // const ipc = require('./services/print.serviceprin').ipcMain;
+   // ipc.emit("openPrintersSettings");
+
    let win = new BrowserWindow({
       alwaysOnTop: true,
       resizable: false,
       maxHeight: 200,
       maxWidth: 200,
-      modal: false,
+      modal: true,
       useContentSize: true,
+
       title: "Settings",
       webPreferences: {
+         devTools: true,
          nodeIntegration: true,
       },
       // backgroundColor: '#2e2c29' 

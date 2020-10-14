@@ -1,8 +1,10 @@
 const path = require('path');
 const fs = require('fs');
 
+const ipc = require('electron').ipcMain;
 
 class appStore {
+
 
     constructor(opts) {
         this.opts = opts;
@@ -12,9 +14,18 @@ class appStore {
         this.userDataPath = userPath;
         this.path = path.join(this.userDataPath, this.opts.configName + '.json');
         this.data = this.parseDataFile(this.path, this.opts.defaults);
+        
+        ipc.on('getlocalSettings', (event, ...args) => {
+            event.returnValue = this.data;
+        });
+
+        ipc.on('setlocalSettings', (event, ...args) => {
+            this.setValue(args[0], args[1]);
+        })
     }
 
     getValue(key) {
+
         return this.data[key];
     }
 

@@ -12,30 +12,39 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsToMany(models.supplier, {
         as: 'get_suppliers',
-        through: models.item_suppliers,
+        through: models.variance_suppliers,
         foreignKey: 'item_id',
       })
+
       this.belongsToMany(models.tax, {
         as: 'get_tax',
-        through: models.item_taxes,
+        through: models.variance_taxes,
         foreignKey: 'item_id',
 
       })
-      this.belongsToMany(models.item, {
+      this.belongsToMany(models.variance, {
         as: 'items',
-        through: models.item_alternatives,
+        through: models.variance_alternatives,
         foreignKey: 'alternative_id',
+        otherKey: { name: 'variance_id', field: 'item_id' },
+
       })
-      this.belongsToMany(models.item, {
+      this.belongsToMany(models.variance, {
         as: 'alternatives',
-        through: models.item_alternatives,
+        through: models.variance_alternatives,
         foreignKey: 'item_id',
       })
 
       this.belongsToMany(models.category, {
         as: 'get_item_categories',
-        through: models.item_categories,
+        through: models.variance_categories,
         foreignKey: 'item_id',
+      })
+      this.belongsTo(models.scale, {
+        as: 'get_scale_barcode',
+        foreignKey: {
+          field: 'scale_id', name: 'scaleId',
+        }
       })
 
       // this.belongsTo(models.category, {
@@ -43,33 +52,45 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: { name: 'categoryId', field: 'category_id' },
 
       // })
-      // this.hasMany(models.item, {
+      // this.hasMany(models.variance, {
       //   // foreignKey: {
-      //   //   field: 'item_id',
-      //   //   name: 'itemId',
+      //   //   field: 'variance_id',
+      //   //   name: 'varianceId',
       //   // }
       // })
       this.hasMany(models.segment, {
-        as: 'get_segment'
+        as: 'get_segment',
+        foreignKey: {
+          field: 'variance_id',
+          name: 'varianceId'
+        }
         // foreignKey: {
-        //   field: 'item_id',
-        //   name: 'itemId',
+        //   field: 'variance_id',
+        //   name: 'varianceId',
         // }
       })
       this.hasMany(models.serial, {
         as: 'get_serials',
-        foreignKey: 'item_id',
+        foreignKey: {
+          field: 'variance_id',
+          name: 'varianceId'
+        }
+        // foreignKey: 'variance_id',
         // foreignKey: {
-        //   field: 'item_id',
-        //   name: 'itemId',
+        //   field: 'variance_id',
+        //   name: 'varianceId',
         // }
       })
       this.hasMany(models.price, {
         as: 'get_prices',
-        foreignKey: 'item_id'
+        foreignKey: {
+          field: 'variance_id',
+          name: 'varianceId'
+        }
+        //  foreignKey: 'variance_id' 
 
-        //   field: 'item_id',
-        //   name: 'itemId',
+        //   field: 'variance_id',
+        //   name: 'varianceId',
         // }
       })
 
@@ -120,9 +141,11 @@ module.exports = (sequelize, DataTypes) => {
     brief_name_ar: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     brief_name_en: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     description: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
+    has_serial: { type: DataTypes.TINYINT, defualtValue: 0 },
+    color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true }
   }, {
     sequelize,
-    modelName: 'item',
+    modelName: 'variance',
   });
   return Item;
 };

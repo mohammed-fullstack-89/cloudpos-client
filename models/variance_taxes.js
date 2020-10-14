@@ -3,43 +3,42 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class ItemSupplier extends Model {
+    class VarianceTax extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            ItemSupplier.belongsTo(models.item, { foreignKey: 'item_id', targetKey: 'id' });
-            ItemSupplier.belongsTo(models.supplier, { foreignKey: 'supplier_id', targetKey: 'id' });
+            VarianceTax.belongsTo(models.variance, { foreignKey: 'item_id', targetKey: 'id' });
+            VarianceTax.belongsTo(models.tax, { foreignKey: 'tax_id', targetKey: 'id', as: 'get_tax' });
 
         }
     };
-    ItemSupplier.init({
+    VarianceTax.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        item_id: {
+        variance_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
-
             references: {
-                model: 'item',
+                model: 'variance',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-item'
+            unique: 'unique-genre-per-variance'
         },
-        supplier_id: {
+        tax_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'supplier',
+                model: 'tax',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-supplier'
+            unique: 'unique-genre-per-tax'
         },
     }, {
         sequelize,
-        modelName: 'item_suppliers',
+        modelName: 'variance_taxes',
     });
-    return ItemSupplier;
+    return VarianceTax;
 };

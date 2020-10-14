@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-            this.belongsTo(models.item, {
+            this.belongsTo(models.variance, {
                 as: 'get_prices',
-
-                foreignKey:
-                    'item_id'
+                foreignKey: {
+                    field: 'variance_id', name: 'varianceId',
+                }
             })
         }
     };
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         offer_price: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
         start_offer: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         end_offer: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-        // item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+        item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
         variance_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
         branch_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
         store_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },

@@ -3,43 +3,43 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class ItemTax extends Model {
+    class VarianceAlternative extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            ItemTax.belongsTo(models.item, { foreignKey: 'item_id', targetKey: 'id' });
-            ItemTax.belongsTo(models.tax, { foreignKey: 'tax_id', targetKey: 'id' });
+            VarianceAlternative.belongsTo(models.variance, { foreignKey: 'item_id', targetKey: 'id' });
+            VarianceAlternative.belongsTo(models.variance, { foreignKey: 'alternative_id', targetKey: 'id' });
 
         }
     };
-    ItemTax.init({
+    VarianceAlternative.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        item_id: {
+        variance_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
             references: {
-                model: 'item',
+                model: 'variance',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-item'
+            unique: 'unique-genre-per-variance'
         },
-        tax_id: {
+        alternative_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'tax',
+                model: 'alternative',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-tax'
+            unique: 'unique-genre-per-alternative'
         },
     }, {
         sequelize,
-        modelName: 'item_taxes',
+        modelName: 'variance_alternatives',
     });
-    return ItemTax;
+    return VarianceAlternative;
 };

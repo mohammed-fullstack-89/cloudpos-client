@@ -23,7 +23,7 @@ class Communicator {
 
 
     async getCustomers(val) {
-        return ipc.invoke('getCustomers');
+        // return ipc.invoke('getCustomers');
     }
 
     async searchCustomers(val) {

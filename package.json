@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "post-install": "electron-builder install-app-deps",
-    "rebuild-sqlite3-modules": "electron-rebuild -f -w sqlite3",
+    "rebuild-sqlite3-modules": "electron-rebuild -f -w usb",
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",
@@ -69,9 +69,14 @@
     "sequelize-cli": "^6.2.0"
   },
   "dependencies": {
+    "electron-pos-printer": "^1.2.4",
+    "electron-root-path": "^1.0.16",
+    "escpos": "^3.0.0-alpha.6",
+    "escpos-usb": "^3.0.0-alpha.4",
     "jquery": "^3.5.1",
     "node-gyp": "^7.1.0",
     "sequelize": "^6.3.5",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "usb-detection": "^4.10.0"
   }
 }

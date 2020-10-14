@@ -24,7 +24,6 @@ class CategoriesService {
     setCategories(categoriesList) {
         let categoryTable = db.model("category");
         categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
-        console.log("insert is complete");
     }
 
 

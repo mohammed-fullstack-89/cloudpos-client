@@ -3,43 +3,43 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class ItemAlternative extends Model {
+    class VarianceSupplier extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            ItemAlternative.belongsTo(models.item, { foreignKey: 'item_id', targetKey: 'id' });
-            ItemAlternative.belongsTo(models.item, { foreignKey: 'alternative_id', targetKey: 'id' });
+            VarianceSupplier.belongsTo(models.variance, { foreignKey: 'item_id', targetKey: 'id' });
+            VarianceSupplier.belongsTo(models.supplier, { foreignKey: 'supplier_id', targetKey: 'id' });
 
         }
     };
-    ItemAlternative.init({
+    VarianceSupplier.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        item_id: {
+        variance_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
             references: {
-                model: 'item',
+                model: 'variance',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-item'
+            unique: 'unique-genre-per-variance'
         },
-        alternative_id: {
+        supplier_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'alternative',
+                model: 'supplier',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-alternative'
+            unique: 'unique-genre-per-supplier'
         },
     }, {
         sequelize,
-        modelName: 'item_alternatives',
+        modelName: 'variance_suppliers',
     });
-    return ItemAlternative;
+    return VarianceSupplier;
 };

@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsToMany(models.item, {
-        through: 'item_segments',
-        foreignKey: 'segment_id',
-        otherKey: 'item_id',
+      this.belongsTo(models.variance, {
+        foreignKey: {
+          field: 'variance_id', name: 'varianceId',
+        }
       });
     }
   };
@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     nick_name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     barcode: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     sale_price: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
-    unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-    parent_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-    variance_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-    item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
+    unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    parent_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    variance_id: { type: DataTypes.BIGINT, allowNull: false },
+    item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
   }, {
     sequelize,
     modelName: 'segment',

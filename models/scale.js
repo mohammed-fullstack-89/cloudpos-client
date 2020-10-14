@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
 
 
-            this.hasOne(models.item, {
+            this.hasOne(models.variance, {
 
             })
 
