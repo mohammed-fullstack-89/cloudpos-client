@@ -46,8 +46,11 @@ class ItemService {
     }
 
     async searchItems(args) {
+        console.log("asdasdasdasdasdas");
         let type = args[0];
         let value = args[1];
+        console.log("asdasdasdasdasdas" + type + "sdsd " + value);
+
         let items = [];
         if (value == '' || value == null || value == undefined) {
             items = [];
@@ -120,7 +123,9 @@ class ItemService {
                 // limit: limit
             });
 
+
             items = JSON.stringify(items);
+            console.log("asdasdasdasdasdas" + type + "sdsd " + items);
             return items;
         }
     }

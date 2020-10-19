@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
 
 
             this.hasOne(models.variance, {
-
+                foreignKey: {
+                    field: 'scale_id', name: 'scaleId',
+                }
             })
 
 

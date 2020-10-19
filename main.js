@@ -13,56 +13,7 @@ const PRINT_HELPER = require('./util/printHelper');
 const { crashReporter } = require('electron')
 const { app, BrowserWindow } = electron;
 const Menu = electron.Menu;
-var usbScanner = require('usbscanner').usbScanner;
-var getDevices = require('usbscanner').getDevices;
- 
-//get array of attached HID devices
-var connectedHidDevices = getDevices()
- 
-//print devices
-console.log(connectedHidDevices)
- 
-//initialize new usbScanner - takes optional parmeters vendorId and hidMap - check source for details
-var scanner = new usbScanner();
- 
-//scanner emits a data event once a barcode has been read and parsed
-scanner.on("data", function(code){
-    console.log("recieved code : " + code);
-});
-// const escpos = require('escpos');
-// var usbDetect = require('usb-detection');
-// usbDetect.startMonitoring();
-// usbDetect.on('add', function (device) { console.log('add', device); });
-// usbDetect.on('add:vid', function (device) { console.log('add', device); });
-// usbDetect.on('add:vid:pid', function (device) { console.log('add', device); });
 
-// // Detect remove
-// usbDetect.on('remove', function (device) { console.log('remove', device); });
-// usbDetect.on('remove:vid', function (device) { console.log('remove', device); });
-// usbDetect.on('remove:vid:pid', function (device) { console.log('remove', device); });
-
-// // Detect add or remove (change)
-// usbDetect.on('change', function (device) { console.log('change', device); });
-// usbDetect.on('change:vid', function (device) { console.log('change', device); });
-// usbDetect.on('change:vid:pid', function (device) { console.log('change', device); });
-
-// // usbDetect.find(function (err, devices) { console.log('find', devices, err); });
-
-// escpos.USB = require('escpos-usb');
-// // Select the adapter based on your printer type
-
-
-// const device = new escpos.USB();
-
-// // const device  = new escpos.Network('localhost');
-// // const device  = new escpos.Serial('/dev/usb/lp0');
-
-// const options = { encoding: "GB18030" /* default */ }
-// // encoding is optional
-
-// const printer = new escpos.Printer(device, options);
-
-// printer.cashdraw();
 var splashWindow;
 
 // APP_HELPER.init();
@@ -71,7 +22,6 @@ PRINT_HELPER.init();
 appStore.init(electron.app.getPath('userData'));
 
 crashReporter.start({ submitURL: '' })
-
 
 
 app.on('ready', async function () {
@@ -84,6 +34,7 @@ app.on('ready', async function () {
    }).catch((error) => {
       console.log(`error : ${error}`);
    });
+
 });
 
 app.on('closed', function () {
@@ -140,7 +91,6 @@ function createWindow() {
       modal: true,
       paintWhenInitiallyHidden: true,
 
-
       // contextIsolation: false, //block website loaded to access electron preload script (false)
       webPreferences: {
          enableBlinkFeatures: true,
@@ -184,6 +134,55 @@ function createWindow() {
                label: 'Quit',
                accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
                async click() {
+
+                  let printWindow = new BrowserWindow({
+                     webPreferences: {
+                        javascript: false,
+                        contextIsolation: true
+                     },
+                     parent: BrowserWindow.getFocusedWindow(),
+                     modal: true,
+                     show: true,
+                  })
+
+                  //remove menu in the print window
+                  printWindow.removeMenu();
+                  printWindow.menu = null;
+                  console.log("appStore.getValue(jjh)" + appStore.getValue("mainPrinter"));
+                  const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
+                  // let buffer = Buffer.from([27, 112, 48, 55, 121]);
+                  // let arraybuffer = Uint8Array.from(buffer).buffer;
+                  printWindow.webContents.loadFile('./pr.js');
+                  printWindow.webContents.print(options, (success, errorType) => {
+                     if (!success) {
+                        console.log("check printer")
+                        console.log(errorType)
+                        // printWindow.close()
+                     }
+                     else {
+                        console.log("success")
+                        console.log(errorType)
+                        // printWindow.close()
+
+                     }
+                  }, (failureReason, errorType) => {
+                     if (!failureReason == null || failureReason == '') {
+                        console.log("fail..unknown reason")
+                        console.log("error : " + errorType + " reason : " + failureReason)
+                        // printWindow.close()
+
+                     }
+                     else {
+                        console.log("fail..")
+                        console.log(errorType)
+                        // printWindow.close()
+
+                     }
+                  })
+
+                  // Use default printing options
+
+
                   // let printWindow = new BrowserWindow({
                   //    webPreferences: {
                   //       javascript: false,
@@ -225,35 +224,35 @@ function createWindow() {
                   // })
 
 
-                  const { PosPrinter } = require("electron-pos-printer");
-                  const path = require("path");
+                  // const { PosPrinter } = require("electron-pos-printer");
+                  // const path = require("path");
 
-                  const options = {
-                     
-                             // Preview in window or print
-                     width: '170px',               //  width of content body
-                     margin: '0 0 0 0',            // margin of content body
-                     copies: 1,                    // Number of copies to print
-                     printerName: 'XPc2',        // printerName: string, check with webContent.getPrinters()
-                     timeOutPerLine: 400,
+                  // const options = {
 
-                  }
+                  //    // Preview in window or print
+                  //    width: '170px',               //  width of content body
+                  //    margin: '0 0 0 0',            // margin of content body
+                  //    copies: 1,                    // Number of copies to print
+                  //    printerName: 'XPc2',        // printerName: string, check with webContent.getPrinters()
+                  //    timeOutPerLine: 400,
 
-                  const data = [
-                     {
-                        type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-                        value: '\\x1b\\x70\\x00\\x19\\xfa',
+                  // }
 
-                     }
-                  ]
+                  // const data = [
+                  //    {
+                  //       type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+                  //       value: '\\x1b\\x70\\x00\\x19\\xfa',
 
-                  PosPrinter.print(data, options)
-                     .then(() => { 
-                        console.log("data "+data);
-                     })
-                     .catch((error) => {
-                        console.error(error);
-                     });
+                  //    }
+                  // ]
+
+                  // PosPrinter.print(data, options)
+                  //    .then(() => {
+                  //       console.log("data " + data);
+                  //    })
+                  //    .catch((error) => {
+                  //       console.error(error);
+                  //    });
 
 
                }
@@ -348,15 +347,41 @@ function createWindow() {
       ctxmenu.popup(mainWindow, params.x, params.y)
    });
 
+
+
    mainWindow.loadURL(url.format({
       pathname: enviroment.development.url,
       protocol: 'http',
       slashes: true,
    }));
    // mainWindow.loadFile(path.join(__dirname, '/windows/main/main.html'));
+
+   let code = "";
+   let lastKeyTime = Date.now();
    mainWindow.webContents.on("before-input-event", (event, input) => {
 
-      console.log(input.code == "Enter" || input.code == "NumpadEnter");
+      if (input.type == 'keyDown') {
+         const currentTime = Date.now();
+         let cal = currentTime - lastKeyTime;
+         if (currentTime - lastKeyTime > 500) {
+            code = "";
+         }
+         if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
+            if (code.length > 1) {
+               let items = [];
+
+               mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
+
+               code = "";
+            }
+         } else {
+            code += input.key
+
+         }
+         lastKeyTime = currentTime;
+
+      }
+
    });
 
 

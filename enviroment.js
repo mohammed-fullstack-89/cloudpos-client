@@ -3,7 +3,7 @@ module.exports = {
         "url": "localhost:4200",
     },
     "production": {
-        "url": "rpos.live/staff",
+        "url": "localhost:4200",
 
     }
 }

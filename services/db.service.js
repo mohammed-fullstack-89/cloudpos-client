@@ -100,6 +100,7 @@ class DbStore {
         // }
 
         ipc.handle('searchItems', async (event, ...args) => {
+           
             let itemsService = require('../repositories/item.service');
             let items = await itemsService.searchItems(args);
             return items

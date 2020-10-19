@@ -17,8 +17,7 @@ class PrintHelper {
         ipc.on('printHtmlDocument', (event, ...args) => {
             const html = args[0];
             const copies = args[1];
-            console.log("printing");
-            console.log(html);
+
             for (let i = 1; i <= copies; i++) {
                 let printWindow = new BrowserWindow({
                     webPreferences: {
@@ -28,14 +27,16 @@ class PrintHelper {
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: true,
                     show: false,
-                })
 
+                })
+                printWindow.webContents.openDevTools();
                 //remove menu in the print window
                 printWindow.removeMenu();
                 printWindow.menu = null;
+
                 //load html in the print window
                 // printWindow.loadURL('data:text/html;charset=utf-8,' + "<body dir=\"rtl\" style=\"margin:0; padding:0;\"><div style=\"text-align: center; padding: 0; margin: 0;\"><img style=\"width: 250px;\" src=\"/assets/images/receipt-logo-mono.png\"/></p><p style=\"text-align: center;\">رقم الطلب: 1956<p style=\"text-align: center;\">رقم الطاولة: 2<p style=\"text-align: center; padding: 0; margin: 0;\">اسم الموظف: adminالوقت: 2018/9/27 12:45:42</p><table style=\"width: 100%; margin:0; padding:0; float:right;\"><tr><th style=\"text-align:right; border:1px solid black; margin:0; padding:0;\"> الاسم </th> <th style=\"text-align:right; border:1px solid black; margin:0; padding:0;\"> الكمية </th> <th style=\"text-align:right; border:1px solid black; margin:0; padding:0;\"> السعر </th> <th style=\"text-align:right; border:1px solid black; margin:0; padding:0;\"> المجموع </th></tr><tr><td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">وجبة شاورما لحم عادي</td> <td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">1</td> <td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">3.00 </td><td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">3.00 </td></tr><tr><td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">ديناميت شاورما دجاج ايطالي</td> <td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">1</td> <td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">4.00 </td><td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">4.00 </td></tr><tr><td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">ديناميت شاورما لحمة ايطالي</td> <td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">1</td> <td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">4.25 </td><td style=\"text-align:right; margin:0; padding:0; border:1px solid black;\">4.25 </td></tr><tr><td></td><td style=\"text-align: right; margin:0; padding:0;\"></td></tr><tr><td><b>المجموع: 3عنصر</b></td><td style=\"text-align: right; margin:0; padding:0;\"><b>11.25 </b></td></tr><tr><td>طريقة الدفع:</td><td style=\"text-align: right; margin:0; padding:0;\">كاش</td></tr><tr><td>المبلغ المدفوع: </td><td style=\"text-align: right; margin:0; padding:0;\">11.25 </td></tr><tr><td>الباقي: </td><td style=\"text-align: right; margin:0; padding:0;\">0.00 </td></tr></table></body>")
-                printWindow.loadURL('data:text/html;charset=utf-8,' + html);
+                printWindow.loadURL("data:text/html;charset=utf-8," + html);
 
                 const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
                 printWindow.webContents.on("did-finish-load", function () {
@@ -103,6 +104,65 @@ class PrintHelper {
         });
 
         ipc.on('openDrawer', (event, ...args) => {
+            const printer = require('@thiagoelg/node-printer');
+            printer.printDirect({
+                data: '\x10\x14\x01\x00\x05'
+                , printer: appStore.getValue("mainPrinter") // printer name, if missing then will print to default printer
+                , type: 'RAW' // type: RAW, TEXT, PDF, JPEG, .. depends on platform
+                , success: function (jobID) {
+                    console.log("sent to printer with ID: " + jobID);
+                }
+                , error: function (err) { console.log(err); }
+            });
+            // let printWindow = new BrowserWindow({
+            //     webPreferences: {
+            //         javascript: false,
+            //         contextIsolation: true
+            //     },
+            //     parent: BrowserWindow.getFocusedWindow(),
+            //     modal: true,
+            //     show: false,
+            // })
+
+            // //remove menu in the print window
+            // printWindow.removeMenu();
+            // printWindow.menu = null;
+
+            // const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
+
+            // printWindow.webContents.on("did-finish-load", function () {
+            //     printWindow.webContents.insertText("27, 112, 48, 55, 121");
+            //     printWindow.webContents.print(options, (success, errorType) => {
+            //         if (!success) {
+            //             console.log("check printer")
+            //             console.log(errorType)
+            //             // printWindow.close()
+            //         }
+            //         else {
+            //             console.log("success")
+            //             console.log(errorType)
+            //             // printWindow.close()
+
+            //         }
+            //     }, (failureReason, errorType) => {
+            //         if (!failureReason == null || failureReason == '') {
+            //             console.log("fail..unknown reason")
+            //             console.log("error : " + errorType + " reason : " + failureReason)
+            //             // printWindow.close()
+
+            //         }
+            //         else {
+            //             console.log("fail..")
+            //             console.log(errorType)
+            //             // printWindow.close()
+
+            //         }
+            //     })
+
+            //     // Use default printing options
+
+            // })
+            // }
             // const { PosPrinter } = require("electron-pos-printer");
             // const path = require("path");
 
@@ -130,45 +190,44 @@ class PrintHelper {
             //     .catch((error) => {
             //         console.error(error);
             //     });
-            let printWindow = new BrowserWindow({
-                webPreferences: {
-                    javascript: false,
-                    contextIsolation: true
-                },
-                parent: BrowserWindow.getFocusedWindow(),
-                modal: true,
-                show: false,
-            });
+            // let printWindow = new BrowserWindow({
+            //     webPreferences: {
+            //         javascript: false,
+            //         contextIsolation: true
+            //     },
+            //     parent: BrowserWindow.getFocusedWindow(),
+            //     modal: true,
+            //     show: false,
+            // });
 
-            const options = { printBackground: true, copies: 0, silent: true, deviceName: appStore.getValue("mainPrinter") }
 
-            printWindow.loadURL('\x1b\x70\x00\x19\xfa');
-            printWindow.webContents.print(options, (success, errorType) => {
-                if (!success) {
-                    console.log("check printer")
-                    console.log(errorType)
-                    printWindow.close()
-                }
-                else {
-                    console.log("success")
-                    console.log(errorType)
-                    printWindow.close()
+            // printWindow.loadURL('\x1b\x70\x00\x19\xfa');
+            //     printWindow.webContents.print(options, (success, errorType) => {
+            //         if (!success) {
+            //             console.log("check printer")
+            //             console.log(errorType)
+            //             printWindow.close()
+            //         }
+            //         else {
+            //             console.log("success")
+            //             console.log(errorType)
+            //             printWindow.close()
 
-                }
-            }, (failureReason, errorType) => {
-                if (!failureReason == null || failureReason == '') {
-                    console.log("fail..unknown reason")
-                    console.log("error : " + errorType + " reason : " + failureReason)
-                    printWindow.close()
+            //         }
+            //     }, (failureReason, errorType) => {
+            //         if (!failureReason == null || failureReason == '') {
+            //             console.log("fail..unknown reason")
+            //             console.log("error : " + errorType + " reason : " + failureReason)
+            //             printWindow.close()
 
-                }
-                else {
-                    console.log("fail..")
-                    console.log(errorType)
-                    printWindow.close()
+            //         }
+            //         else {
+            //             console.log("fail..")
+            //             console.log(errorType)
+            //             printWindow.close()
 
-                }
-            })
+            //         }
+            //     })
 
         })
 

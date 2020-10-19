@@ -9,7 +9,6 @@ class Communicator {
     }
 
     async getCategories(parentId) {
-
         let categories = await ipc.invoke('getCategories', parentId)
 
         return categories;
