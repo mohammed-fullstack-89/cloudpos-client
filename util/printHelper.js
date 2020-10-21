@@ -17,7 +17,7 @@ class PrintHelper {
         ipc.on('printHtmlDocument', (event, ...args) => {
             const html = args[0];
             const copies = args[1];
-
+            console.log("html " + html);
             for (let i = 1; i <= copies; i++) {
                 let printWindow = new BrowserWindow({
                     webPreferences: {
@@ -26,10 +26,10 @@ class PrintHelper {
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: true,
-                    show: false,
+                    show: true,
 
                 })
-                printWindow.webContents.openDevTools();
+                // printWindow.webContents.openDevTools();
                 //remove menu in the print window
                 printWindow.removeMenu();
                 printWindow.menu = null;

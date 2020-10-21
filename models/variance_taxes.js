@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     VarianceTax.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         variance_id: {
-            type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
+            type: DataTypes.BIGINT, allowNull: false,
             references: {
                 model: 'variance',
                 key: 'id'

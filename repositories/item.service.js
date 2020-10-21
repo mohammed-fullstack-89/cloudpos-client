@@ -3,7 +3,15 @@
 let db = require('../models/index');
 class ItemService {
 
-
+    async getQtyByStock(stockId) {
+        const priceTable = db.model('price');
+        const newQty = await priceTable.findOne({
+            where: {
+                id: stockId
+            }
+        });
+        return newQty.qty;
+    }
     async getItemsByCategory(args) {
         // console.log("asdas2 " + args);
         // parentId = args[0];
@@ -46,10 +54,8 @@ class ItemService {
     }
 
     async searchItems(args) {
-        console.log("asdasdasdasdasdas");
         let type = args[0];
         let value = args[1];
-        console.log("asdasdasdasdasdas" + type + "sdsd " + value);
 
         let items = [];
         if (value == '' || value == null || value == undefined) {
@@ -125,8 +131,25 @@ class ItemService {
 
 
             items = JSON.stringify(items);
-            console.log("asdasdasdasdasdas" + type + "sdsd " + items);
             return items;
+        }
+    }
+
+    async updateStock(args) {
+
+        try {
+            let newStockValues = [];
+            newStockValues = args;
+            let priceTable = db.model('price');
+
+            console.log(" newStockValues " + JSON.stringify(newStockValues));
+            console.log(" newStockValues " + JSON.stringify(Object.keys(priceTable.rawAttributes)));
+
+            priceTable.bulkCreate(newStockValues, { updateOnDuplicate: Object.keys(priceTable.rawAttributes) })
+
+        }
+        catch (error) {
+            console.log("error " + error);
         }
     }
     async setItems(args) {
@@ -135,7 +158,6 @@ class ItemService {
             let serialsList = args[1];
             let alternatives = args[2];
             let pricesList = args[3];
-
             let segmantsList = args[4];
             let suppliersList = args[5];
             let taxesList = args[6];
@@ -162,7 +184,6 @@ class ItemService {
             if (taxesList != [] && taxesList != undefined) {
                 await taxTable.destroy({ truncate: true })
                 await taxTable.bulkCreate(taxesList);
-
             }
 
             if (suppliersList != [] && suppliersList != undefined) {
@@ -174,26 +195,24 @@ class ItemService {
             if (segmantsList != [] && segmantsList != undefined) {
                 await segmentTable.destroy({ truncate: true })
                 await segmentTable.bulkCreate(segmantsList);
-
             }
+
             if (serialsList != [] && serialsList != undefined) {
                 await serialTable.destroy({ truncate: true })
                 await serialTable.bulkCreate(serialsList);
             }
 
-
             if (pricesList != [] && pricesList != undefined) {
                 await priceTable.destroy({ truncate: true })
                 await priceTable.bulkCreate(pricesList);
-
             }
 
             if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
                 await itemAlternativeTable.destroy({ truncate: true })
                 await itemAlternativeTable.bulkCreate(itemAlternativesRel);
-
             }
 
+            console.log("itemCategoriesRel " + JSON.stringify(itemCategoriesRel));
             if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
                 await itemCategoriesTable.destroy({ truncate: true })
                 await itemCategoriesTable.bulkCreate(itemCategoriesRel);
@@ -206,6 +225,7 @@ class ItemService {
 
             if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
                 await itemTaxesTable.destroy({ truncate: true });
+                console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
                 await itemTaxesTable.bulkCreate(taxesItemsRelation);
             }
 
@@ -214,8 +234,6 @@ class ItemService {
         }
 
     }
-
-
 
 }
 

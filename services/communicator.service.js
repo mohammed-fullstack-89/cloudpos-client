@@ -50,10 +50,18 @@ class Communicator {
         return items
     }
 
+    async updateStockQty(values) {
 
+        await ipc.invoke('updateStockQty', JSON.parse(values));
+    }
+    async getQtyByStockId(stockId) {
+        let newQty = await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
+        return newQty
+    }
     async setInsuranceCompany(companies, companiesRatios, companiesTerms, companyRatiosRel, companyTermsRel) {
         await ipc.invoke('setCompanies', JSON.parse(companies), JSON.parse(companiesRatios), JSON.parse(companiesTerms), JSON.parse(companyRatiosRel), JSON.parse(companyTermsRel));
     }
+
     // obj.setInsuranceCompany(JSON.stringify(sqllightobject.companies),JSON.stringify(sqllightobject.companiesRatios),JSON.stringify(sqllightobject.companiesTerms),JSON.stringify(sqllightobject.companyTermsRel),JSON.stringify(sqllightobject.companyRatiosRel))
     async getInsuranceCompany() {
         let companies = await ipc.invoke('getCompanies');

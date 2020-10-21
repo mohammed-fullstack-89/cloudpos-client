@@ -31,11 +31,20 @@ class DbStore {
 
         });
 
+        ipc.handle('updateStockQty', (event, args) => {
+            let itemsService = require('../repositories/item.service');
+            itemsService.updateStock(args);
+        })
 
         ipc.handle('setCustomers', async (event, ...args) => {
             let customerService = require('../repositories/customer.service');
             await customerService.setCustomers(args);
             return;
+        });
+        ipc.handle('getQtyByStockId', async (event, args) => {
+            let itemsService = require('../repositories/item.service');
+            const newQty = await itemsService.getQtyByStock(args);
+            return newQty;
         });
         // ipc.handle('getCustomers', async (event, ...args) => {
         //     let customerService = require('../repositories/customer.service');
@@ -50,7 +59,8 @@ class DbStore {
             return customers;
 
         });
-
+        
+       
         // });
 
         // this.setCategories = async function (categoriesList) {
@@ -100,7 +110,7 @@ class DbStore {
         // }
 
         ipc.handle('searchItems', async (event, ...args) => {
-           
+
             let itemsService = require('../repositories/item.service');
             let items = await itemsService.searchItems(args);
             return items
