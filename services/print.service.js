@@ -15,7 +15,6 @@ class PrintService {
         });
     }
 
-
     printHtmlDocument(html, copies) {
         console.log("printing");
         console.log(html);

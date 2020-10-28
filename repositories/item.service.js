@@ -215,14 +215,17 @@ class ItemService {
             console.log("itemCategoriesRel " + JSON.stringify(itemCategoriesRel));
             if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
                 await itemCategoriesTable.destroy({ truncate: true })
-                await itemCategoriesTable.bulkCreate(itemCategoriesRel);
-            }
+                console.log("itemCategoriesRel " + JSON.stringify(itemCategoriesRel));
 
+                await itemCategoriesTable.bulkCreate(itemCategoriesRel);
+                console.log("itemCategoriesRel222 " + JSON.stringify(itemCategoriesRel));
+            }
+            console.log("suppliersItemsRelation " + JSON.stringify(suppliersItemsRelation));
             if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
                 await itemSupplierTable.destroy({ truncate: true })
                 await itemSupplierTable.bulkCreate(suppliersItemsRelation);
             }
-
+            console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
             if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
                 await itemTaxesTable.destroy({ truncate: true });
                 console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));

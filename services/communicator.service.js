@@ -3,13 +3,13 @@ const ipc = require('electron').ipcRenderer;
 class Communicator {
 
     setCategories(categoriesList) {
-        // let categoryService = require('../repositories/category.service');
+        // const categoryService = require('../repositories/category.service');
         // await dbStore.setCategories(categoriesList);
         ipc.sendSync('setCategories', categoriesList);
     }
 
     async getCategories(parentId) {
-        let categories = await ipc.invoke('getCategories', parentId)
+        const categories = await ipc.invoke('getCategories', parentId)
 
         return categories;
     }
@@ -55,7 +55,7 @@ class Communicator {
         await ipc.invoke('updateStockQty', JSON.parse(values));
     }
     async getQtyByStockId(stockId) {
-        let newQty = await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
+        const newQty = await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
         return newQty
     }
     async setInsuranceCompany(companies, companiesRatios, companiesTerms, companyRatiosRel, companyTermsRel) {
@@ -64,7 +64,7 @@ class Communicator {
 
     // obj.setInsuranceCompany(JSON.stringify(sqllightobject.companies),JSON.stringify(sqllightobject.companiesRatios),JSON.stringify(sqllightobject.companiesTerms),JSON.stringify(sqllightobject.companyTermsRel),JSON.stringify(sqllightobject.companyRatiosRel))
     async getInsuranceCompany() {
-        let companies = await ipc.invoke('getCompanies');
+        const companies = await ipc.invoke('getCompanies');
         return companies;
 
     }
@@ -73,10 +73,25 @@ class Communicator {
     }
 
     async getCards() {
-        let cards = await ipc.invoke('getCards');
+        const cards = await ipc.invoke('getCards');
         return cards;
     }
 
+
+    async saveSale(saleObject) {
+        const saved = await ipc.invoke('saveSale', saleObject);
+        console.log("saveSale");
+        return saved;
+    }
+    async getSales(filter) {
+        const sales = await ipc.invoke('getSales', filter);
+        console.log("sales :" + sales);
+        return sales;
+    }
+    async getFailedSales() {
+        const sales = await ipc.invoke('getFailedSales');
+        return sales;
+    }
     //     if(Communicator.caller != Communicator.getInstance) {
     //     throw new Error("This object cannot be instanciated");
     // }

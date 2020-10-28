@@ -59,8 +59,8 @@ class DbStore {
             return customers;
 
         });
-        
-       
+
+
         // });
 
         // this.setCategories = async function (categoriesList) {
@@ -151,6 +151,23 @@ class DbStore {
         //     const items = ipc.invoke('getItems', parentId, limit, offset);
         //     return items
         // }
+
+        ipc.handle('saveSale', async (event, ...args) => {
+            let saleService = require('../repositories/sale.service');
+            let saveStatus = await saleService.saveSale(args);
+            return saveStatus;
+        });
+
+        ipc.handle('getSales', async (event, ...args) => {
+            let saleService = require('../repositories/sale.service');
+            let sales = await saleService.getSales(args);
+            return sales;
+        })
+        ipc.handle('getFailedSales', async (event, ...args) => {
+            const saleTable = require('../repositories/sale.service');
+            const sales = await saleTable.getFailedSales();
+            return sales;
+        })
     }
 }
 
