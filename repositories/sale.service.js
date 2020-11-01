@@ -23,7 +23,6 @@ class SaleService {
                     await saleTable.create(saleObject);
                 }
                 else {
-                    console.log("updated" + result.order_number)
                     await saleTable.update(saleObject, {
                         where: {
                             order_number: result.order_number,
@@ -69,7 +68,6 @@ class SaleService {
             limit: 20
         });
         const sales = JSON.stringify(result);
-        console.log("sales22 " + sales);
         return sales;
     }
 }

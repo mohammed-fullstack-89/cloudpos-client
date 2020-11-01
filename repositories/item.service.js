@@ -13,10 +13,7 @@ class ItemService {
         return newQty.qty;
     }
     async getItemsByCategory(args) {
-        // console.log("asdas2 " + args);
-        // parentId = args[0];
-        // limit = args[1];
-        // offset = args[2];
+       
         let varianceTable = db.model('variance');
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
@@ -141,10 +138,6 @@ class ItemService {
             let newStockValues = [];
             newStockValues = args;
             let priceTable = db.model('price');
-
-            console.log(" newStockValues " + JSON.stringify(newStockValues));
-            console.log(" newStockValues " + JSON.stringify(Object.keys(priceTable.rawAttributes)));
-
             priceTable.bulkCreate(newStockValues, { updateOnDuplicate: Object.keys(priceTable.rawAttributes) })
 
         }
@@ -175,70 +168,98 @@ class ItemService {
             const itemCategoriesTable = db.model("variance_categories");
             const itemTaxesTable = db.model("variance_taxes");
             const itemSupplierTable = db.model("variance_suppliers");
-
-            if (itemsInfo != [] && itemsInfo != undefined) {
-                await varianceTable.destroy({ truncate: true });
-                await varianceTable.bulkCreate(itemsInfo)
+            try {
+                if (itemsInfo != [] && itemsInfo != undefined) {
+                    await varianceTable.destroy({ truncate: true });
+                    await varianceTable.bulkCreate(itemsInfo)
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
-            if (taxesList != [] && taxesList != undefined) {
-                await taxTable.destroy({ truncate: true })
-                await taxTable.bulkCreate(taxesList);
+            try {
+                if (taxesList != [] && taxesList != undefined) {
+                    await taxTable.destroy({ truncate: true })
+                    await taxTable.bulkCreate(taxesList);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
+            try {
+                if (suppliersList != [] && suppliersList != undefined) {
+                    await supplierTable.destroy({ truncate: true })
+                    await supplierTable.bulkCreate(suppliersList);
 
-            if (suppliersList != [] && suppliersList != undefined) {
-                await supplierTable.destroy({ truncate: true })
-                await supplierTable.bulkCreate(suppliersList);
-
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
-            if (segmantsList != [] && segmantsList != undefined) {
-                await segmentTable.destroy({ truncate: true })
-                await segmentTable.bulkCreate(segmantsList);
+            try {
+                if (segmantsList != [] && segmantsList != undefined) {
+                    await segmentTable.destroy({ truncate: true })
+                    await segmentTable.bulkCreate(segmantsList);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
-            if (serialsList != [] && serialsList != undefined) {
-                await serialTable.destroy({ truncate: true })
-                await serialTable.bulkCreate(serialsList);
+            try {
+                if (serialsList != [] && serialsList != undefined) {
+                    await serialTable.destroy({ truncate: true })
+                    await serialTable.bulkCreate(serialsList);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
-            if (pricesList != [] && pricesList != undefined) {
-                await priceTable.destroy({ truncate: true })
-                await priceTable.bulkCreate(pricesList);
+            try {
+                if (pricesList != [] && pricesList != undefined) {
+                    await priceTable.destroy({ truncate: true })
+                    await priceTable.bulkCreate(pricesList);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
-            if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
-                await itemAlternativeTable.destroy({ truncate: true })
-                await itemAlternativeTable.bulkCreate(itemAlternativesRel);
+            try {
+                if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
+                    await itemAlternativeTable.destroy({ truncate: true })
+                    await itemAlternativeTable.bulkCreate(itemAlternativesRel);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
-            console.log("itemCategoriesRel " + JSON.stringify(itemCategoriesRel));
-            if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
-                await itemCategoriesTable.destroy({ truncate: true })
-                console.log("itemCategoriesRel " + JSON.stringify(itemCategoriesRel));
-
-                await itemCategoriesTable.bulkCreate(itemCategoriesRel);
-                console.log("itemCategoriesRel222 " + JSON.stringify(itemCategoriesRel));
+            try {
+                if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
+                    await itemCategoriesTable.destroy({ truncate: true })
+                    await itemCategoriesTable.bulkCreate(itemCategoriesRel);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-            console.log("suppliersItemsRelation " + JSON.stringify(suppliersItemsRelation));
-            if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
-                await itemSupplierTable.destroy({ truncate: true })
-                await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+            try {
+                console.log("suppliersItemsRelation " + JSON.stringify(suppliersItemsRelation));
+                if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
+                    await itemSupplierTable.destroy({ truncate: true })
+                    await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-            console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
-            if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
-                await itemTaxesTable.destroy({ truncate: true });
+            try {
                 console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
-                await itemTaxesTable.bulkCreate(taxesItemsRelation);
+                if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
+                    await itemTaxesTable.destroy({ truncate: true });
+                    console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
+                    await itemTaxesTable.bulkCreate(taxesItemsRelation);
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
 
         } catch (error) {
             console.log("error " + error);
         }
-
     }
-
 }
+
+
 
 ItemService.instance = null;
 ItemService.getInstance = function () {

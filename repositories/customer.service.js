@@ -43,39 +43,53 @@ class CustomerService {
             let tiersTable = db.model("tier");
             let entitesTable = db.model("entity");
             let customerEntitesRelTable = db.model("customer_entities");
+            try {
+                if (tiers_list != [] && tiers_list != undefined) {
+                    await tiersTable.destroy({ truncate: true });
+                    await tiersTable.bulkCreate(tiers_list);
 
-            if (tiers_list != [] && tiers_list != undefined) {
-                await tiersTable.destroy({ truncate: true });
-                await tiersTable.bulkCreate(tiers_list);
 
-
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
+            try {
+                if (customersList != [] && customersList != undefined) {
+                    await customerTable.destroy({ truncate: true })
+                    await customerTable.bulkCreate(customersList);
 
-            if (customersList != [] && customersList != undefined) {
-                await customerTable.destroy({ truncate: true })
-                await customerTable.bulkCreate(customersList);
-
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
+            try {
+                if (addresss_list != [] && addresss_list != undefined) {
+                    await addressesTable.destroy({ truncate: true })
+                    await addressesTable.bulkCreate(addresss_list);
 
-            if (addresss_list != [] && addresss_list != undefined) {
-                await addressesTable.destroy({ truncate: true })
-                await addressesTable.bulkCreate(addresss_list);
-
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-            if (entites_list != [] && entites_list != undefined) {
-                await entitesTable.destroy({ truncate: true })
-                await entitesTable.bulkCreate(entites_list);
+            try {
+                if (entites_list != [] && entites_list != undefined) {
+                    await entitesTable.destroy({ truncate: true })
+                    await entitesTable.bulkCreate(entites_list);
 
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
+            try {
+                if (entity_rel_list != [] && entity_rel_list != undefined) {
+                    await customerEntitesRelTable.destroy({ truncate: true })
+                    await customerEntitesRelTable.bulkCreate(entity_rel_list);
 
 
-            if (entity_rel_list != [] && entity_rel_list != undefined) {
-                await customerEntitesRelTable.destroy({ truncate: true })
-                await customerEntitesRelTable.bulkCreate(entity_rel_list);
-
-
+                }
+            } catch (error) {
+                console.log("error " + error);
             }
-
 
             // await customerTable.sequelize.query(
             //     "INSERT INTO entities_customers (customer_id, entity_id) VALUES ?;", JSON.parse(entity_rel_list));

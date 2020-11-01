@@ -46,12 +46,7 @@ class DbStore {
             const newQty = await itemsService.getQtyByStock(args);
             return newQty;
         });
-        // ipc.handle('getCustomers', async (event, ...args) => {
-        //     let customerService = require('../repositories/customer.service');
-        //     // console.log("asdsa " + args + "------------------=-==- " + args[0]);
-        //     await customerService.getCustomers();
-        //     return;
-        // });
+      
 
         ipc.handle('searchCustomers', async (event, ...args) => {
             let customerService = require('../repositories/customer.service');

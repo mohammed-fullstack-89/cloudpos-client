@@ -85,7 +85,6 @@ class Communicator {
     }
     async getSales(filter) {
         const sales = await ipc.invoke('getSales', filter);
-        console.log("sales :" + sales);
         return sales;
     }
     async getFailedSales() {

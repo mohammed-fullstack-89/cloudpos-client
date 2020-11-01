@@ -6,7 +6,6 @@ const ipc = electron.ipcRenderer;
 class PrintService {
 
     constructor() {
-        console.log("print created .....");
         ipc.on("closeSettingsWindow", (event, ...args) => {
             if (this.win != undefined && this.win != null) {
                 this.win.close;
@@ -16,8 +15,7 @@ class PrintService {
     }
 
     printHtmlDocument(html, copies) {
-        console.log("printing");
-        console.log(html);
+    
         ipc.send("printHtmlDocument", html, copies);
     }
 

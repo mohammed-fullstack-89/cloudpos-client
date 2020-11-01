@@ -68,12 +68,11 @@ app.on('activate', function () {
 
 
 
-async function init() {
-   app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
-}
+
 
 
 function createWindow() {
+   app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
    // Create the browser window.
    const mainWindow = new BrowserWindow({
       focusable: true,
@@ -102,6 +101,7 @@ function createWindow() {
          webgl: false,
          webSecurity: false,
          nodeIntegrationInWorker: true,
+         allowRunningInsecureContent: true,
          preload: path.join(__dirname, 'renderer.js')
       }
    });
@@ -122,12 +122,7 @@ function createWindow() {
                click() {
                   clearAppDataDialog();
                   console.log("clear cache")
-                  // mainWindow.webContents.session.clearCache(function(){console.log('cleared all cookies ');    electron.webContents.reload()});
 
-                  // electron.webContents.webContents.session.clearStorageData(function () {
-                  //    electron.webContents.reload()
-                  // });
-                  //some callback.
                }
             },
             {
@@ -148,7 +143,6 @@ function createWindow() {
                   //remove menu in the print window
                   printWindow.removeMenu();
                   printWindow.menu = null;
-                  console.log("appStore.getValue(jjh)" + appStore.getValue("mainPrinter"));
                   const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
                   // let buffer = Buffer.from([27, 112, 48, 55, 121]);
                   // let arraybuffer = Uint8Array.from(buffer).buffer;
@@ -179,81 +173,6 @@ function createWindow() {
 
                      }
                   })
-
-                  // Use default printing options
-
-
-                  // let printWindow = new BrowserWindow({
-                  //    webPreferences: {
-                  //       javascript: false,
-                  //       contextIsolation: true
-                  //    },
-                  //    parent: BrowserWindow.getFocusedWindow(),
-                  //    modal: true,
-                  //    show: false,
-                  // });
-
-                  // const options = { printBackground: true, copies: 0, silent: true, deviceName: appStore.getValue("mainPrinter") }
-
-                  // printWindow.loadURL('\x1b\x70\x00\x19\xfa');
-                  // printWindow.webContents.print(options, (success, errorType) => {
-                  //    if (!success) {
-                  //       console.log("check printer")
-                  //       console.log(errorType)
-                  //       printWindow.close()
-                  //    }
-                  //    else {
-                  //       console.log("success")
-                  //       console.log(errorType)
-                  //       printWindow.close()
-
-                  //    }
-                  // }, (failureReason, errorType) => {
-                  //    if (!failureReason == null || failureReason == '') {
-                  //       console.log("fail..unknown reason")
-                  //       console.log("error : " + errorType + " reason : " + failureReason)
-                  //       printWindow.close()
-
-                  //    }
-                  //    else {
-                  //       console.log("fail..")
-                  //       console.log(errorType)
-                  //       printWindow.close()
-
-                  //    }
-                  // })
-
-
-                  // const { PosPrinter } = require("electron-pos-printer");
-                  // const path = require("path");
-
-                  // const options = {
-
-                  //    // Preview in window or print
-                  //    width: '170px',               //  width of content body
-                  //    margin: '0 0 0 0',            // margin of content body
-                  //    copies: 1,                    // Number of copies to print
-                  //    printerName: 'XPc2',        // printerName: string, check with webContent.getPrinters()
-                  //    timeOutPerLine: 400,
-
-                  // }
-
-                  // const data = [
-                  //    {
-                  //       type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-                  //       value: '\\x1b\\x70\\x00\\x19\\xfa',
-
-                  //    }
-                  // ]
-
-                  // PosPrinter.print(data, options)
-                  //    .then(() => {
-                  //       console.log("data " + data);
-                  //    })
-                  //    .catch((error) => {
-                  //       console.error(error);
-                  //    });
-
 
                }
             },
@@ -348,12 +267,8 @@ function createWindow() {
    });
 
 
-
-   mainWindow.loadURL(url.format({
-      pathname: enviroment.development.url,
-      protocol: 'http',
-      slashes: true,
-   }));
+   // init();
+   mainWindow.loadURL('https://64.227.66.157/staff');
    // mainWindow.loadFile(path.join(__dirname, '/windows/main/main.html'));
 
    let code = "";
@@ -393,7 +308,7 @@ function createWindow() {
 
 }
 function clearAppDataDialog() {
-   const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
+   const clearAppDataMessage = 'are you sure ?';
    const getAppPath = path.join(app.getPath('appData'), app.getName());
 
    dialog.showMessageBox({

@@ -31,10 +31,10 @@ function savePreferances() {
 // }
 function setSelectedPrinters() {
     const localSettings = ipcRenderer.sendSync("getlocalSettings");
-
     document.getElementById('main').value = localSettings.mainPrinter;
     // sel.value = store.getValue('mainPrinter');
 }
+
 function getPrinters() {
     let sel = document.getElementById('main');
     // let k1 = document.getElementById('k1');
@@ -46,7 +46,6 @@ function getPrinters() {
     defaultopt.appendChild(document.createTextNode("--choose Printer--"));
     defaultopt.value = "--choose Printer--";
     sel.appendChild(defaultopt);
-    console.log(printers.toString());
     printers.forEach((p) => {
         let opt = document.createElement('option');
         opt.appendChild(document.createTextNode(p.name));

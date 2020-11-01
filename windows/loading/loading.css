@@ -2,14 +2,13 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    display: flex;
-    flex-direction: column;
+    margin: auto 0;
 }
 
 .app-status {
     font-size: large;
     font-family: 'Times New Roman', Times, serif;
-    color: cornflowerblue;
+    color: rgb(22, 130, 157);
     font-weight: 600;
 
 }

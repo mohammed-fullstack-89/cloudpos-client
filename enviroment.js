@@ -1,8 +1,8 @@
 module.exports = {
     "development": {
-        "url": "192.168.1.90:4200",
+        "url": "localhost:4200",
     },
     "production": {
-        "url": "192.168.1.90:4200",
+        "url": "64.227.66.157/admin/public",
     }
 }

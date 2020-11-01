@@ -10,6 +10,7 @@ const { BrowserWindow } = electron;
 const rootPath = require('electron-root-path').rootPath;
 // const APP_HELPER = require('../util/appHelper')
 const appStore = require('../services/store.service');
+const { PosPrinter } = require("electron-pos-printer");
 
 class PrintHelper {
 
@@ -17,17 +18,17 @@ class PrintHelper {
         ipc.on('printHtmlDocument', (event, ...args) => {
             const html = args[0];
             const copies = args[1];
-            console.log("html " + html);
+
             for (let i = 1; i <= copies; i++) {
                 let printWindow = new BrowserWindow({
+
                     webPreferences: {
                         javascript: false,
                         contextIsolation: true
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: true,
-                    show: true,
-
+                    show: false,
                 })
                 // printWindow.webContents.openDevTools();
                 //remove menu in the print window
@@ -114,120 +115,7 @@ class PrintHelper {
                 }
                 , error: function (err) { console.log(err); }
             });
-            // let printWindow = new BrowserWindow({
-            //     webPreferences: {
-            //         javascript: false,
-            //         contextIsolation: true
-            //     },
-            //     parent: BrowserWindow.getFocusedWindow(),
-            //     modal: true,
-            //     show: false,
-            // })
 
-            // //remove menu in the print window
-            // printWindow.removeMenu();
-            // printWindow.menu = null;
-
-            // const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
-
-            // printWindow.webContents.on("did-finish-load", function () {
-            //     printWindow.webContents.insertText("27, 112, 48, 55, 121");
-            //     printWindow.webContents.print(options, (success, errorType) => {
-            //         if (!success) {
-            //             console.log("check printer")
-            //             console.log(errorType)
-            //             // printWindow.close()
-            //         }
-            //         else {
-            //             console.log("success")
-            //             console.log(errorType)
-            //             // printWindow.close()
-
-            //         }
-            //     }, (failureReason, errorType) => {
-            //         if (!failureReason == null || failureReason == '') {
-            //             console.log("fail..unknown reason")
-            //             console.log("error : " + errorType + " reason : " + failureReason)
-            //             // printWindow.close()
-
-            //         }
-            //         else {
-            //             console.log("fail..")
-            //             console.log(errorType)
-            //             // printWindow.close()
-
-            //         }
-            //     })
-
-            //     // Use default printing options
-
-            // })
-            // }
-            // const { PosPrinter } = require("electron-pos-printer");
-            // const path = require("path");
-
-            // const options = {
-            //     preview: true,
-            //     silent: true,           // Preview in window or print
-            //     width: '170px',               //  width of content body
-            //     margin: '0 0 0 0',            // margin of content body
-            //     copies: 1,                    // Number of copies to print
-            //     printerName: 'XPc2',        // printerName: string, check with webContent.getPrinters()
-            //     timeOutPerLine: 400,
-            //     pageSize: { height: 301000, width: 71000 }  // page size
-            // }
-
-            // const data = [
-            //     {
-            //         type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-            //         value: '27, 112, 48, 55, 121',
-
-            //     }
-            // ]
-
-            // PosPrinter.print(data, options)
-            //     .then(() => { })
-            //     .catch((error) => {
-            //         console.error(error);
-            //     });
-            // let printWindow = new BrowserWindow({
-            //     webPreferences: {
-            //         javascript: false,
-            //         contextIsolation: true
-            //     },
-            //     parent: BrowserWindow.getFocusedWindow(),
-            //     modal: true,
-            //     show: false,
-            // });
-
-
-            // printWindow.loadURL('\x1b\x70\x00\x19\xfa');
-            //     printWindow.webContents.print(options, (success, errorType) => {
-            //         if (!success) {
-            //             console.log("check printer")
-            //             console.log(errorType)
-            //             printWindow.close()
-            //         }
-            //         else {
-            //             console.log("success")
-            //             console.log(errorType)
-            //             printWindow.close()
-
-            //         }
-            //     }, (failureReason, errorType) => {
-            //         if (!failureReason == null || failureReason == '') {
-            //             console.log("fail..unknown reason")
-            //             console.log("error : " + errorType + " reason : " + failureReason)
-            //             printWindow.close()
-
-            //         }
-            //         else {
-            //             console.log("fail..")
-            //             console.log(errorType)
-            //             printWindow.close()
-
-            //         }
-            //     })
 
         })
 

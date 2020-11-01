@@ -38,7 +38,7 @@ class DbManager {
           const model = require(path.join(__dirname, file))(this.sequelize, Sequelize.DataTypes);
           this.db[model.name] = model;
         });
-      console.log(this.db);
+
       Object.keys(this.db).forEach(modelName => {
         if (this.db[modelName].associate) {
           this.db[modelName].associate(this.db);
@@ -48,12 +48,8 @@ class DbManager {
       this.db.sequelize = this.sequelize;
       //sequelize instance  
       this.db.Sequelize = Sequelize;
-      // resolve("done");
       this.db.sequelize.authenticate().then(async () => {
-
-        // await this.db.sequelize.drop();
         this.db.sequelize.sync({ force: true }).catch((error) => {
-          // sequelize.sync().catch((error) => {
           console.log("error : ! " + error);
         }).then(() => {
           resolve("done");
