@@ -24,10 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     Scale.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         name: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-        end: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+        start: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         end: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         number_of_digits: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-
 
     }, {
         sequelize,

@@ -50,6 +50,10 @@ class Communicator {
         return items
     }
 
+    async getItemFromScaleBarcode(type, value) {
+        const items = await ipc.invoke('getItemFromScaleBarcode', type, value);
+        return items
+    }
     async updateStockQty(values) {
 
         await ipc.invoke('updateStockQty', JSON.parse(values));

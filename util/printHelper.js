@@ -10,7 +10,6 @@ const { BrowserWindow } = electron;
 const rootPath = require('electron-root-path').rootPath;
 // const APP_HELPER = require('../util/appHelper')
 const appStore = require('../services/store.service');
-const { PosPrinter } = require("electron-pos-printer");
 
 class PrintHelper {
 

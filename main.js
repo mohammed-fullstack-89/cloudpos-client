@@ -7,8 +7,6 @@ const customContextMenu = require('./components/menu/context_menu');
 const db = require('./models/index');
 const dbStore = require('./services/db.service');
 const appStore = require('./services/store.service');
-const ipc = electron.ipcMain;
-const APP_HELPER = require('./util/appHelper');
 const PRINT_HELPER = require('./util/printHelper');
 const { crashReporter } = require('electron')
 const { app, BrowserWindow } = electron;
@@ -16,16 +14,12 @@ const Menu = electron.Menu;
 
 var splashWindow;
 
-// APP_HELPER.init();
 PRINT_HELPER.init();
-
 appStore.init(electron.app.getPath('userData'));
-
-crashReporter.start({ submitURL: '' })
+// crashReporter.start({ submitURL: '' })
 
 
 app.on('ready', async function () {
-
 
    dbStore.init();
    createSplashWindow();
@@ -38,7 +32,7 @@ app.on('ready', async function () {
 });
 
 app.on('closed', function () {
-   db.close()
+   db.close();
    app.quit();
 });
 
@@ -60,15 +54,11 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
    // On macOS it's common to re-create a window in the app when the
-   // dock icon is clicked and there are no other windows open.
+   // dock icon is clicked and there are no other  windows open.
    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
    }
 });
-
-
-
-
 
 
 function createWindow() {
@@ -101,7 +91,6 @@ function createWindow() {
          webgl: false,
          webSecurity: false,
          nodeIntegrationInWorker: true,
-         allowRunningInsecureContent: true,
          preload: path.join(__dirname, 'renderer.js')
       }
    });
@@ -127,53 +116,9 @@ function createWindow() {
             },
             {
                label: 'Quit',
-               accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
-               async click() {
-
-                  let printWindow = new BrowserWindow({
-                     webPreferences: {
-                        javascript: false,
-                        contextIsolation: true
-                     },
-                     parent: BrowserWindow.getFocusedWindow(),
-                     modal: true,
-                     show: true,
-                  })
-
-                  //remove menu in the print window
-                  printWindow.removeMenu();
-                  printWindow.menu = null;
-                  const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
-                  // let buffer = Buffer.from([27, 112, 48, 55, 121]);
-                  // let arraybuffer = Uint8Array.from(buffer).buffer;
-                  printWindow.webContents.loadFile('./pr.js');
-                  printWindow.webContents.print(options, (success, errorType) => {
-                     if (!success) {
-                        console.log("check printer")
-                        console.log(errorType)
-                        // printWindow.close()
-                     }
-                     else {
-                        console.log("success")
-                        console.log(errorType)
-                        // printWindow.close()
-
-                     }
-                  }, (failureReason, errorType) => {
-                     if (!failureReason == null || failureReason == '') {
-                        console.log("fail..unknown reason")
-                        console.log("error : " + errorType + " reason : " + failureReason)
-                        // printWindow.close()
-
-                     }
-                     else {
-                        console.log("fail..")
-                        console.log(errorType)
-                        // printWindow.close()
-
-                     }
-                  })
-
+               // accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
+               click() {
+                  app.quit();
                }
             },
          ]
@@ -208,9 +153,9 @@ function createWindow() {
             {
                role: 'reload'
             },
-            {
-               role: 'toggledevtools'
-            },
+            // {
+            //    role: 'toggledevtools'
+            // },
             {
                type: 'separator'
             },
@@ -243,20 +188,18 @@ function createWindow() {
             }
          ]
       },
-      {
-         role: 'help',
-         submenu: [
-            {
-               label: 'Learn More',
-               click() {
+      // {
+      //    role: 'help',
+      //    submenu: [
+      //       {
+      //          label: 'Learn More',
+      //          click() {
+      //             shell.openExternal('http://Rubikomm.com')
+      //          }
 
-
-                  // shell.openExternal('http://Rubikomm.com')
-               }
-
-            }
-         ]
-      }
+      //       }
+      //    ]
+      // }
    ];
 
    const menu = Menu.buildFromTemplate(customMenu)
@@ -266,10 +209,15 @@ function createWindow() {
       ctxmenu.popup(mainWindow, params.x, params.y)
    });
 
+   // SSL/TSL: this is the self signed certificate support
+   app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+      // On certificate error we disable default behaviour (stop loading the page)
+      // and we then say "it is all fine - true" to the callback
+      event.preventDefault();
+      callback(true);
+   });
 
-   // init();
    mainWindow.loadURL('https://64.227.66.157/staff');
-   // mainWindow.loadFile(path.join(__dirname, '/windows/main/main.html'));
 
    let code = "";
    let lastKeyTime = Date.now();
@@ -284,7 +232,6 @@ function createWindow() {
          if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
             if (code.length > 1) {
                let items = [];
-
                mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
 
                code = "";
@@ -320,13 +267,12 @@ function clearAppDataDialog() {
    }, response => {
       if (response === 0) {
          fs.remove(getAppPath);
-         setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
+         // app.relaunch();
+         // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
       }
    });
 }
 function createSettingsWindow() {
-   // const ipc = require('./services/print.serviceprin').ipcMain;
-   // ipc.emit("openPrintersSettings");
 
    let win = new BrowserWindow({
       alwaysOnTop: true,
@@ -338,7 +284,7 @@ function createSettingsWindow() {
 
       title: "Settings",
       webPreferences: {
-         devTools: true,
+         devTools: false,
          nodeIntegration: true,
       },
       // backgroundColor: '#2e2c29' 

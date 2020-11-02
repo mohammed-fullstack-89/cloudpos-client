@@ -46,7 +46,7 @@ class DbStore {
             const newQty = await itemsService.getQtyByStock(args);
             return newQty;
         });
-      
+
 
         ipc.handle('searchCustomers', async (event, ...args) => {
             let customerService = require('../repositories/customer.service');
@@ -110,6 +110,14 @@ class DbStore {
             let items = await itemsService.searchItems(args);
             return items
         })
+
+        ipc.handle('getItemFromScaleBarcode', async (event, ...args) => {
+
+            let itemsService = require('../repositories/item.service');
+            let items = await itemsService.getItemFromScaleBarcode(args);
+            return items
+        })
+        
         ipc.handle('setCompanies', async (event, ...args) => {
             let companiesService = require('../repositories/company.service');
             await companiesService.setCompanies(args);

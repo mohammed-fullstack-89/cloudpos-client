@@ -13,7 +13,7 @@ class ItemService {
         return newQty.qty;
     }
     async getItemsByCategory(args) {
-       
+
         let varianceTable = db.model('variance');
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
@@ -145,6 +145,27 @@ class ItemService {
             console.log("error " + error);
         }
     }
+    async getItemFromScaleBarcode(args) {
+        let barcode = args[0];
+
+        const itemsTable = await db.model('variance');
+
+        const item = itemsTable.findAll({
+
+            include: [
+                {
+                    model: db.model('scale'), as: 'get_scale_barcode', where: {
+                        [db.Seq().Op.like]: {
+                            start: '%' + barcode + '%'
+                        }
+                    }
+                }
+            ],
+            limit: 1
+        });
+        return item;
+    }
+
     async setItems(args) {
         try {
             let itemsInfo = args[0];
@@ -234,7 +255,6 @@ class ItemService {
                 console.log("error " + error);
             }
             try {
-                console.log("suppliersItemsRelation " + JSON.stringify(suppliersItemsRelation));
                 if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
                     await itemSupplierTable.destroy({ truncate: true })
                     await itemSupplierTable.bulkCreate(suppliersItemsRelation);
@@ -243,10 +263,8 @@ class ItemService {
                 console.log("error " + error);
             }
             try {
-                console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
                 if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
                     await itemTaxesTable.destroy({ truncate: true });
-                    console.log("taxesItemsRelation " + JSON.stringify(taxesItemsRelation));
                     await itemTaxesTable.bulkCreate(taxesItemsRelation);
                 }
             } catch (error) {
