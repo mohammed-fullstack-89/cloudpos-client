@@ -145,27 +145,52 @@ class ItemService {
             console.log("error " + error);
         }
     }
-    async getItemFromScaleBarcode(args) {
-        let barcode = args[0];
 
-        const itemsTable = await db.model('variance');
+    async getScaleFromBarcode(args) {
+        let scaleIdentifier = args[0];
+        const scaleTable = await db.model('scale');
+        const scale = scaleTable.findOne({
+            where: {
 
-        const item = itemsTable.findAll({
+                start: { [db.Seq().Op.like]: scaleIdentifier + '%' }
+            }
 
+            // include: [
+            //     {
+            //         model: db.model('scale'), as: 'get_scale_barcode', where: {
+            //             [db.Seq().Op.like]: {
+            //                 start: '%' + barcode + '%'
+            //             }
+            //         }
+            //     }
+            // ],
+            // limit: 1
+        });
+        return JSON.stringify(scale);
+    }
+
+    async getBarcodeFromScale(args) {
+        let scale = args[0];
+        let barcode = args[1];
+        // const scaleIdentifierCode = String.substr(barcode.length - 1, 6);
+        const itemTable = await db.model('variance');
+        const items = itemTable.findAll({
+            where: {
+
+                barcode: { [db.Seq().Op.like]: barcode + '%' }
+
+            },
             include: [
                 {
                     model: db.model('scale'), as: 'get_scale_barcode', where: {
-                        [db.Seq().Op.like]: {
-                            start: '%' + barcode + '%'
-                        }
+                        id: scale.id
                     }
                 }
             ],
-            limit: 1
-        });
-        return item;
-    }
 
+        });
+        return JSON.stringify(items);
+    }
     async setItems(args) {
         try {
             let itemsInfo = args[0];

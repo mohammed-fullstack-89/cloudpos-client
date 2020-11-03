@@ -6,13 +6,15 @@ const { BrowserWindow } = electron;
 const appStore = require('../services/store.service');
 class AppHelper {
 
-
+    // init() {
+    //     ipc.handle('playSound', (event, ...args) => {
+    //         var audio = new Audio('../assets/sound/item.mp3');
+    //         audio.play();
+    //     });
+    // }
     // init() {
     //     appStore.init(electron.app.getPath('userData'));
-    //     // ipc.on('getAppPath', (event, ...args) => {
-    //     //     const path = electron.app.getPath('userData');
-    //     //     event.returnValue = path;
-    //     // });
+
 
 
 

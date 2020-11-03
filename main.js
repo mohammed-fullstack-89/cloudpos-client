@@ -5,15 +5,17 @@ const url = require('url');
 const enviroment = require('./enviroment');
 const customContextMenu = require('./components/menu/context_menu');
 const db = require('./models/index');
+const appHelper = require('./util/appHelper');
 const dbStore = require('./services/db.service');
 const appStore = require('./services/store.service');
+const item_service = require('./repositories/item.service');
 const PRINT_HELPER = require('./util/printHelper');
-const { crashReporter } = require('electron')
+const ipcMain = electron.ipcMain;
 const { app, BrowserWindow } = electron;
 const Menu = electron.Menu;
 
 var splashWindow;
-
+// appHelper.init();
 PRINT_HELPER.init();
 appStore.init(electron.app.getPath('userData'));
 // crashReporter.start({ submitURL: '' })
@@ -153,9 +155,9 @@ function createWindow() {
             {
                role: 'reload'
             },
-            // {
-            //    role: 'toggledevtools'
-            // },
+            {
+               role: 'toggledevtools'
+            },
             {
                type: 'separator'
             },
@@ -217,11 +219,17 @@ function createWindow() {
       callback(true);
    });
 
-   mainWindow.loadURL('https://64.227.66.157/staff');
+   mainWindow.loadURL(url.format({
+      pathname: enviroment.development.url,
+      protocol: 'http',
+      slashes: true,
+   }
+
+   ));
 
    let code = "";
    let lastKeyTime = Date.now();
-   mainWindow.webContents.on("before-input-event", (event, input) => {
+   mainWindow.webContents.on("before-input-event", async (event, input) => {
 
       if (input.type == 'keyDown') {
          const currentTime = Date.now();
@@ -229,16 +237,35 @@ function createWindow() {
          if (currentTime - lastKeyTime > 500) {
             code = "";
          }
-         if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
-            if (code.length > 1) {
-               let items = [];
-               mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
+         console.log("input.code " + input.code);
+         if (input.code == "ShiftLeft" || input.code == "ShiftRight") {
 
-               code = "";
-            }
          } else {
-            code += input.key
 
+            if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
+               if (code.length > 1) {
+                  let items = [];
+                  // mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
+                  // mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
+                  const scaleIdentifierCode = code.substr(0, 2);
+                  console.log("value :" + code + "trimmed :" + scaleIdentifierCode);
+                  const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);
+                  if (scale == undefined) {
+                     code = code.substring(2);
+                     const item = await await item_service.getBarcodeFromScale(scale, code);
+                     mainWindow.webContents.executeJavaScript(`barcode(item);`);
+
+                  } else {
+                     mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
+
+                  }
+
+                  code = "";
+               }
+            } else {
+               code += input.key
+
+            }
          }
          lastKeyTime = currentTime;
 

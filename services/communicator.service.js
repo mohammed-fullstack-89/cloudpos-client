@@ -1,5 +1,4 @@
 const ipc = require('electron').ipcRenderer;
-
 class Communicator {
 
     setCategories(categoriesList) {
@@ -24,7 +23,10 @@ class Communicator {
     async getCustomers(val) {
         // return ipc.invoke('getCustomers');
     }
-
+    // async playSound() {
+    //     console.log("playing sound...");
+    //     return ipc.invoke('playSound');
+    // }
     async searchCustomers(val) {
         const customers = await ipc.invoke('searchCustomers', val)
         return customers;
@@ -50,9 +52,19 @@ class Communicator {
         return items
     }
 
-    async getItemFromScaleBarcode(type, value) {
-        const items = await ipc.invoke('getItemFromScaleBarcode', type, value);
-        return items
+    async playSound() {
+        console.log("playing sound...2");
+        // await ipc.invoke('playSound');
+        var audio = new Audio('../assets/sound/item.mp3');
+        audio.play();
+    }
+    async getScaleFromBarcode(value) {
+        const scale = await ipc.invoke('getScaleFromBarcode', value);
+        return scale
+    }
+    async getBarcodeFromScale(value) {
+        const scale = await ipc.invoke('getBarcodeFromScale', value);
+        return scale
     }
     async updateStockQty(values) {
 

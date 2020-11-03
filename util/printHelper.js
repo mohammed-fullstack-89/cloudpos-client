@@ -23,12 +23,15 @@ class PrintHelper {
 
                     webPreferences: {
                         javascript: false,
-                        contextIsolation: true
+                        contextIsolation: true,
+
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: true,
-                    show: false,
+                    show: true,
+
                 })
+
                 // printWindow.webContents.openDevTools();
                 //remove menu in the print window
                 printWindow.removeMenu();
