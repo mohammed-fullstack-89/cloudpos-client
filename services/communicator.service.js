@@ -32,9 +32,9 @@ class Communicator {
         return customers;
     }
 
-    async setItems(itemsInfo, serialsList, alternatives, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel) {
+    async setItems(itemsInfo, serialsList, alternatives, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList) {
 
-        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(alternatives), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel));
+        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(alternatives), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList));
 
     }
 
@@ -53,7 +53,6 @@ class Communicator {
     }
 
     async playSound() {
-        console.log("playing sound...2");
         // await ipc.invoke('playSound');
         var audio = new Audio('../assets/sound/item.mp3');
         audio.play();
@@ -62,9 +61,9 @@ class Communicator {
         const scale = await ipc.invoke('getScaleFromBarcode', value);
         return scale
     }
-    async getBarcodeFromScale(value) {
-        const scale = await ipc.invoke('getBarcodeFromScale', value);
-        return scale
+    async getItemFromScale(scale, barcode) {
+        const item = await ipc.invoke('getItemFromScale', scale, barcode);
+        return item
     }
     async updateStockQty(values) {
 
@@ -96,7 +95,6 @@ class Communicator {
 
     async saveSale(saleObject) {
         const saved = await ipc.invoke('saveSale', saleObject);
-        console.log("saveSale");
         return saved;
     }
     async getSales(filter) {

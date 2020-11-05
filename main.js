@@ -237,7 +237,6 @@ function createWindow() {
          if (currentTime - lastKeyTime > 500) {
             code = "";
          }
-         console.log("input.code " + input.code);
          if (input.code == "ShiftLeft" || input.code == "ShiftRight") {
 
          } else {
@@ -248,12 +247,19 @@ function createWindow() {
                   // mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
                   // mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
                   const scaleIdentifierCode = code.substr(0, 2);
-                  console.log("value :" + code + "trimmed :" + scaleIdentifierCode);
                   const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);
-                  if (scale == undefined) {
-                     code = code.substring(2);
-                     const item = await await item_service.getBarcodeFromScale(scale, code);
-                     mainWindow.webContents.executeJavaScript(`barcode(item);`);
+
+                  if (scale !== undefined) {
+                     const scaleObject = JSON.parse(scale)
+                     end = scaleObject.number_of_digits;
+                     console.log("scale132 :" + JSON.stringify(scale) + "code" + code + "end:" + end);
+
+                     const trimmedCode = code.substr(0, code.length - end);
+                     console.log("scale132 :" + JSON.stringify(scale) + "code" + trimmedCode);
+
+                     // const item = await item_service.getItemFromScale(JSON.stringify(scale), code);
+
+                     mainWindow.webContents.executeJavaScript(`obj.getItemFromScale(${JSON.stringify(scale)},${trimmedCode}).then((item)=>{barcode(item,${code})});`);
 
                   } else {
                      mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);

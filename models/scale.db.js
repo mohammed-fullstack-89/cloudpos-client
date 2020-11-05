@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-
-            this.hasOne(models.variance, {
+            this.hasMany(models.variance, {
+                as: 'get_scale_barcode',
                 foreignKey: {
                     field: 'scale_id', name: 'scaleId',
                 }
@@ -26,7 +26,11 @@ module.exports = (sequelize, DataTypes) => {
         name: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         start: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         end: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-        number_of_digits: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+        number_of_digits: { type: DataTypes.BIGINT, allowNull: true },
+        has_serial: { type: DataTypes.TINYINT, allowNull: true },
+        precations: { type: DataTypes.TINYINT, allowNull: true },
+        side_effects: { type: DataTypes.STRING, allowNull: true },
+
 
     }, {
         sequelize,

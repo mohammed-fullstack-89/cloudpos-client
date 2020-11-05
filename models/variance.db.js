@@ -40,13 +40,13 @@ module.exports = (sequelize, DataTypes) => {
         through: models.variance_categories,
         foreignKey: 'item_id',
       })
+
       this.belongsTo(models.scale, {
         as: 'get_scale_barcode',
         foreignKey: {
           field: 'scale_id', name: 'scaleId',
         }
       })
-
       // this.belongsTo(models.category, {
 
       //   foreignKey: { name: 'categoryId', field: 'category_id' },
