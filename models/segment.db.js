@@ -31,6 +31,29 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'segment',
+    indexes: [{
+      name: 'segments_nick_name_ar_foreign',
+      fields: [`nick_name_ar`]
+    },
+    {
+      name: 'segments_nick_name_en_foreign',
+      fields: [`nick_name_en`]
+    }, {
+      name: 'segments_barcode_foreign',
+      fields: [`barcode`]
+    }, {
+      name: 'segments_unit_id_foreign',
+      fields: [`unit_id`]
+    }, {
+      name: 'segments_parent_id_foreign',
+      fields: [`parent_id`]
+    }, {
+      name: 'segments_variance_id_foreign',
+      fields: [`variance_id`]
+    }, {
+      name: 'segments_item_id_foreign',
+      fields: [`item_id`]
+    }]
   });
   return Segment;
 };

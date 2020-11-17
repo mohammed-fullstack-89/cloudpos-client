@@ -13,25 +13,24 @@ class ItemService {
         return newQty.qty;
     }
     async getItemsByCategory(args) {
-
+        console.log("getItemsByCategory");
         let varianceTable = db.model('variance');
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
         let limit = args[1];
         let offset = args[2];
-
+        console.log("limit " + limit);
+        console.log("offset " + offset);
         let filter = (parentId != null && parentId != undefined) ?
             {
                 id: parentId
             } : null;
-
 
         items = await varianceTable.findAll({
             where: {
                 show_in_sale_screen: 1
             },
             include: [
-
                 { model: db.model('price'), as: 'get_prices', },
                 { model: db.model('segment'), as: 'get_segment' },
                 { model: db.model('serial'), as: 'get_serials' },
@@ -46,13 +45,49 @@ class ItemService {
             offset: offset,
             limit: limit
         });
+
         items = JSON.stringify(items);
         return items;
     }
 
+    async searchBarcode(args) {
+        const code = args[0];
+
+        let item = [];
+        if (code == '' || code == null || code == undefined) {
+            item = [];
+            return item;
+        }
+        else {
+
+            let varianceTable = db.model('variance');
+
+            item = await varianceTable.findAll({
+                where: {
+                    barcode: code
+                    // show_in_sale_screen: 1
+                },
+                include: [
+                    { model: db.model('price'), as: 'get_prices', },
+                    { model: db.model('segment'), as: 'get_segment' },
+                    { model: db.model('serial'), as: 'get_serials' },
+                    { model: db.model('tax'), as: 'get_tax' },
+                    { model: db.model('category'), as: 'get_item_categories' },
+                    { model: db.model('supplier'), as: 'get_suppliers' },
+
+                ],
+
+            });
+            item = JSON.stringify(item);
+            return item;
+        }
+    }
+
     async searchItems(args) {
-        let type = args[0];
-        let value = args[1];
+        const type = args[0];
+        const value = args[1];
+        const offset = args[2];
+        const limit = args[3];
 
         let items = [];
         if (value == '' || value == null || value == undefined) {
@@ -107,7 +142,8 @@ class ItemService {
 
             items = await varianceTable.findAll({
                 where: {
-                    [db.Seq().Op.and]: filter, show_in_sale_screen: 1
+                    [db.Seq().Op.and]: filter,
+                    // show_in_sale_screen: 1
                 },
                 include: [
                     { model: db.model('price'), as: 'get_prices', },
@@ -122,11 +158,9 @@ class ItemService {
 
                 ],
 
-                // offset: offset,
-                // limit: limit
+                offset: offset,
+                limit: limit
             });
-
-
             items = JSON.stringify(items);
             return items;
         }
@@ -198,10 +232,10 @@ class ItemService {
                 { model: db.model('supplier'), as: 'get_suppliers' }]
 
         });
-        console.log("we:" + JSON.stringify(items));
         return JSON.stringify(items);
     }
     async setItems(args) {
+        console.log("setting items ");
         try {
             let itemsInfo = args[0];
             let serialsList = args[1];
@@ -227,24 +261,37 @@ class ItemService {
             const itemCategoriesTable = db.model("variance_categories");
             const itemTaxesTable = db.model("variance_taxes");
             const itemSupplierTable = db.model("variance_suppliers");
-
-            // try {
-            //     if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
-            //         await scaleTable.destroy({ truncate: true })
-            //         await scaleTable.bulkCreate(scaleBarcodeList);
-            //     }
-            // } catch (error) {
-            //     console.log("scaleBarcodeList error : " + error);
-            // }
+            try {
+                if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
+                    await scaleTable.destroy({ truncate: true })
+                    await scaleTable.bulkCreate(scaleBarcodeList);
+                }
+            } catch (error) {
+                console.log("scaleBarcodeList error : " + error);
+            }
             try {
                 if (itemsInfo != [] && itemsInfo != undefined) {
+
                     await varianceTable.destroy({ truncate: true });
-                    await varianceTable.bulkCreate(itemsInfo
-                        , {
-                            include: [
-                                { model: scaleTable, as: 'get_scale_barcode', ignoreDuplicates: true },
-                            ]
-                        })
+                    await varianceTable.bulkCreate(itemsInfo);
+                    //     , {
+
+                    //     include: [
+                    //         { model: db.model('price'), as: 'get_prices', },
+                    //         { model: db.model('segment'), as: 'get_segment' },
+                    //         {
+                    //             model: db.model('serial'), as: 'get_serials',
+
+                    //         },
+                    //         { model: db.model('tax'), as: 'get_tax' },
+                    //         { model: db.model('category'), as: 'get_item_categories' },
+                    //         { model: db.model('supplier'), as: 'get_suppliers' },
+                    //         { model: scaleTable, as: 'get_scale_barcode', ignoreDuplicates: true },
+
+                    //     ]
+                    // }
+
+                    // )
                 }
             } catch (error) {
                 console.log("itemsInfo error :" + error);
@@ -326,6 +373,8 @@ class ItemService {
 
         } catch (error) {
             console.log("error " + error);
+        } finally {
+            console.log("settings item end")
         }
     }
 }

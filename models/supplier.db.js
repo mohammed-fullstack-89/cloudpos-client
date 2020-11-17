@@ -33,6 +33,26 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'supplier',
+    indexes: [{
+      name: 'suppliers_name_ar_foreign',
+      fields: [`name_ar`]
+    },
+    {
+      name: 'suppliers_name_en_foreign',
+      fields: [`name_en`]
+    }, {
+      name: 'suppliers_mobile_foreign',
+      fields: [`mobile`]
+    }, {
+      name: 'suppliers_mobile2_foreign',
+      fields: [`mobile2`]
+    }, {
+      name: 'suppliers_email_foreign',
+      fields: [`email`]
+    }, {
+      name: 'suppliers_address_foreign',
+      fields: [`address`]
+    }]
   });
   return Supplier;
 };

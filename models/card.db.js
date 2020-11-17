@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'card',
+    indexes: [{
+      name: 'cards_name_ar_foreign',
+      fields: [`name_ar`]
+    },
+    {
+      name: 'cards_name_en_foreign',
+      fields: [`name_en`]
+    }]
   });
   return Card;
 };

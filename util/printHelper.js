@@ -32,7 +32,6 @@ class PrintHelper {
 
                 })
 
-                // printWindow.webContents.openDevTools();
                 //remove menu in the print window
                 printWindow.removeMenu();
                 printWindow.menu = null;
@@ -93,7 +92,7 @@ class PrintHelper {
 
                 title: "Settings",
                 webPreferences: {
-                    devTools: true,
+                    devTools: false,
                     nodeIntegration: true,
                 },
                 // backgroundColor: '#2e2c29' 

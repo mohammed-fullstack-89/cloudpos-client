@@ -142,10 +142,65 @@ module.exports = (sequelize, DataTypes) => {
     brief_name_en: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     description: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
     has_serial: { type: DataTypes.TINYINT, defualtValue: 0 },
-    color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true }
-  }, {
-    sequelize,
-    modelName: 'variance',
-  });
+    color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
+
+
+
+  },
+    {
+      sequelize,
+      modelName: 'variance',
+      indexes: [{
+        name: 'items_name_ar_foreign',
+        fields: [`name_ar`]
+      },
+      {
+        name: 'items_name_en_foreign',
+        fields: [`name_en`]
+      }, {
+        name: 'items_trade_name_ar_foreign',
+        fields: [`trade_name_ar`]
+      }, {
+        name: 'items_trade_name_en_foreign',
+        fields: [`trade_name_ar`]
+      },
+      {
+        name: 'items_scientific_name_ar_foreign',
+        fields: [`scientific_name_ar`]
+      },
+      {
+        name: 'items_scientific_name_en_foreign',
+        fields: [`scientific_name_en`]
+      },
+
+      {
+        name: 'items_show_in_sale_screen_foreign',
+        fields: [`show_in_sale_screen`]
+      },
+      {
+        name: 'variants_nick_name_ar_foreign',
+        fields: [`nick_name_ar`]
+      },
+      {
+        name: 'variants_nick_name_en_foreign',
+        fields: [`nick_name_en`]
+      },
+      {
+        name: 'variants_barcode_foreign',
+        fields: [`barcode`]
+      }, {
+        name: 'variants_code_foreign',
+        fields: [`code`]
+      }, {
+        name: 'variants_unit_id_foreign',
+        fields: [`unit_id`]
+      },
+      {
+        name: 'variants_brand_id_foreign',
+        fields: [`brand_id`]
+      },
+
+      ]
+    });
   return Item;
 };

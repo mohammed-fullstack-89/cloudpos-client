@@ -110,7 +110,12 @@ class DbStore {
             let items = await itemsService.searchItems(args);
             return items
         })
+        ipc.handle('searchBarcode', async (event, ...args) => {
 
+            let itemsService = require('../repositories/item.service');
+            let item = await itemsService.searchBarcode(args);
+            return item
+        })
         ipc.handle('getScaleFromBarcode', async (event, ...args) => {
             let itemsService = require('../repositories/item.service');
             let scale = await itemsService.getScaleFromBarcode(args);

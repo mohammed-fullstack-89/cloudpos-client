@@ -30,6 +30,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'tier',
+    indexes: [{
+      name: 'customers_tiers_name_ar_foreign',
+      fields: [`name_ar`]
+    }, {
+      name: 'customers_tiers_name_en_foreign',
+      fields: [`name_en`]
+    }]
   });
   return Tier;
 };

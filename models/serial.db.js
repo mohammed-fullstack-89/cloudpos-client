@@ -39,6 +39,29 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'serial',
+    indexes: [{
+      name: 'serials_serial_foreign',
+      fields: [`serial`]
+    },
+    {
+      name: 'serials_model_foreign',
+      fields: [`model`]
+    }, {
+      name: 'serials_size_id_foreign',
+      fields: [`size_id`]
+    }, {
+      name: 'serials_unit_id_foreign',
+      fields: [`unit_id`]
+    }, {
+      name: 'serials_color_id_foreign',
+      fields: [`color_id`]
+    }, {
+      name: 'serials_variance_id_foreign',
+      fields: [`variance_id`]
+    }, {
+      name: 'serials_item_id_foreign',
+      fields: [`item_id`]
+    }]
   });
   return Serial;
 };

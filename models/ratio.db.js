@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ratio',
+    indexes: [{
+      name: 'ratios_value_foreign',
+      fields: [`value`]
+    },
+    ]
   });
   return Ratio;
 };

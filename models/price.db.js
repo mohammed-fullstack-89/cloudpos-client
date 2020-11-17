@@ -39,6 +39,19 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         sequelize,
         modelName: 'price',
+        indexes: [{
+            name: 'prices_item_id_foreign',
+            fields: [`item_id`]
+        }, {
+            name: 'prices_variance_id_foreign',
+            fields: [`variance_id`]
+        }, {
+            name: 'prices_store_id_foreign',
+            fields: [`store_id`]
+        }, {
+            name: 'prices_branch_id_foreign',
+            fields: [`branch_id`]
+        }]
     });
     return Price;
 };

@@ -1,15 +1,15 @@
 const electron = require('electron');
+const fs = require('fs')
 const dialog = electron.dialog;
 const path = require('path');
 const url = require('url');
 const enviroment = require('./enviroment');
 const customContextMenu = require('./components/menu/context_menu');
 const db = require('./models/index');
-const appHelper = require('./util/appHelper');
 const dbStore = require('./services/db.service');
 const appStore = require('./services/store.service');
-const item_service = require('./repositories/item.service');
 const PRINT_HELPER = require('./util/printHelper');
+const { webContents } = require('electron');
 const ipcMain = electron.ipcMain;
 const { app, BrowserWindow } = electron;
 const Menu = electron.Menu;
@@ -19,7 +19,6 @@ var splashWindow;
 PRINT_HELPER.init();
 appStore.init(electron.app.getPath('userData'));
 // crashReporter.start({ submitURL: '' })
-
 
 app.on('ready', async function () {
 
@@ -105,14 +104,34 @@ function createWindow() {
             {
                label: 'Settings',
                click() {
+                  mainWindow.webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems)=>{barcode(searchedItems)});`);
+
                   createSettingsWindow()
                }
             },
             {
-               label: 'Clear cache',
+               label: 'Clear data',
                click() {
-                  clearAppDataDialog();
-                  console.log("clear cache")
+                  const clearAppDataMessage = 'are you sure ?';
+                  const getAppPath = path.join(app.getPath('appData'), app.getName());
+
+                  dialog.showMessageBox({
+                     type: 'warning',
+                     buttons: ['YES', 'NO'],
+                     defaultId: 0,
+                     message: 'Are you sure',
+                     detail: clearAppDataMessage
+                  }).then((dialogRes) => {
+                     // const getAppPath = path.join(app.getPath('appData'), app.getName());
+                     if (dialogRes.response === 0) {
+                        // fs.rmSync(getAppPath);
+                        mainWindow.webContents.executeJavaScript("localStorage.clear();");
+                        mainWindow.webContents.executeJavaScript(" sessionStorage.clear();");
+                        mainWindow.webContents.executeJavaScript("window.location.reload()");
+                        // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
+                     }
+
+                  })
 
                }
             },
@@ -219,13 +238,12 @@ function createWindow() {
       callback(true);
    });
 
-   mainWindow.loadURL(url.format({
-      pathname: enviroment.development.url,
-      protocol: 'http',
-      slashes: true,
-   }
-
-   ));
+   // mainWindow.loadURL(url.format({
+   //    pathname: enviroment.development.url,
+   //    protocol: 'https',
+   //    slashes: true,
+   // }
+   mainWindow.loadURL(enviroment.development.url);
 
    let code = "";
    let lastKeyTime = Date.now();
@@ -243,28 +261,21 @@ function createWindow() {
 
             if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
                if (code.length > 1) {
-                  let items = [];
+                  // let items = [];
+                  mainWindow.webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems)=>{barcode(searchedItems)});`);
                   // mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
+                  // const scaleIdentifierCode = code.substr(0, 2);
+                  // const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);
+                  // if (scale !== undefined) {
+                  //    const scaleObject = JSON.parse(scale);
+                  //    end = scaleObject.number_of_digits;
+                  //    const trimmedCode = code.substr(0, code.length - end);
+                  //    // const item = await item_service.getItemFromScale(JSON.stringify(scale), code);
+                  //    mainWindow.webContents.executeJavaScript(`obj.getItemFromScale(${JSON.stringify(scale)},${trimmedCode}).then((item)=>{barcode(item,${code})});`);
+                  // } else {
                   // mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
-                  const scaleIdentifierCode = code.substr(0, 2);
-                  const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);
 
-                  if (scale !== undefined) {
-                     const scaleObject = JSON.parse(scale)
-                     end = scaleObject.number_of_digits;
-                     console.log("scale132 :" + JSON.stringify(scale) + "code" + code + "end:" + end);
-
-                     const trimmedCode = code.substr(0, code.length - end);
-                     console.log("scale132 :" + JSON.stringify(scale) + "code" + trimmedCode);
-
-                     // const item = await item_service.getItemFromScale(JSON.stringify(scale), code);
-
-                     mainWindow.webContents.executeJavaScript(`obj.getItemFromScale(${JSON.stringify(scale)},${trimmedCode}).then((item)=>{barcode(item,${code})});`);
-
-                  } else {
-                     mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
-
-                  }
+                  // }
 
                   code = "";
                }
@@ -287,24 +298,26 @@ function createWindow() {
 
 
 }
-function clearAppDataDialog() {
-   const clearAppDataMessage = 'are you sure ?';
-   const getAppPath = path.join(app.getPath('appData'), app.getName());
+// function clearAppDataDialog(webcontent) {
+//    const clearAppDataMessage = 'are you sure ?';
+//    const getAppPath = path.join(app.getPath('appData'), app.getName());
 
-   dialog.showMessageBox({
-      type: 'warning',
-      buttons: ['YES', 'NO'],
-      defaultId: 0,
-      message: 'Are you sure',
-      detail: clearAppDataMessage
-   }, response => {
-      if (response === 0) {
-         fs.remove(getAppPath);
-         // app.relaunch();
-         // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
-      }
-   });
-}
+//    dialog.showMessageBox({
+//       type: 'warning',
+//       buttons: ['YES', 'NO'],
+//       defaultId: 0,
+//       message: 'Are you sure',
+//       detail: clearAppDataMessage
+//    }, response => {
+//       if (response === 0) {
+//          fs.remove(getAppPath);
+//          clearStorage(webcontent);
+//          // app.relaunch();
+//          // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
+//       }
+//    });
+// }
+
 function createSettingsWindow() {
 
    let win = new BrowserWindow({
@@ -343,7 +356,6 @@ function createSplashWindow() {
          }
       }
    );
-   // splashWindow.webContents.openDevTools();
    splashWindow.removeMenu();
    splashWindow.menu = null;
    splashWindow.loadFile(path.join(__dirname, 'windows/loading/loading.html'));

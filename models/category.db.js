@@ -48,6 +48,19 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'category',
+    indexes: [{
+      name: 'categories_branch_id_foreign',
+      fields: [`branch_id`]
+    }, {
+      name: 'categories_tax_id_foreign',
+      fields: [`tax_id`]
+    }, {
+      name: 'categories_printer_id_foreign',
+      fields: [`printer_id`]
+    }, {
+      name: 'categories_parent_foreign',
+      fields: [`parent`]
+    }]
   });
   return Category;
 };

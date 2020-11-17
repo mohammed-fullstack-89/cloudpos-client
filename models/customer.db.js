@@ -55,6 +55,21 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'customer',
+    indexes: [{
+      name: 'customers_name_foreign',
+      fields: [`name`]
+    }, {
+      name: 'customers_phone_number_1_foreign',
+      fields: [`phone_number_1`]
+    }, {
+      name: 'customers_phone_number_2_foreign',
+      fields: [`phone_number_2`]
+    },
+    {
+      name: 'customers_tier_id_foreign',
+      fields: [`tier_id`]
+    }
+    ]
   });
   return Customer;
 };

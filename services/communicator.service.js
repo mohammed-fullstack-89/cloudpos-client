@@ -43,13 +43,21 @@ class Communicator {
     }
 
     async getItemsByCategory(parentId, limit, offset) {
+        console.log("call getItemsByCategory ");
+
         const items = await ipc.invoke('getItemsByCategory', parentId, limit, offset);
+        console.log("finish ");
+
         return items
     }
 
-    async searchItems(type, value) {
-        const items = await ipc.invoke('searchItems', type, value);
+    async searchItems(type, value, offset, limit) {
+        const items = await ipc.invoke('searchItems', type, value, offset, limit);
         return items
+    }
+    async searchBarcode(code) {
+        const item = await ipc.invoke('searchBarcode', code);
+        return item
     }
 
     async playSound() {
@@ -105,6 +113,8 @@ class Communicator {
         const sales = await ipc.invoke('getFailedSales');
         return sales;
     }
+
+
     //     if(Communicator.caller != Communicator.getInstance) {
     //     throw new Error("This object cannot be instanciated");
     // }

@@ -35,6 +35,14 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'company',
+    indexes: [{
+      name: 'companies_name_ar_foreign',
+      fields: [`name_ar`]
+    },
+    {
+      name: 'companies_name_en_foreign',
+      fields: [`name_en`]
+    }]
   });
   return Company;
 };
