@@ -67,6 +67,7 @@ function createWindow() {
    // Create the browser window.
    const mainWindow = new BrowserWindow({
       focusable: true,
+
       fullscreenWindowTitle: true,
       fullscreenable: true,
       maximizable: true,
@@ -83,11 +84,13 @@ function createWindow() {
 
       // contextIsolation: false, //block website loaded to access electron preload script (false)
       webPreferences: {
+
          enableBlinkFeatures: true,
          nativeWindowOpen: true,
          nodeIntegration: true,
          safeDialogs: false,
          javascript: true,
+         devTools: false,
          // sandbox: true,
          webgl: false,
          webSecurity: false,
@@ -95,7 +98,7 @@ function createWindow() {
          preload: path.join(__dirname, 'renderer.js')
       }
    });
-
+   mainWindow.webContents.setAudioMuted(false);
    //init menu and context menu
    const customMenu = [
       {
@@ -104,7 +107,9 @@ function createWindow() {
             {
                label: 'Settings',
                click() {
-                  mainWindow.webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems)=>{barcode(searchedItems)});`);
+                  // mainWindow.webContents.executeJavaScript(`obj.playSound();`);
+
+                  // mainWindow.webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems)=>{barcode(searchedItems)});`);
 
                   createSettingsWindow()
                }
@@ -174,9 +179,9 @@ function createWindow() {
             {
                role: 'reload'
             },
-            {
-               role: 'toggledevtools'
-            },
+            // {
+            //    role: 'toggledevtools'
+            // },
             {
                type: 'separator'
             },

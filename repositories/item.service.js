@@ -1,5 +1,4 @@
 
-
 let db = require('../models/index');
 class ItemService {
 
@@ -167,10 +166,10 @@ class ItemService {
     }
 
     async updateStock(args) {
-
         try {
             let newStockValues = [];
-            newStockValues = args;
+            newStockValues = args[0];
+
             let priceTable = db.model('price');
             priceTable.bulkCreate(newStockValues, { updateOnDuplicate: Object.keys(priceTable.rawAttributes) })
 
@@ -207,9 +206,7 @@ class ItemService {
 
         let scale = JSON.parse(args[0]);
         let barcode = args[1];
-        // const scaleIdentifierCode = String.substr(barcode.length - 1, 6);
-        // console.log("scale " + JSON.stringify(scale));
-        // console.log("barcode " + barcode);
+
 
         const itemTable = db.model('variance');
         const items = await itemTable.findAll({

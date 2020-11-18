@@ -43,11 +43,7 @@ class Communicator {
     }
 
     async getItemsByCategory(parentId, limit, offset) {
-        console.log("call getItemsByCategory ");
-
         const items = await ipc.invoke('getItemsByCategory', parentId, limit, offset);
-        console.log("finish ");
-
         return items
     }
 
@@ -63,7 +59,7 @@ class Communicator {
     async playSound() {
         // await ipc.invoke('playSound');
         var audio = new Audio('../assets/sound/item.mp3');
-        audio.play();
+        audio.play().catch(error => console.log("errror " + error));
     }
     async getScaleFromBarcode(value) {
         const scale = await ipc.invoke('getScaleFromBarcode', value);

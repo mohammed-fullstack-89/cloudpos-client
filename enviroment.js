@@ -1,9 +1,9 @@
 module.exports = {
     "development": {
-        "url": "http://localhost:4200",
+        "url": "https://64.227.66.157/staff/#/login",
     },
     "production": {
-        "url": "http://localhost:4200",
+        "url": "https://64.227.66.157/staff/#/login",
     }
 }
 // https://64.227.66.157/staff/#/login
