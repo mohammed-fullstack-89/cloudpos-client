@@ -27,8 +27,8 @@ class PrintHelper {
 
                     },
                     parent: BrowserWindow.getFocusedWindow(),
-                    modal: true,
-                    show: true,
+                    modal: false,
+                    show: false,
 
                 })
 
@@ -42,36 +42,38 @@ class PrintHelper {
 
                 const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
                 printWindow.webContents.on("did-finish-load", function () {
+                    try {
+                        printWindow.webContents.print(options, (success, errorType) => {
+                            if (!success) {
+                                console.log("check printer")
+                                console.log(errorType)
+                                // printWindow.close()
+                            }
+                            else {
+                                console.log("success")
+                                console.log(errorType)
+                                // printWindow.close()
 
-                    printWindow.webContents.print(options, (success, errorType) => {
-                        if (!success) {
-                            console.log("check printer")
-                            console.log(errorType)
-                            // printWindow.close()
-                        }
-                        else {
-                            console.log("success")
-                            console.log(errorType)
-                            // printWindow.close()
+                            }
+                        }, (failureReason, errorType) => {
+                            if (!failureReason == null || failureReason == '') {
+                                console.log("fail..unknown reason")
+                                console.log("error : " + errorType + " reason : " + failureReason)
+                                // printWindow.close()
 
-                        }
-                    }, (failureReason, errorType) => {
-                        if (!failureReason == null || failureReason == '') {
-                            console.log("fail..unknown reason")
-                            console.log("error : " + errorType + " reason : " + failureReason)
-                            // printWindow.close()
+                            }
+                            else {
+                                console.log("fail..")
+                                console.log(errorType)
+                                // printWindow.close()
 
-                        }
-                        else {
-                            console.log("fail..")
-                            console.log(errorType)
-                            // printWindow.close()
+                            }
+                        })
 
-                        }
-                    })
-
-                    // Use default printing options
-
+                        // Use default printing options
+                    } catch (error) {
+                        console.log("error : " + error);
+                    }
                 })
             }
         });
@@ -128,7 +130,7 @@ class PrintHelper {
 
 }
 PrintHelper.instance = null;
-PrintHelper.getInstance = function () {
+PrintHelper.getInstance = () => {
     if (PrintHelper.instance == null) {
         PrintHelper.instance = new PrintHelper();
     }

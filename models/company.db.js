@@ -1,23 +1,17 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Company extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
 
       this.belongsToMany(models.ratio, {
-        as: 'get_ratio',
+        as: 'variant_ratio',
         through: models.company_ratios,
         foreignKey: 'company_id',
       });
       this.belongsToMany(models.term, {
-        as: 'get_terms',
+        as: 'variant_terms',
         through: models.company_terms,
         foreignKey: 'company_id',
       });

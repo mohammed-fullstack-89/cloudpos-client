@@ -1,35 +1,32 @@
+
 const electron = require('electron');
-const fs = require('fs')
+const windowsConfig = require('./config/windowsConfig');
 const dialog = electron.dialog;
+const fs = require('fs');
 const path = require('path');
-const url = require('url');
 const enviroment = require('./enviroment');
 const customContextMenu = require('./components/menu/context_menu');
 const db = require('./models/index');
 const dbStore = require('./services/db.service');
 const appStore = require('./services/store.service');
 const PRINT_HELPER = require('./util/printHelper');
-const { webContents } = require('electron');
-const ipcMain = electron.ipcMain;
+const soundManager = require('./util/soundManager');
 const { app, BrowserWindow } = electron;
 const Menu = electron.Menu;
 
 var splashWindow;
-// appHelper.init();
 PRINT_HELPER.init();
 appStore.init(electron.app.getPath('userData'));
-// crashReporter.start({ submitURL: '' })
 
-app.on('ready', async function () {
-
+app.on('ready', async () => {
+   soundManager.playBarcodeSound();
    dbStore.init();
-   createSplashWindow();
+   // createSplashWindow();
    await db.setup().then(() => {
       createWindow();
    }).catch((error) => {
       console.log(`error : ${error}`);
    });
-
 });
 
 app.on('closed', function () {
@@ -41,13 +38,11 @@ app.on('window-all-closed', function () {
    app.quit();
 });
 
-// Quit when all windows are closed.
 app.on('window-all-closed', function () {
 
-   // On macOS it is common for applications and their menu bar
-   // to stay active until the user quits explicitly with Cmd + Q
    if (process.platform !== 'darwin') {
-
+      // On macOS it is common for applications and their menu bar
+      // to stay active until the user quits explicitly with Cmd + Q
       db.close();
       app.quit();
    }
@@ -64,10 +59,8 @@ app.on('activate', function () {
 
 function createWindow() {
    app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
-   // Create the browser window.
    const mainWindow = new BrowserWindow({
       focusable: true,
-
       fullscreenWindowTitle: true,
       fullscreenable: true,
       maximizable: true,
@@ -80,17 +73,16 @@ function createWindow() {
       parent: true,
       frame: true,
       modal: true,
-      paintWhenInitiallyHidden: true,
 
+      paintWhenInitiallyHidden: true,
       // contextIsolation: false, //block website loaded to access electron preload script (false)
       webPreferences: {
-
          enableBlinkFeatures: true,
          nativeWindowOpen: true,
          nodeIntegration: true,
          safeDialogs: false,
          javascript: true,
-         devTools: false,
+         devTools: true,
          // sandbox: true,
          webgl: false,
          webSecurity: false,
@@ -99,27 +91,18 @@ function createWindow() {
       }
    });
    mainWindow.webContents.setAudioMuted(false);
-   //init menu and context menu
    const customMenu = [
       {
          label: 'File',
          submenu: [
             {
                label: 'Settings',
-               click() {
-                  // mainWindow.webContents.executeJavaScript(`obj.playSound();`);
-
-                  // mainWindow.webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems)=>{barcode(searchedItems)});`);
-
-                  createSettingsWindow()
-               }
+               click: () => createSettingsWindow()
             },
             {
                label: 'Clear data',
-               click() {
+               click: () => {
                   const clearAppDataMessage = 'are you sure ?';
-                  const getAppPath = path.join(app.getPath('appData'), app.getName());
-
                   dialog.showMessageBox({
                      type: 'warning',
                      buttons: ['YES', 'NO'],
@@ -127,12 +110,26 @@ function createWindow() {
                      message: 'Are you sure',
                      detail: clearAppDataMessage
                   }).then((dialogRes) => {
-                     // const getAppPath = path.join(app.getPath('appData'), app.getName());
+                     const getAppPath = path.join(app.getPath('appData'), app.getName());
                      if (dialogRes.response === 0) {
-                        // fs.rmSync(getAppPath);
                         mainWindow.webContents.executeJavaScript("localStorage.clear();");
-                        mainWindow.webContents.executeJavaScript(" sessionStorage.clear();");
+                        mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                         mainWindow.webContents.executeJavaScript("window.location.reload()");
+                        fs.unlinkSync(getAppPath, () => {
+
+                        });
+                        fs.rmdir(getAppPath, {
+                           recursive: true,
+
+                        }, (error) => {
+                           if (error) {
+                              console.log(error);
+                           }
+                           else {
+                              console.log("Non Recursive: Directories Deleted!");
+                           }
+                        });
+
                         // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
                      }
 
@@ -143,9 +140,7 @@ function createWindow() {
             {
                label: 'Quit',
                // accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
-               click() {
-                  app.quit();
-               }
+               click: () => app.quit()
             },
          ]
       },
@@ -179,9 +174,9 @@ function createWindow() {
             {
                role: 'reload'
             },
-            // {
-            //    role: 'toggledevtools'
-            // },
+            {
+               role: 'toggledevtools'
+            },
             {
                type: 'separator'
             },
@@ -237,20 +232,19 @@ function createWindow() {
 
    // SSL/TSL: this is the self signed certificate support
    app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-      // On certificate error we disable default behaviour (stop loading the page)
-      // and we then say "it is all fine - true" to the callback
       event.preventDefault();
       callback(true);
    });
 
    // mainWindow.loadURL(url.format({
-   //    pathname: enviroment.development.url,
+   //    hostname: enviroment.maestro.hostname,
    //    protocol: 'https',
    //    slashes: true,
-   // }
-   mainWindow.loadURL(enviroment.development.url);
+   //    pathname: enviroment.maestro.pathname
+   // }))
+   mainWindow.loadURL(enviroment.zug.url);
 
-   let code = "";
+   var code = "";
    let lastKeyTime = Date.now();
    mainWindow.webContents.on("before-input-event", async (event, input) => {
 
@@ -298,7 +292,7 @@ function createWindow() {
 
 
    //close splash screen 
-   splashWindow.close();
+   // splashWindow.close();
    splashWindow = null;
 
 
@@ -323,7 +317,7 @@ function createWindow() {
 //    });
 // }
 
-function createSettingsWindow() {
+createSettingsWindow = () => {
 
    let win = new BrowserWindow({
       alwaysOnTop: true,
@@ -332,7 +326,6 @@ function createSettingsWindow() {
       maxWidth: 200,
       modal: true,
       useContentSize: true,
-
       title: "Settings",
       webPreferences: {
          devTools: false,
@@ -347,7 +340,7 @@ function createSettingsWindow() {
 
 }
 
-function createSplashWindow() {
+createSplashWindow = () => {
    splashWindow = new BrowserWindow(
       {
          height: 300,

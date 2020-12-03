@@ -11,14 +11,12 @@ module.exports = (sequelize, DataTypes) => {
 
         }
     }
-    // Sale.removeAttribute("id");
 
     Sale.init({
         id: { type: DataTypes.BIGINT, autoIncrement: true, primaryKey: true, },
         data: { type: DataTypes.JSON, allowNull: true, defaultValue: null },
         invoice_number: {
-            type: DataTypes.BIGINT, allowNull: false, unique: 'compositeIndex', onDelete: 'cascade',
-            onUpdate: 'cascade',
+            type: DataTypes.BIGINT, allowNull: false, unique: 'compositeIndex', onDelete: 'cascade', onUpdate: 'cascade',
         },
         order_number: {
             type: DataTypes.BIGINT, allowNull: false, unique: 'compositeIndex', onDelete: 'cascade',

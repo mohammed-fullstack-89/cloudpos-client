@@ -3,8 +3,6 @@ const electron = require('electron');
 const ipc = electron.ipcMain;
 
 class DbStore {
-
-
     init() {
 
         ipc.on('setCategories', async (event, args) => {

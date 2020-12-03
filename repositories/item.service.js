@@ -13,7 +13,7 @@ class ItemService {
     }
     async getItemsByCategory(args) {
         console.log("getItemsByCategory");
-        let varianceTable = db.model('variance');
+        let variantTable = db.model('variant');
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
         let limit = args[1];
@@ -25,19 +25,24 @@ class ItemService {
                 id: parentId
             } : null;
 
-        items = await varianceTable.findAll({
+        items = await variantTable.findAll({
             where: {
                 show_in_sale_screen: 1
             },
             include: [
-                { model: db.model('price'), as: 'get_prices', },
-                { model: db.model('segment'), as: 'get_segment' },
-                { model: db.model('serial'), as: 'get_serials' },
-                { model: db.model('tax'), as: 'get_tax' },
                 {
-                    model: db.model('category'), as: 'get_item_categories', where: filter
+                    model: db.model('stock'), as: 'stock', include: [
+                        { model: db.model('segment'), as: 'variant_segment' },
+                        { model: db.model('price'), as: 'variant_price', }]
+
                 },
-                { model: db.model('supplier'), as: 'get_suppliers' },
+
+                { model: db.model('serial'), as: 'variant_serials' },
+                { model: db.model('tax'), as: 'variant_tax' },
+                {
+                    model: db.model('category'), as: 'variant_item_categories', where: filter
+                },
+                { model: db.model('supplier'), as: 'item_suppliers' },
 
             ],
 
@@ -59,23 +64,21 @@ class ItemService {
         }
         else {
 
-            let varianceTable = db.model('variance');
+            let variantTable = db.model('variant');
 
-            item = await varianceTable.findAll({
+            item = await variantTable.findAll({
                 where: {
                     barcode: code
                     // show_in_sale_screen: 1
                 },
                 include: [
-                    { model: db.model('price'), as: 'get_prices', },
-                    { model: db.model('segment'), as: 'get_segment' },
-                    { model: db.model('serial'), as: 'get_serials' },
-                    { model: db.model('tax'), as: 'get_tax' },
-                    { model: db.model('category'), as: 'get_item_categories' },
-                    { model: db.model('supplier'), as: 'get_suppliers' },
-
+                    { model: db.model('price'), as: 'variant_price', },
+                    { model: db.model('segment'), as: 'variant_segment' },
+                    { model: db.model('serial'), as: 'variant_serials' },
+                    { model: db.model('tax'), as: 'variant_tax' },
+                    { model: db.model('category'), as: 'variant_item_categories' },
+                    { model: db.model('supplier'), as: 'item_suppliers' },
                 ],
-
             });
             item = JSON.stringify(item);
             return item;
@@ -95,7 +98,7 @@ class ItemService {
         }
         else {
 
-            let varianceTable = db.model('variance');
+            let variantTable = db.model('variant');
             let filter = null;
             let serialFilter = null;
             switch (type) {
@@ -139,21 +142,21 @@ class ItemService {
 
 
 
-            items = await varianceTable.findAll({
+            items = await variantTable.findAll({
                 where: {
                     [db.Seq().Op.and]: filter,
                     // show_in_sale_screen: 1
                 },
                 include: [
-                    { model: db.model('price'), as: 'get_prices', },
-                    { model: db.model('segment'), as: 'get_segment' },
+                    { model: db.model('price'), as: 'variant_price', },
+                    { model: db.model('segment'), as: 'variant_segment' },
                     {
-                        model: db.model('serial'), as: 'get_serials',
+                        model: db.model('serial'), as: 'variant_serials',
                         where: serialFilter
                     },
-                    { model: db.model('tax'), as: 'get_tax' },
-                    { model: db.model('category'), as: 'get_item_categories' },
-                    { model: db.model('supplier'), as: 'get_suppliers' },
+                    { model: db.model('tax'), as: 'variant_tax' },
+                    { model: db.model('category'), as: 'variant_item_categories' },
+                    { model: db.model('supplier'), as: 'item_suppliers' },
 
                 ],
 
@@ -190,7 +193,7 @@ class ItemService {
 
             // include: [
             //     {
-            //         model: db.model('scale'), as: 'get_scale_barcode', where: {
+            //         model: db.model('scale'), as: 'variant_scale_barcode', where: {
             //             [db.Seq().Op.like]: {
             //                 start: '%' + barcode + '%'
             //             }
@@ -208,7 +211,7 @@ class ItemService {
         let barcode = args[1];
 
 
-        const itemTable = db.model('variance');
+        const itemTable = db.model('variant');
         const items = await itemTable.findAll({
             where: {
 
@@ -218,46 +221,54 @@ class ItemService {
             include: [
                 //     all: true
                 // }
-                { model: db.model('price'), as: 'get_prices', },
-                { model: db.model('segment'), as: 'get_segment' },
+                { model: db.model('price'), as: 'variant_price', },
+                { model: db.model('segment'), as: 'variant_segment' },
                 {
-                    model: db.model('serial'), as: 'get_serials',
-                    where: serialFilter
+                    model: db.model('serial'), as: 'variant_serials',
+                    // where: serialFilter
                 },
-                { model: db.model('tax'), as: 'get_tax' },
-                { model: db.model('category'), as: 'get_item_categories' },
-                { model: db.model('supplier'), as: 'get_suppliers' }]
+                { model: db.model('tax'), as: 'variant_tax' },
+                { model: db.model('category'), as: 'variant_item_categories' },
+                { model: db.model('supplier'), as: 'item_suppliers' }]
 
         });
         return JSON.stringify(items);
     }
     async setItems(args) {
-        console.log("setting items ");
+        console.log("setting items " + JSON.stringify(args));
         try {
-            let itemsInfo = args[0];
-            let serialsList = args[1];
-            let alternatives = args[2];
-            let pricesList = args[3];
-            let segmantsList = args[4];
-            let suppliersList = args[5];
-            let taxesList = args[6];
-            let taxesItemsRelation = args[7];
-            let suppliersItemsRelation = args[8];
-            let itemAlternativesRel = args[9];
-            let itemCategoriesRel = args[10];
-            let scaleBarcodeList = args[11];
-            const varianceTable = db.model('variance');
+            const { 0: itemsInfo, 1: serialsList,
+                2: pricesList, 3: segmantsList, 4: suppliersList,
+                5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
+                8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
+                11: itemStockslist } = args;
+            // let itemsInfo = args[0];
+            // let serialsList = args[1];
+            // let alternatives = args[2];
+            // let pricesList = args[3];
+            // let segmantsList = args[4];
+            // let suppliersList = args[5];
+            // let taxesList = args[6];
+            // let taxesItemsRelation = args[7];
+            // let suppliersItemsRelation = args[8];
+            // let itemAlternativesRel = args[9];
+            // let itemCategoriesRel = args[10];
+            // let scaleBarcodeList = args[11];
+            // let itemStockslist = args[12];
+
+            const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
             const segmentTable = db.model("segment");
             const serialTable = db.model("serial");
             const priceTable = db.model("price");
             const scaleTable = db.model("scale");
+            const stockTable = db.model("stock");
+            const itemAlternativeTable = db.model("variant_alternatives");
+            const itemCategoriesTable = db.model("variant_categories");
+            const itemTaxesTable = db.model("variant_taxes");
+            const itemSupplierTable = db.model("variant_suppliers");
 
-            const itemAlternativeTable = db.model("variance_alternatives");
-            const itemCategoriesTable = db.model("variance_categories");
-            const itemTaxesTable = db.model("variance_taxes");
-            const itemSupplierTable = db.model("variance_suppliers");
             try {
                 if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
                     await scaleTable.destroy({ truncate: true })
@@ -269,21 +280,21 @@ class ItemService {
             try {
                 if (itemsInfo != [] && itemsInfo != undefined) {
 
-                    await varianceTable.destroy({ truncate: true });
-                    await varianceTable.bulkCreate(itemsInfo);
+                    await variantTable.destroy({ truncate: true });
+                    await variantTable.bulkCreate(itemsInfo);
                     //     , {
 
                     //     include: [
-                    //         { model: db.model('price'), as: 'get_prices', },
-                    //         { model: db.model('segment'), as: 'get_segment' },
+                    //         { model: db.model('price'), as: 'variant_price', },
+                    //         { model: db.model('segment'), as: 'variant_segment' },
                     //         {
-                    //             model: db.model('serial'), as: 'get_serials',
+                    //             model: db.model('serial'), as: 'variant_serials',
 
                     //         },
-                    //         { model: db.model('tax'), as: 'get_tax' },
-                    //         { model: db.model('category'), as: 'get_item_categories' },
-                    //         { model: db.model('supplier'), as: 'get_suppliers' },
-                    //         { model: scaleTable, as: 'get_scale_barcode', ignoreDuplicates: true },
+                    //         { model: db.model('tax'), as: 'variant_tax' },
+                    //         { model: db.model('category'), as: 'variant_item_categories' },
+                    //         { model: db.model('supplier'), as: 'item_suppliers' },
+                    //         { model: scaleTable, as: 'variant_scale_barcode', ignoreDuplicates: true },
 
                     //     ]
                     // }
@@ -363,6 +374,14 @@ class ItemService {
                 if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
                     await itemTaxesTable.destroy({ truncate: true });
                     await itemTaxesTable.bulkCreate(taxesItemsRelation);
+                }
+            } catch (error) {
+                console.log("taxesItemsRelation error :" + error);
+            }
+            try {
+                if (itemStockslist != [] && itemStockslist != undefined) {
+                    await stockTable.destroy({ truncate: true });
+                    await stockTable.bulkCreate(itemStockslist);
                 }
             } catch (error) {
                 console.log("taxesItemsRelation error :" + error);

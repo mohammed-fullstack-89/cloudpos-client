@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -16,16 +14,23 @@ module.exports = (sequelize, DataTypes) => {
       // });
 
 
-      this.belongsToMany(models.variance, {
-        as: 'get_item_categories',
-        through: models.variance_categories,
+      this.belongsToMany(models.variant, {
+        as: 'variant_item_categories',
+        through: models.variant_categories,
         foreignKey: 'category_id',
-        otherKey: { name: 'variance_id', field: 'item_id' },
+        otherKey: { name: 'variant_id', field: 'item_id' },
 
 
       });
 
-      // this.hasMany(models.variance, {
+      this.belongsTo(models.tax, {
+        as: 'category_tax',
+        foreignKey: {
+          name: 'categoryTaxId',
+          field: 'tax_id'
+        }
+      })
+      // this.hasMany(models.variant, {
       //   as: 'main_category',
       //   foreignKey: { name: 'categoryId', field: 'category_id' },
 
@@ -41,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
     branch_id: { type: DataTypes.BIGINT, allowNull: true },
-    tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    // tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     printer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
 

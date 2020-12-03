@@ -1,28 +1,25 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Tax extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
-      // this.belongsToMany(models.variance, {
-      //   through: 'item_taxes',
-      //   foreignKey: 'tax_id',
-      //   otherKey: 'variance_id',
-      // });
 
-      this.belongsToMany(models.variance, {
-        as: 'get_tax',
-        through: models.variance_taxes,
+      this.belongsToMany(models.variant, {
+        as: 'variant_tax',
+        through: models.variant_taxes,
         foreignKey: 'tax_id',
-        otherKey: { name: 'variance_id', field: 'item_id' },
+        otherKey: { name: 'variant_id', field: 'item_id' },
 
 
+      })
+      this.hasOne(models.category, {
+        as: 'category_tax',
+        foreignKey: {
+          name: 'tax_id',
+          field: 'tax_id',
+        },
+        sourceKey: 'id'
       })
     }
   };

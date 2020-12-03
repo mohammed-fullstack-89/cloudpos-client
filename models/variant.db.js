@@ -1,99 +1,69 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       this.belongsToMany(models.supplier, {
-        as: 'get_suppliers',
-        through: models.variance_suppliers,
+        as: 'item_suppliers',
+        through: models.variant_suppliers,
         foreignKey: 'item_id',
       })
 
       this.belongsToMany(models.tax, {
-        as: 'get_tax',
-        through: models.variance_taxes,
+        as: 'variant_tax',
+        through: models.variant_taxes,
         foreignKey: 'item_id',
 
       })
-      this.belongsToMany(models.variance, {
+      this.belongsToMany(models.variant, {
         as: 'items',
-        through: models.variance_alternatives,
+        through: models.variant_alternatives,
         foreignKey: 'alternative_id',
-        otherKey: { name: 'variance_id', field: 'item_id' },
+        otherKey: { name: 'variant_id', field: 'item_id' },
 
       })
-      this.belongsToMany(models.variance, {
+      this.belongsToMany(models.variant, {
         as: 'alternatives',
-        through: models.variance_alternatives,
+        through: models.variant_alternatives,
         foreignKey: 'item_id',
       })
 
       this.belongsToMany(models.category, {
-        as: 'get_item_categories',
-        through: models.variance_categories,
+        as: 'variant_item_categories',
+        through: models.variant_categories,
         foreignKey: 'item_id',
       })
 
       this.belongsTo(models.scale, {
-        as: 'get_scale_barcode',
+        as: 'variant_scale_barcode',
         foreignKey: {
           field: 'scale_id', name: 'scaleId',
         }
       })
-      // this.belongsTo(models.category, {
 
-      //   foreignKey: { name: 'categoryId', field: 'category_id' },
-
-      // })
-      // this.hasMany(models.variance, {
-      //   // foreignKey: {
-      //   //   field: 'variance_id',
-      //   //   name: 'varianceId',
-      //   // }
-      // })
-      this.hasMany(models.segment, {
-        as: 'get_segment',
+      this.hasMany(models.stock, {
+        as: 'stock',
         foreignKey: {
-          field: 'variance_id',
-          name: 'varianceId'
+          field: 'variant_id',
+          name: 'variant_id'
         }
-        // foreignKey: {
-        //   field: 'variance_id',
-        //   name: 'varianceId',
-        // }
+      });
+
+      this.hasMany(models.segment, {
+        as: 'variant_segment',
+        foreignKey: {
+          field: 'variant_id',
+          name: 'variantId'
+        }
       })
       this.hasMany(models.serial, {
-        as: 'get_serials',
+        as: 'variant_serials',
         foreignKey: {
-          field: 'variance_id',
-          name: 'varianceId'
+          field: 'variant_id',
+          name: 'variantId'
         }
-        // foreignKey: 'variance_id',
-        // foreignKey: {
-        //   field: 'variance_id',
-        //   name: 'varianceId',
-        // }
-      })
-      this.hasMany(models.price, {
-        as: 'get_prices',
-        foreignKey: {
-          field: 'variance_id',
-          name: 'varianceId'
-        }
-        //  foreignKey: 'variance_id' 
 
-        //   field: 'variance_id',
-        //   name: 'varianceId',
-        // }
       })
-
     }
   };
   Item.init({
@@ -108,6 +78,7 @@ module.exports = (sequelize, DataTypes) => {
     brand_id: { type: DataTypes.BIGINT, defaultValue: null },
     color_id: { type: DataTypes.BIGINT, defaultValue: null },
     size_id: { type: DataTypes.BIGINT, defaultValue: null },
+    category_id: { type: DataTypes.BIGINT, defaultValue: null },
     column: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     row: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     shelf: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
@@ -129,6 +100,7 @@ module.exports = (sequelize, DataTypes) => {
     item_segmented: { type: DataTypes.TINYINT, allowNull: false, defaultValue: 0 },
     allow_discount: { type: DataTypes.TINYINT, allowNull: true, defaultValue: 0 },
     item_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
+    alert_on: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
     is_main_item: { type: DataTypes.TINYINT, allowNull: true, defaultValue: 0 },
     has_expire_date: { type: DataTypes.TINYINT, allowNull: true, defaultValue: 0 },
     side_effects: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
@@ -143,13 +115,10 @@ module.exports = (sequelize, DataTypes) => {
     description: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
     has_serial: { type: DataTypes.TINYINT, defualtValue: 0 },
     color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
-
-
-
   },
     {
       sequelize,
-      modelName: 'variance',
+      modelName: 'variant',
       indexes: [{
         name: 'items_name_ar_foreign',
         fields: [`name_ar`]

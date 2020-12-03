@@ -1,43 +1,46 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Segment extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
-      this.belongsTo(models.variance, {
+      this.belongsTo(models.variant, {
         foreignKey: {
-          field: 'variance_id', name: 'varianceId',
+          field: 'variant_id', name: 'variantId',
         }
       });
+
+      this.hasOne(models.stock, {
+        as: 'variant_segment',
+        foreignKey: {
+          field: 'segment_id',
+          name: 'segment_id',
+        }
+
+      })
     }
   };
   Segment.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     qty: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    nick_name_ar: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    nick_name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    name_ar: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     barcode: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     sale_price: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
     unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-    variance_id: { type: DataTypes.BIGINT, allowNull: false },
+    variant_id: { type: DataTypes.BIGINT, allowNull: false },
     item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
   }, {
     sequelize,
     modelName: 'segment',
     indexes: [{
-      name: 'segments_nick_name_ar_foreign',
-      fields: [`nick_name_ar`]
+      name: 'segments_name_ar_foreign',
+      fields: [`name_ar`]
     },
     {
-      name: 'segments_nick_name_en_foreign',
-      fields: [`nick_name_en`]
+      name: 'segments_name_en_foreign',
+      fields: [`name_en`]
     }, {
       name: 'segments_barcode_foreign',
       fields: [`barcode`]
@@ -48,8 +51,8 @@ module.exports = (sequelize, DataTypes) => {
       name: 'segments_parent_id_foreign',
       fields: [`parent_id`]
     }, {
-      name: 'segments_variance_id_foreign',
-      fields: [`variance_id`]
+      name: 'segments_variant_id_foreign',
+      fields: [`variant_id`]
     }, {
       name: 'segments_item_id_foreign',
       fields: [`item_id`]

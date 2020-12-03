@@ -9,20 +9,18 @@ class Communicator {
 
     async getCategories(parentId) {
         const categories = await ipc.invoke('getCategories', parentId)
-
         return categories;
     }
 
 
     async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
-
         await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
 
 
-    async getCustomers(val) {
-        // return ipc.invoke('getCustomers');
-    }
+    // async getCustomers(val) {
+    //     // return ipc.invoke('getCustomers');
+    // }
     // async playSound() {
     //     console.log("playing sound...");
     //     return ipc.invoke('playSound');
@@ -32,10 +30,9 @@ class Communicator {
         return customers;
     }
 
-    async setItems(itemsInfo, serialsList, alternatives, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList) {
+    async setItems(itemsInfo, serialsList, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList, itemStockslist) {
 
-        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(alternatives), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList));
-
+        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList), JSON.parse(itemStockslist));
     }
 
     async getItems() {

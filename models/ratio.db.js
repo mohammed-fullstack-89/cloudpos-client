@@ -1,17 +1,10 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Ratio extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       this.belongsToMany(models.company, {
-        as: 'get_ratio',
+        as: 'variant_ratio',
         through: models.company_ratios,
         foreignKey: 'ratio_id',
       })
@@ -26,8 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [{
       name: 'ratios_value_foreign',
       fields: [`value`]
-    },
-    ]
+    }]
   });
   return Ratio;
 };

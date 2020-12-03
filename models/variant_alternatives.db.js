@@ -3,42 +3,43 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class VarianceTax extends Model {
+    class VariantAlternative extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            VarianceTax.belongsTo(models.variance, { foreignKey: 'item_id', targetKey: 'id' });
-            VarianceTax.belongsTo(models.tax, { foreignKey: 'tax_id', targetKey: 'id', as: 'get_tax' });
+            VariantAlternative.belongsTo(models.variant, { foreignKey: 'item_id', targetKey: 'id' });
+            VariantAlternative.belongsTo(models.variant, { foreignKey: 'alternative_id', targetKey: 'id' });
 
         }
     };
-    VarianceTax.init({
+    VariantAlternative.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        variance_id: {
-            type: DataTypes.BIGINT, allowNull: false,
+        variant_id: {
+            type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
+
             references: {
-                model: 'variance',
+                model: 'variant',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-variance'
+            unique: 'unique-genre-per-variant'
         },
-        tax_id: {
+        alternative_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
-                model: 'tax',
+                model: 'alternative',
                 key: 'id'
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-tax'
+            unique: 'unique-genre-per-alternative'
         },
     }, {
         sequelize,
-        modelName: 'variance_taxes',
+        modelName: 'variant_alternatives',
     });
-    return VarianceTax;
+    return VariantAlternative;
 };

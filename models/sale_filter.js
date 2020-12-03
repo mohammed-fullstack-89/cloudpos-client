@@ -1,4 +1,5 @@
 class SaleFilter {
+
     constractor() {
         this.user_id
         this.customer_id
