@@ -1,25 +1,19 @@
 const path = require('path');
 const fs = require('fs');
-
-const ipc = require('electron').ipcMain;
-
+const { app, ipcMainMain } = require('electron');
 class appStore {
-
-
     constructor(opts) {
         this.opts = opts;
-    }
-
-    init(userPath) {
-        this.userDataPath = userPath;
+        electron.app.getPath('userData')
+        this.userDataPath = electron.app.getPath('userData');
         this.path = path.join(this.userDataPath, this.opts.configName + '.json');
         this.data = this.parseDataFile(this.path, this.opts.defaults);
-        
-        ipc.on('getlocalSettings', (event, ...args) => {
+
+        ipcMain.on('getlocalSettings', (event, ...args) => {
             event.returnValue = this.data;
         });
 
-        ipc.on('setlocalSettings', (event, ...args) => {
+        ipcMain.on('setlocalSettings', (event, ...args) => {
             this.setValue(args[0], args[1]);
         })
     }
@@ -52,7 +46,7 @@ appStore.instance = null;
 
 appStore.getInstance = () => {
     if (appStore.instance == null) {
-        appStore.instance = new appStore({
+        const configObject = {
             configName: 'user-preferences',
             defaults: {
                 mainPrinter: "--choose Printer--",
@@ -61,10 +55,9 @@ appStore.getInstance = () => {
                 KitchenPrinter3: "--choose Printer--",
                 KitchenPrinter4: "--choose Printer--",
                 InnerPrinter: "--choose Printer--",
-
-
             }
-        });
+        }
+        appStore.instance = new appStore(configObject);
     }
     return appStore.instance;
 }

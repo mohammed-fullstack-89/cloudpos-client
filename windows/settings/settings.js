@@ -1,7 +1,5 @@
 
 const { ipcRenderer } = require('electron');
-const printHelper = require('../../util/printHelper');
-
 const printers = ipcRenderer.sendSync("getPrinters");
 
 $(document).ready(() => {
@@ -60,7 +58,7 @@ function getPrinters() {
     setSelectedPrinters();
 }
 
-function save() {
+save = () => {
     console.log("saving");
     savePreferances();
     ipcRenderer.send('closeSettingsWindow');

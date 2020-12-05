@@ -1,9 +1,8 @@
 const ipc = require('electron').ipcRenderer;
-class Communicator {
+
+class CommunicatorMiddleware {
 
     setCategories(categoriesList) {
-        // const categoryService = require('../repositories/category.service');
-        // await dbStore.setCategories(categoriesList);
         ipc.sendSync('setCategories', categoriesList);
     }
 
@@ -12,19 +11,15 @@ class Communicator {
         return categories;
     }
 
-
     async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
         await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
 
 
-    // async getCustomers(val) {
-    //     // return ipc.invoke('getCustomers');
-    // }
-    // async playSound() {
-    //     console.log("playing sound...");
-    //     return ipc.invoke('playSound');
-    // }
+    async playSound() {
+        console.log("playing sound...");
+        return ipc.invoke('playSound');
+    }
     async searchCustomers(val) {
         const customers = await ipc.invoke('searchCustomers', val)
         return customers;
@@ -39,7 +34,7 @@ class Communicator {
         return ipc.invoke('getItems');
     }
 
-    async getItemsByCategory(parentId, limit, offset) {
+    async getItemsByCategory(parentId, offset, limit) {
         const items = await ipc.invoke('getItemsByCategory', parentId, limit, offset);
         return items
     }
@@ -53,9 +48,9 @@ class Communicator {
         return item
     }
 
-    async playSound() {
-        // await ipc.invoke('playSound');
-        var audio = new Audio('../assets/sound/item.mp3');
+    async playSound(audioPath, type) {
+        const audioFormat = '.mp3';
+        var audio = new Audio(`${decodeURI(audioPath)}\\error${audioFormat}`);
         audio.play().catch(error => console.log("errror " + error));
     }
     async getScaleFromBarcode(value) {
@@ -108,19 +103,20 @@ class Communicator {
     }
 
 
-    //     if(Communicator.caller != Communicator.getInstance) {
-    //     throw new Error("This object cannot be instanciated");
-    // }
+
 }
 
-Communicator.instance = null;
+// if (CommunicatorMiddleware.caller != CommunicatorMiddleware.getInstance) {
+//     throw new Error("This object cannot be instanciated");
+// }
+CommunicatorMiddleware.instance = null;
 
-Communicator.getInstance = function () {
-    if (Communicator.instance === null) {
-        Communicator.instance = new Communicator();
+CommunicatorMiddleware.getInstance = function () {
+    if (CommunicatorMiddleware.instance === null) {
+        CommunicatorMiddleware.instance = new CommunicatorMiddleware();
     }
-    return Communicator.instance;
+    return CommunicatorMiddleware.instance;
 }
 
-module.exports = Communicator.getInstance();
+module.exports = CommunicatorMiddleware.getInstance();
 

@@ -14,7 +14,7 @@ class CategoriesService {
         let categories = [];
         categories = await categoryTable.findAll({
             where: {
-                parent: parentId == undefined ? null : parentId
+                parent: parentId == undefined || parentId === 0 ? null : parentId
             }
         });
         categories = JSON.stringify(categories);

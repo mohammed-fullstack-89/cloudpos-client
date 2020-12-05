@@ -1,10 +1,8 @@
-const store = require('./store.service')
 const electron = require('electron')
 const ipc = electron.ipcRenderer;
 
 
-class PrintService {
-
+class PrintMiddleware {
     constructor() {
         ipc.on("closeSettingsWindow", (event, ...args) => {
             if (this.win != undefined && this.win != null) {
@@ -15,7 +13,6 @@ class PrintService {
     }
 
     printHtmlDocument(html, copies) {
-    
         ipc.send("printHtmlDocument", html, copies);
     }
 
@@ -31,14 +28,14 @@ class PrintService {
 
 }
 
-PrintService.instance = null;
+PrintMiddleware.instance = null;
 
-PrintService.getInstance = function () {
-    if (PrintService.instance === null) {
-        PrintService.instance = new PrintService();
+PrintMiddleware.getInstance = function () {
+    if (PrintMiddleware.instance === null) {
+        PrintMiddleware.instance = new PrintMiddleware();
     }
-    return PrintService.instance;
+    return PrintMiddleware.instance;
 }
 
 
-module.exports = PrintService.getInstance();
+module.exports = PrintMiddleware.getInstance();

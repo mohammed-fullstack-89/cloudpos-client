@@ -1,5 +1,2 @@
-const communicator = require('./services/communicator.service');
-const print = require('./services/print.service');
-
-window.obj = communicator;
-window.printService = print;
+window.obj = require('./middlewares/communicator');;
+window.printService = require('./middlewares/print');;

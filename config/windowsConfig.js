@@ -15,9 +15,7 @@ module.exports = {
         parent: true,
         frame: true,
         modal: true,
-
         paintWhenInitiallyHidden: true,
-        // contextIsolation: false, //block website loaded to access electron preload script (false)
         webPreferences: {
             enableBlinkFeatures: true,
             nativeWindowOpen: true,
@@ -27,7 +25,7 @@ module.exports = {
             devTools: true,
             // sandbox: true,
             webgl: false,
-            webSecurity: false,
+            webSecurity: true,
             nodeIntegrationInWorker: true,
             preload: `${path.relative}/renderer.js`
         }

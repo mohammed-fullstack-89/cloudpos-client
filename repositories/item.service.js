@@ -12,14 +12,11 @@ class ItemService {
         return newQty.qty;
     }
     async getItemsByCategory(args) {
-        console.log("getItemsByCategory");
         let variantTable = db.model('variant');
         let items = [];
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
         let limit = args[1];
         let offset = args[2];
-        console.log("limit " + limit);
-        console.log("offset " + offset);
         let filter = (parentId != null && parentId != undefined) ?
             {
                 id: parentId
@@ -235,7 +232,6 @@ class ItemService {
         return JSON.stringify(items);
     }
     async setItems(args) {
-        console.log("setting items " + JSON.stringify(args));
         try {
             const { 0: itemsInfo, 1: serialsList,
                 2: pricesList, 3: segmantsList, 4: suppliersList,

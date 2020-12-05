@@ -2,7 +2,7 @@
 module.exports = {
     development: {
         production: false,
-        url: "http//localhost:4200/#/login",
+        url: "http://localhost:4200/#/login",
         protocol: 'http',
         hostname: 'localhost:4200',
         pathname: '/#/login',
@@ -34,5 +34,12 @@ module.exports = {
         protocol: 'https',
         hostname: '192.168.1.90',
         pathname: '/#/login',
+    },
+    remoteZug: {
+        production: false,
+        url: "https://987beb3111c7.ngrok.io",
+        protocol: 'https',
+        hostname: '987beb3111c7.ngrok.io"',
+        pathname: '',
     },
 }
