@@ -28,6 +28,13 @@ module.exports = {
         hostname: 'rpos.live',
         pathname: '/staff/#/login',
     },
+    stagging_new: {
+        production: false,
+        url: "http://rpos.live/staff_new/#/login",
+        protocol: 'https',
+        hostname: 'rpos.live',
+        pathname: '/staff/#/login',
+    },
     zug: {
         production: false,
         url: "http://192.168.1.90:4200/#/login",

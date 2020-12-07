@@ -14,16 +14,16 @@ module.exports = (sequelize, DataTypes) => {
   };
   Address.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-    address: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    location: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     governorate: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     zone: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    email: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    status: { type: DataTypes.TINYINT, defualtValue: 1, allowNull: false },
+    home_number: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     street: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     building: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     floor: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    office_flat_number: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    longitude: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    latitude: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    lat: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    long: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     customer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true, }
   }, {
     sequelize,

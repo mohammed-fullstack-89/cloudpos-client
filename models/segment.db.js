@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     sale_price: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
     unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-    variant_id: { type: DataTypes.BIGINT, allowNull: false },
+    variant_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    location_id: { type: DataTypes.BIGINT, allowNull: false },
     item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
   }, {
     sequelize,

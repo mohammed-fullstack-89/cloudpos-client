@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     color_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
     unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
     size_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
+    user_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
+
   }, {
     sequelize,
     modelName: 'serial',

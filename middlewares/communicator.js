@@ -16,9 +16,9 @@ class CommunicatorMiddleware {
     }
 
 
-    async playSound() {
+    async playSound(type) {
         console.log("playing sound...");
-        return ipc.invoke('playSound');
+        return ipc.invoke('playSound', type);
     }
     async searchCustomers(val) {
         const customers = await ipc.invoke('searchCustomers', val)
@@ -40,6 +40,7 @@ class CommunicatorMiddleware {
     }
 
     async searchItems(type, value, offset, limit) {
+        console.log("searchItems");
         const items = await ipc.invoke('searchItems', type, value, offset, limit);
         return items
     }
@@ -48,11 +49,11 @@ class CommunicatorMiddleware {
         return item
     }
 
-    async playSound(audioPath, type) {
-        const audioFormat = '.mp3';
-        var audio = new Audio(`${decodeURI(audioPath)}\\error${audioFormat}`);
-        audio.play().catch(error => console.log("errror " + error));
-    }
+    // async playSound(audioPath, type) {
+    //     const audioFormat = '.mp3';
+    //     var audio = new Audio(`${decodeURI(audioPath)}\\error${audioFormat}`);
+    //     audio.play().catch(error => console.log("errror " + error));
+    // }
     async getScaleFromBarcode(value) {
         const scale = await ipc.invoke('getScaleFromBarcode', value);
         return scale
@@ -65,6 +66,12 @@ class CommunicatorMiddleware {
 
         await ipc.invoke('updateStockQty', JSON.parse(values));
     }
+    // async getStockData(values) {
+
+    //     const stockData = await ipc.invoke('getStockData');
+    //     return stockData;
+    // }
+
     async getQtyByStockId(stockId) {
         const newQty = await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
         return newQty

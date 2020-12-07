@@ -3,7 +3,7 @@ let db = require('../models/index');
 class ItemService {
 
     async getQtyByStock(stockId) {
-        const priceTable = db.model('price');
+        const priceTable = db.model('stock');
         const newQty = await priceTable.findOne({
             where: {
                 id: stockId
@@ -48,6 +48,7 @@ class ItemService {
         });
 
         items = JSON.stringify(items);
+        console.log("items " + items);
         return items;
     }
 
@@ -145,14 +146,18 @@ class ItemService {
                     // show_in_sale_screen: 1
                 },
                 include: [
-                    { model: db.model('price'), as: 'variant_price', },
-                    { model: db.model('segment'), as: 'variant_segment' },
                     {
-                        model: db.model('serial'), as: 'variant_serials',
-                        where: serialFilter
+                        model: db.model('stock'), as: 'stock', include: [
+                            { model: db.model('segment'), as: 'variant_segment' },
+                            { model: db.model('price'), as: 'variant_price', }]
+
                     },
+
+                    { model: db.model('serial'), as: 'variant_serials' },
                     { model: db.model('tax'), as: 'variant_tax' },
-                    { model: db.model('category'), as: 'variant_item_categories' },
+                    {
+                        model: db.model('category'), as: 'variant_item_categories'
+                    },
                     { model: db.model('supplier'), as: 'item_suppliers' },
 
                 ],
@@ -170,7 +175,7 @@ class ItemService {
             let newStockValues = [];
             newStockValues = args[0];
 
-            let priceTable = db.model('price');
+            let priceTable = db.model('stock');
             priceTable.bulkCreate(newStockValues, { updateOnDuplicate: Object.keys(priceTable.rawAttributes) })
 
         }
@@ -178,6 +183,14 @@ class ItemService {
             console.log("error " + error);
         }
     }
+    // async getStockData() {
+
+    //     const priceTable = db.model('stock');
+    //     const stockData = priceTable.findAll({
+    //         attributes: ['id', 'qty']
+    //     });
+    //     return JSON.stringify(stockData);
+    // }
 
     async getScaleFromBarcode(args) {
         let scaleIdentifier = args[0];
@@ -238,6 +251,7 @@ class ItemService {
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
                 11: itemStockslist } = args;
+
             // let itemsInfo = args[0];
             // let serialsList = args[1];
             // let alternatives = args[2];

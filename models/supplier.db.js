@@ -16,13 +16,17 @@ module.exports = (sequelize, DataTypes) => {
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name_ar: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    mobile: { type: DataTypes.INTEGER, defualtValue: null, allowNull: true },
-    mobile2: { type: DataTypes.INTEGER, defualtValue: null, allowNull: true },
+    mobile_1: { type: DataTypes.INTEGER, defualtValue: null, allowNull: true },
+    mobile_2: { type: DataTypes.INTEGER, defualtValue: null, allowNull: true },
     email: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     address: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), allowNull: true },
     discount_value: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    description: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    creditor: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
+    debtor: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
+    note: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    lat: { type: DataTypes.DOUBLE, defualtValue: 0.0, allowNull: true },
+    long: { type: DataTypes.DOUBLE, defualtValue: 0.0, allowNull: true }
 
   }, {
     sequelize,
@@ -36,10 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       fields: [`name_en`]
     }, {
       name: 'suppliers_mobile_foreign',
-      fields: [`mobile`]
+      fields: [`mobile_1`]
     }, {
       name: 'suppliers_mobile2_foreign',
-      fields: [`mobile2`]
+      fields: [`mobile_2`]
     }, {
       name: 'suppliers_email_foreign',
       fields: [`email`]

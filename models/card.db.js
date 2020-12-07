@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name_ar: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    card_image: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    image: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    is_active: { type: DataTypes.ENUM('active', 'inactive'), allowNull: true }
   }, {
     sequelize,
     modelName: 'card',

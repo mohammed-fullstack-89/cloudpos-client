@@ -3,6 +3,8 @@ const { BrowserWindow, ipcMain } = require('electron');
 const rootPath = require('electron-root-path').rootPath;
 const appStore = require('./store-service');
 const windowManager = require('./window-manager-service');
+const notificationService = require('./notification-service');
+const commons = require('../commons');
 class PrintHelper {
     constructor() {
 
@@ -27,6 +29,8 @@ class PrintHelper {
     }
 
     printDocument(html, copies) {
+        notificationService.showNotification('Printing');
+
         for (let i = 1; i <= copies; i++) {
             let printWindow = new BrowserWindow({
                 webPreferences: {

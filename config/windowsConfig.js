@@ -27,7 +27,7 @@ module.exports = {
             webgl: false,
             webSecurity: true,
             nodeIntegrationInWorker: true,
-            preload: `${path.relative}/renderer.js`
+            preload: __dirname + '/../renderer.js'
         }
     }
 }

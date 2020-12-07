@@ -1,11 +1,11 @@
 const path = require('path');
 const fs = require('fs');
-const { app, ipcMainMain } = require('electron');
+const { app, ipcMain } = require('electron');
 class appStore {
     constructor(opts) {
         this.opts = opts;
-        electron.app.getPath('userData')
-        this.userDataPath = electron.app.getPath('userData');
+        app.getPath('userData')
+        this.userDataPath = app.getPath('userData');
         this.path = path.join(this.userDataPath, this.opts.configName + '.json');
         this.data = this.parseDataFile(this.path, this.opts.defaults);
 
@@ -19,7 +19,6 @@ class appStore {
     }
 
     getValue(key) {
-
         return this.data[key];
     }
 
