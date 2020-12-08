@@ -11,8 +11,6 @@ class InitializerService {
     constructor() {
         this.splash = null;
         this.mainWindow = null;
-        this.settingsWindow = null;
-
     }
     initTray(tray) {
         const trayMenu = [
@@ -32,24 +30,28 @@ class InitializerService {
                         message: 'Are you sure',
                         detail: clearAppDataMessage
                     }).then((dialogRes) => {
-                        const getAppPath = path.join(app.getPath('appData'), app.getName());
+                        // const getAppPath = path.join(app.getPath('appData'), app.getName());
+                        // console.log("getAppPath " + getAppPath);
                         if (dialogRes.response === 0) {
+
                             this.this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                             this.this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                             this.this.mainWindow.webContents.executeJavaScript("window.location.reload()");
-                            fs.unlinkSync(getAppPath, () => {
-                                fs.rmdir(getAppPath, {
-                                    recursive: true,
-                                }, (error) => {
-                                    if (error) {
-                                        console.log(error);
-                                    }
-                                    else {
-                                        console.log("Non Recursive: Directories Deleted!");
-                                    }
-                                });
-                            });
 
+                            // app.relaunch();
+                            // app.exit()
+                            // fs.unlinkSync(getAppPath, () => {
+                            //     fs.rmdir(getAppPath, {
+                            //         recursive: false,
+                            //     }, (error) => {
+                            //         if (error) {
+                            //             console.log(error);
+                            //         }
+                            //         else {
+                            //             console.log("Non Recursive: Directories Deleted!");
+                            //         }
+                            //     });
+                            // });
                             // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
                         }
 
@@ -227,7 +229,7 @@ class InitializerService {
         //    slashes: true,
         //    pathname: enviroment.maestro.pathname
         // }))
-        this.mainWindow.loadURL(enviroment.zug.url);
+        this.mainWindow.loadURL(enviroment.remoteZug.url);
         // this.mainWindow.webContents.executeJavaScript(`let sound = new Audio('file: //' + './assets/audio/error.mp3');
         // sound.play();`);
 
@@ -276,11 +278,12 @@ class InitializerService {
         this.hideSplash();
     }
     createSettingsWindow() {
-        if (this.settingsWindow !== null) {
-            this.settingsWindow.close();
-            this.settingsWindow = null;
+        let settingsWindow = null;
+        if (settingsWindow !== null) {
+            settingsWindow.close();
+            settingsWindow = null;
         }
-        this.settingsWindow = new BrowserWindow({
+        settingsWindow = new BrowserWindow({
             alwaysOnTop: true,
             resizable: false,
             maxHeight: 200,
@@ -295,9 +298,9 @@ class InitializerService {
             // backgroundColor: '#2e2c29' 
         });
 
-        this.settingsWindow.removeMenu();
-        this.settingsWindow.menu = null;
-        this.settingsWindow.loadFile(path.join(__dirname, 'windows/settings/settings.html'));
+        settingsWindow.removeMenu();
+        settingsWindow.menu = null;
+        settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
         // win.loadFile(path.join(rootPath, 'windows/settings/settings.html'));
 
     }
@@ -324,7 +327,7 @@ class InitializerService {
         );
         this.splash.removeMenu();
         this.splash.menu = null;
-        this.splash.loadFile(path.join(__dirname, 'windows/loading/loading.html'));
+        this.splash.loadFile(path.dirname(__dirname) + '/windows/loading/loading.html');
     }
 }
 InitializerService._instance = null;

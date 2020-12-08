@@ -1,5 +1,5 @@
 
-const { ipcRenderer } = require('electron');
+const ipcRenderer = require('electron').ipcRenderer;
 const printers = ipcRenderer.sendSync("getPrinters");
 
 $(document).ready(() => {

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     location: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     governorate: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     zone: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    status: { type: DataTypes.TINYINT, defualtValue: 1, allowNull: false },
+    // status: { type: DataTypes.TINYINT, defualtValue: 1, allowNull: false },
     home_number: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     street: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     building: { type: DataTypes.STRING, defualtValue: null, allowNull: true },

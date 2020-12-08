@@ -70,6 +70,17 @@ class SaleService {
         const sales = JSON.stringify(result);
         return sales;
     }
+    async deleteSalesInvoice() {
+        const saleTable = db.model("sale");
+        const result = await saleTable.destroy({
+            truncate: true
+        });
+    }
+    async updateSaleInvoice(invoice_number, status) {
+        const saleTable = db.model("sale");
+        const result = await saleTable.upsert({ invoice_number, status });
+    }
+
 }
 
 

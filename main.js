@@ -28,16 +28,16 @@ app.whenReady().then(() => {
    require('./services/index');
 })
 app.on('ready', async () => {
-   tray = new Tray('./assets/icons/app.ico')
+   tray = new Tray(__dirname + '/assets/icons/app.ico')
    windowManager.showSplash();
-   notificationService.showNotification(commons.APPNAME, 'initiating database...');
+   notificationService.showNotification(commons.APPNAME, 'initiating ...');
    await db.setup().then(() => {
       // autoUpdater.checkForUpdates();
       windowManager.createAppWindow();
       windowManager.initTray(tray);
-      notificationService.showNotification(commons.APPNAME, 'database is ready :)');
+      notificationService.showNotification(commons.APPNAME, 'app is ready :)');
    }).catch((error) => {
-      notificationService.showNotification(commons.APPNAME, 'Something went wrong initiating database...');
+      notificationService.showNotification(commons.APPNAME, 'Something went wrong initiating ...');
       console.log(`error : ${error}`);
    });
 });

@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     class CompanyTerms extends Model {
 
         static associate(models) {
-            CompanyTerms.belongsTo(models.company, { foreignKey: 'company_id', targetKey: 'id' });
-            CompanyTerms.belongsTo(models.term, { foreignKey: 'term_id', targetKey: 'id' });
+            CompanyTerms.belongsTo(models.company, { foreignKey: 'company_id', targetKey: 'id', as: 'company' });
+            CompanyTerms.belongsTo(models.term, { foreignKey: 'term_id', targetKey: 'id', as: 'term' });
 
         }
     };
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }, {
         sequelize,
-        modelName: 'company_terms',
+        modelName: 'company_term',
     });
     return CompanyTerms;
 };

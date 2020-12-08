@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
 
       this.belongsToMany(models.ratio, {
-        as: 'variant_ratio',
+        as: 'company_ratio',
         through: models.company_ratios,
         foreignKey: 'company_id',
       });
       this.belongsToMany(models.term, {
-        as: 'variant_terms',
-        through: models.company_terms,
+        as: 'company_terms',
+        through: models.company_term,
         foreignKey: 'company_id',
       });
 

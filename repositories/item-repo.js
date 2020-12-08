@@ -4,12 +4,13 @@ class ItemService {
 
     async getQtyByStock(stockId) {
         const priceTable = db.model('stock');
-        const newQty = await priceTable.findOne({
+        const newStock = await priceTable.findOne({
+            attributes: ['qty'],
             where: {
                 id: stockId
             }
         });
-        return newQty.qty;
+        return JSON.stringify(newStock.qty);
     }
     async getItemsByCategory(args) {
         let variantTable = db.model('variant');
@@ -29,11 +30,18 @@ class ItemService {
             include: [
                 {
                     model: db.model('stock'), as: 'stock', include: [
-                        { model: db.model('segment'), as: 'variant_segment' },
+
                         { model: db.model('price'), as: 'variant_price', }]
 
                 },
 
+                {
+                    model: db.model('segment'), as: 'variant_segment', include: [{
+                        model: db.model('stock'), as: 'stock'
+                    }
+                    ]
+
+                },
                 { model: db.model('serial'), as: 'variant_serials' },
                 { model: db.model('tax'), as: 'variant_tax' },
                 {
@@ -48,7 +56,6 @@ class ItemService {
         });
 
         items = JSON.stringify(items);
-        console.log("items " + items);
         return items;
     }
 
@@ -70,13 +77,29 @@ class ItemService {
                     // show_in_sale_screen: 1
                 },
                 include: [
-                    { model: db.model('price'), as: 'variant_price', },
-                    { model: db.model('segment'), as: 'variant_segment' },
+                    {
+                        model: db.model('stock'), as: 'stock', include: [
+
+                            { model: db.model('price'), as: 'variant_price', }]
+
+                    },
+
+                    {
+                        model: db.model('segment'), as: 'variant_segment', include: [{
+                            model: db.model('stock'), as: 'stock'
+                        }
+                        ]
+
+                    },
                     { model: db.model('serial'), as: 'variant_serials' },
                     { model: db.model('tax'), as: 'variant_tax' },
-                    { model: db.model('category'), as: 'variant_item_categories' },
+                    {
+                        model: db.model('category'), as: 'variant_item_categories'
+                    },
                     { model: db.model('supplier'), as: 'item_suppliers' },
+
                 ],
+
             });
             item = JSON.stringify(item);
             return item;
@@ -148,11 +171,17 @@ class ItemService {
                 include: [
                     {
                         model: db.model('stock'), as: 'stock', include: [
-                            { model: db.model('segment'), as: 'variant_segment' },
+
                             { model: db.model('price'), as: 'variant_price', }]
 
                     },
+                    {
+                        model: db.model('segment'), as: 'variant_segment', include: [{
+                            model: db.model('stock'), as: 'stock'
+                        }
+                        ]
 
+                    },
                     { model: db.model('serial'), as: 'variant_serials' },
                     { model: db.model('tax'), as: 'variant_tax' },
                     {
@@ -174,10 +203,8 @@ class ItemService {
         try {
             let newStockValues = [];
             newStockValues = args[0];
-
             let priceTable = db.model('stock');
-            priceTable.bulkCreate(newStockValues, { updateOnDuplicate: Object.keys(priceTable.rawAttributes) })
-
+            priceTable.bulkCreate(args, { updateOnDuplicate: ['qty'], attributes: ['qty'] },)
         }
         catch (error) {
             console.log("error " + error);

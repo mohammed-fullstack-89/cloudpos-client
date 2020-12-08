@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
   class Term extends Model {
     static associate(models) {
       this.belongsToMany(models.company, {
-        // as: 'variant_term',
-        through: models.company_terms,
+        as: 'company_terms',
+        through: models.company_term,
         foreignKey: 'term_id',
       });
     }

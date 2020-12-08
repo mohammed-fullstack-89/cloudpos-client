@@ -18,7 +18,7 @@ class CommunicatorMiddleware {
 
     async playSound(type) {
         console.log("playing sound...");
-        return ipc.invoke('playSound', type);
+        await ipc.invoke('playSound', type);
     }
     async searchCustomers(val) {
         const customers = await ipc.invoke('searchCustomers', val)
@@ -63,7 +63,6 @@ class CommunicatorMiddleware {
         return item
     }
     async updateStockQty(values) {
-
         await ipc.invoke('updateStockQty', JSON.parse(values));
     }
     // async getStockData(values) {
@@ -105,11 +104,19 @@ class CommunicatorMiddleware {
         return sales;
     }
     async getFailedSales() {
+        console.log("getFailedSales");
         const sales = await ipc.invoke('getFailedSales');
         return sales;
     }
-
-
+    async updateSaleInvoice(filter) {
+        const sales = await ipc.invoke('deleteSalesInvoice');
+        return sales;
+    }
+    async deleteSalesInvoice(invoice_number, status) {
+        console.log("getFailedSales");
+        const sales = await ipc.invoke('updateSaleInvoice', invoice_number, status);
+        return sales;
+    }
 
 }
 

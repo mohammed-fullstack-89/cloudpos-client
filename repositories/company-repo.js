@@ -1,5 +1,6 @@
 
 
+const models = require('../models/index');
 var db = require('../models/index');
 
 
@@ -10,58 +11,85 @@ class CompanyService {
     async getCompanies() {
         let companyTable = db.model('company');
         let companies = [];
-        companies = await companyTable.findAll({ include: { all: true, nested: true } });
+        // companies = await companyTable.findAll({ include: { all: true } });
+        companies = await companyTable.findAll({
+            include: [{ model: db.model('term'), as: 'company_terms', nested: false },
+            { model: db.model('ratio'), as: 'company_ratio', nested: false }]
+        });
         companies = JSON.stringify(companies);
         return companies;
     }
 
 
-    setCompanies(args) {
+    async setCompanies(args) {
         const companies = args[0];
         const companiesRatios = args[1];
         const companiesTerms = args[2];
-        const companyRatiosRel = args[3];
-        const companyTermsRel = args[4];
-
+        const companyTermsRel = args[3];
+        const companyRatiosRel = args[4];
         const companyTable = db.model('company');
         const ratioTable = db.model('ratio');
         const termTable = db.model('term');
-        const companyTermsRelTable = db.model('company_terms');
+        const companyTermsRelTable = db.model('company_term');
         const companyRatiosRelTable = db.model('company_ratios');
+        try {
+            if (companies != [] && companies != undefined) {
+                await companyTable.destroy({ truncate: true });
+                await companyTable.bulkCreate(companies);
+                // companyTable.bulkCreate(companies, { updateOnDuplicate: [...Object.keys(companyTable.rawAttributes)] });
+            }
+        } catch (error) {
+            console.log(" companies error " + error);
+        }
+        try {
+            if (companiesRatios != [] && companiesRatios != undefined) {
+                await ratioTable.destroy({ truncate: true });
+                await ratioTable.bulkCreate(companiesRatios);
+                // ratioTable.bulkCreate(companiesRatios, { updateOnDuplicate: [...Object.keys(ratioTable.rawAttributes)] });
 
-        companyTable.bulkCreate(companies, { updateOnDuplicate: [...Object.keys(companyTable.rawAttributes)] });
-        ratioTable.bulkCreate(companiesRatios, { updateOnDuplicate: [...Object.keys(ratioTable.rawAttributes)] });
-        termTable.bulkCreate(companiesTerms, { updateOnDuplicate: [...Object.keys(termTable.rawAttributes)] });
 
-        companyTermsRelTable.destroy({ truncate: true }).then(() => {
-            companyTermsRelTable.bulkCreate(companyRatiosRel)
+            }
+        } catch (error) {
+            console.log(" companiesRatios error " + error);
+        }
 
-        })
-        companyRatiosRelTable.destroy({ truncate: true }).then(() => {
-            companyRatiosRelTable.bulkCreate(companyTermsRel)
-        })
+        try {
+            if (companiesTerms != [] && companiesTerms != undefined) {
 
-        // await companyTable.bulkCreate();
-        // await companyTable.bulkCreate();
-        // await companyTable.bulkCreate();
-        // await companyTable.sequelize.query(
-        //     "DELETE FROM companies_ratios ;", {
-        //     type: companyTable.sequelize.QueryTypes.DELETE
-        // });
-        // await companyTable.sequelize.query(
-        //     "DELETE FROM companies_terms;", {
-        //     type: companyTable.sequelize.QueryTypes.DELETE
-        // });
-        // const insertedCompanies = await companyTable.bulkCreate(companies, { include: { all: true, nested: true, updateOnDuplicate: [...Object.keys(db.model('ratio').rawAttributes), ...Object.keys(db.model('term').rawAttributes)], cascade: true, }, updateOnDuplicate: [...Object.keys(companyTable.rawAttributes)], returning: true });
-        // console.log("setCompanies': " + insertedCompanies);
-        // await insertedCompanies.setTerms(companiesTerms);
-        // await insertedCompanies.setRatios(companiesRatios);
+                await termTable.destroy({ truncate: true });
+                await termTable.bulkCreate(companiesTerms);
+                // termTable.bulkCreate(companiesTerms, { updateOnDuplicate: [...Object.keys(termTable.rawAttributes)] });
+
+            }
+        } catch (error) {
+            console.log("companiesTerms error " + error);
+        }
+
+        try {
+            if (companyTermsRel != [] && companyTermsRel != undefined) {
+                await companyTermsRelTable.destroy({ truncate: true })
+                await companyTermsRelTable.bulkCreate(companyTermsRel)
+                // termTable.bulkCreate(companiesTerms, { updateOnDuplicate: [...Object.keys(termTable.rawAttributes)] });
+
+            }
+        } catch (error) {
+            console.log("companiesTerms error " + error);
+        }
+
+
+        try {
+            if (companyRatiosRel != [] && companyRatiosRel != undefined) {
+
+                await companyRatiosRelTable.destroy({ truncate: true })
+                await companyRatiosRelTable.bulkCreate(companyRatiosRel)
+
+            }
+        } catch (error) {
+            console.log("companiesTerms error " + error);
+        }
+
     }
 
-
-    // if (companyService.caller != companyService.getInstance) {
-    //     throw new Error("This object cannot be instanciated");
-    // }
 
 }
 

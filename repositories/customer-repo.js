@@ -51,7 +51,7 @@ class CustomerService {
 
                 }
             } catch (error) {
-                console.log("error " + error);
+                console.log("error1 " + error);
             }
             try {
                 if (customersList != [] && customersList != undefined) {
@@ -60,7 +60,7 @@ class CustomerService {
 
                 }
             } catch (error) {
-                console.log("error " + error);
+                console.log("error2 " + error);
             }
             try {
                 if (addresss_list != [] && addresss_list != undefined) {
@@ -69,7 +69,7 @@ class CustomerService {
 
                 }
             } catch (error) {
-                console.log("error " + error);
+                console.log("error3 " + error);
             }
             try {
                 if (entites_list != [] && entites_list != undefined) {
@@ -78,7 +78,7 @@ class CustomerService {
 
                 }
             } catch (error) {
-                console.log("error " + error);
+                console.log("error4 " + error);
             }
             try {
                 if (entity_rel_list != [] && entity_rel_list != undefined) {
@@ -88,13 +88,13 @@ class CustomerService {
 
                 }
             } catch (error) {
-                console.log("error " + error);
+                console.log("error5 " + error);
             }
 
             // await customerTable.sequelize.query(
             //     "INSERT INTO entities_customers (customer_id, entity_id) VALUES ?;", JSON.parse(entity_rel_list));
         } catch (error) {
-            console.log("error : " + error);
+            console.log("error6 : " + error);
         }
 
     }

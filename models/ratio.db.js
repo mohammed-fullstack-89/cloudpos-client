@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Ratio extends Model {
     static associate(models) {
       this.belongsToMany(models.company, {
-        as: 'variant_ratio',
+        as: 'company_ratio',
         through: models.company_ratios,
         foreignKey: 'ratio_id',
       })

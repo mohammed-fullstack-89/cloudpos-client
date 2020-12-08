@@ -27,9 +27,9 @@ class UtilityService {
 
             } else {
                 if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
-                    if (code.length > 1) {
+                    if (this.code.length > 1) {
                         // let items = [];
-                        BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems) => { barcode(searchedItems) }); `);
+                        BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems) }); `);
                         // this.mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${ JSON.stringify(code) }).then((searchedItems) => { barcode(searchedItems) }); `);
                         // const scaleIdentifierCode = code.substr(0, 2);
                         // const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);

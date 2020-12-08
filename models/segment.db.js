@@ -5,13 +5,14 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       this.belongsTo(models.variant, {
+        as: 'variant_segment',
         foreignKey: {
           field: 'variant_id', name: 'variantId',
         }
       });
 
       this.hasOne(models.stock, {
-        as: 'variant_segment',
+        as: 'stock',
         foreignKey: {
           field: 'segment_id',
           name: 'segment_id',

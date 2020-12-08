@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             });
 
             this.belongsTo(models.segment, {
-                as: 'variant_segment',
+
                 foreignKey: {
                     field: 'segment_id',
                     name: 'segment_id',
@@ -39,8 +39,8 @@ module.exports = (sequelize, DataTypes) => {
     Stock.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         qty: { type: DataTypes.BIGINT, allowNull: false, defaultValue: 0 },
-        manufacture_type: { type: DataTypes.ENUM('none',), allowNull: false },
-        qty_in: { type: DataTypes.ENUM('branch', 'store'), allowNull: false },
+        manufacture_type: { type: DataTypes.ENUM('one', 'multiple', 'none'), allowNull: true },
+        qty_in: { type: DataTypes.ENUM('branch', 'store'), defaultValue: 'branch', allowNull: false },
     },
         {
             sequelize,

@@ -44,9 +44,9 @@ module.exports = {
     },
     remoteZug: {
         production: false,
-        url: "https://987beb3111c7.ngrok.io",
-        protocol: 'https',
-        hostname: '987beb3111c7.ngrok.io"',
+        url: "http://711fd7558428.ngrok.io",
+        protocol: 'http',
+        hostname: '711fd7558428.ngrok.io',
         pathname: '',
     },
 }

@@ -25,7 +25,7 @@ module.exports = {
             devTools: true,
             // sandbox: true,
             webgl: false,
-            webSecurity: true,
+            webSecurity: false,
             nodeIntegrationInWorker: true,
             preload: __dirname + '/../renderer.js'
         }

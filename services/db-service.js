@@ -181,6 +181,16 @@ class DbStore {
             const saleTable = require('../repositories/sale-repo');
             const sales = await saleTable.getFailedSales();
             return sales;
+        });
+        ipc.handle('deleteSalesInvoice', async (event, ...args) => {
+            const saleTable = require('../repositories/sale-repo');
+            await saleTable.deleteSalesInvoice();
+
+        })
+        ipc.handle('updateSaleInvoice', async (event, ...args) => {
+            const saleTable = require('../repositories/sale-repo');
+            await saleTable.updateSaleInvoice();
+
         })
     }
 }
