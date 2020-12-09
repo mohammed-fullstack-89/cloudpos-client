@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "post-install": "electron-builder install-app-deps",
-    "rebuild-sqlite3-modules": "electron-rebuild -f -w sqlite3",
+    "rebuild": "electron-rebuild -f -w sqlite3",
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",

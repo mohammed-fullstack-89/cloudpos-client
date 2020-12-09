@@ -30,12 +30,12 @@ app.whenReady().then(() => {
 app.on('ready', async () => {
    tray = new Tray(__dirname + '/assets/icons/app.ico')
    windowManager.showSplash();
-   notificationService.showNotification(commons.APPNAME, 'initiating ...');
+   notificationService.showNotification(commons.APPNAME, 'Initiating ...');
    await db.setup().then(() => {
       // autoUpdater.checkForUpdates();
       windowManager.createAppWindow();
       windowManager.initTray(tray);
-      notificationService.showNotification(commons.APPNAME, 'app is ready :)');
+      notificationService.showNotification(commons.APPNAME, 'App is ready');
    }).catch((error) => {
       notificationService.showNotification(commons.APPNAME, 'Something went wrong initiating ...');
       console.log(`error : ${error}`);

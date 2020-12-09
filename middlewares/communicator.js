@@ -17,7 +17,6 @@ class CommunicatorMiddleware {
 
 
     async playSound(type) {
-        console.log("playing sound...");
         await ipc.invoke('playSound', type);
     }
     async searchCustomers(val) {
@@ -40,7 +39,6 @@ class CommunicatorMiddleware {
     }
 
     async searchItems(type, value, offset, limit) {
-        console.log("searchItems");
         const items = await ipc.invoke('searchItems', type, value, offset, limit);
         return items
     }
@@ -49,11 +47,7 @@ class CommunicatorMiddleware {
         return item
     }
 
-    // async playSound(audioPath, type) {
-    //     const audioFormat = '.mp3';
-    //     var audio = new Audio(`${decodeURI(audioPath)}\\error${audioFormat}`);
-    //     audio.play().catch(error => console.log("errror " + error));
-    // }
+
     async getScaleFromBarcode(value) {
         const scale = await ipc.invoke('getScaleFromBarcode', value);
         return scale
@@ -104,16 +98,14 @@ class CommunicatorMiddleware {
         return sales;
     }
     async getFailedSales() {
-        console.log("getFailedSales");
         const sales = await ipc.invoke('getFailedSales');
         return sales;
     }
-    async updateSaleInvoice(filter) {
+    async deleteSalesInvoice(filter) {
         const sales = await ipc.invoke('deleteSalesInvoice');
         return sales;
     }
-    async deleteSalesInvoice(invoice_number, status) {
-        console.log("getFailedSales");
+    async updateSaleInvoice(invoice_number, status) {
         const sales = await ipc.invoke('updateSaleInvoice', invoice_number, status);
         return sales;
     }

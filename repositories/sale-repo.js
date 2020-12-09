@@ -19,7 +19,6 @@ class SaleService {
                     }
                 });
                 if (!result) {
-                    console.log("created ")
                     await saleTable.create(saleObject);
                 }
                 else {

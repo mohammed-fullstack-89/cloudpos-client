@@ -16,7 +16,6 @@ class DbManager {
 
 
   async setup() {
-    console.log("db setup initilized ")
     const Sequelize = require('sequelize');
     return new Promise(async (resolve, reject) => {
       if (config.use_env_variable) {

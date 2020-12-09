@@ -29,6 +29,7 @@ class PrintHelper {
     }
 
     printDocument(html, copies) {
+        const mainPrinter = appStore.getValue("mainPrinter");
         notificationService.showNotification('Printing');
         if (mainPrinter !== "--choose Printer--") {
             for (let i = 1; i <= copies; i++) {
@@ -44,27 +45,32 @@ class PrintHelper {
 
                 printWindow.removeMenu();
                 printWindow.menu = null;
+
                 printWindow.loadURL("data:text/html;charset=utf-8," + html);
 
-                const options = { collate: false, silent: true, deviceName: appStore.getValue("mainPrinter"), copies: 1 }
+                const options = { collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: true, }
                 printWindow.webContents.on("did-finish-load", () => {
                     try {
                         printWindow.webContents.print(options, (success, errorType) => {
                             if (!success) {
                                 console.log("check printer");
                                 console.log(errorType);
-                                // printWindow.close()
-                            }
-                            else {
+                                printWindow.close();
+                                this.notificationService.showNotification('Printing error : ', errorType);
+
+                            } else {
                                 console.log("success");
                                 console.log(errorType);
-                                // printWindow.close()
+                                printWindow.close();
+                                this.notificationService.showNotification('Printing :', 'Success');
 
                             }
                         }, (failureReason, errorType) => {
                             if (!failureReason == null || failureReason == '') {
                                 console.log("fail..unknown reason")
                                 console.log("error : " + errorType + " reason : " + failureReason)
+                                this.notificationService.showNotification('Printing error : ', failureReason)
+
                             }
                             else {
                                 console.log("fail..")
@@ -74,7 +80,7 @@ class PrintHelper {
                     } catch (error) {
                         console.log("error : " + error);
                     } finally {
-                        printWindow.close()
+
                     }
                 })
             }
@@ -82,7 +88,6 @@ class PrintHelper {
     }
     openDrawer() {
         const mainPrinter = appStore.getValue("mainPrinter");
-        console.log("mainPrinter" + mainPrinter)
         if (mainPrinter !== "--choose Printer--") {
             printer.printDirect({
                 data: '\x10\x14\x01\x00\x05'
@@ -90,6 +95,7 @@ class PrintHelper {
                 , type: 'RAW' // type: RAW, TEXT, PDF, JPEG, .. depends on platform
                 , success: function (jobID) {
                     console.log("sent to printer with ID: " + jobID);
+                    this.notificationService.showNotification('Cash drawer', 'opening cash drawer complete')
                 }
                 , error: function (err) { console.log(err); }
             });

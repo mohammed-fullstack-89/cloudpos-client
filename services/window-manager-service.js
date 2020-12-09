@@ -157,9 +157,9 @@ class InitializerService {
                     {
                         role: 'reload'
                     },
-                    {
-                        role: 'toggledevtools'
-                    },
+                    // {
+                    //     role: 'toggledevtools'
+                    // },
                     {
                         type: 'separator'
                     },
@@ -229,7 +229,7 @@ class InitializerService {
         //    slashes: true,
         //    pathname: enviroment.maestro.pathname
         // }))
-        this.mainWindow.loadURL(enviroment.remoteZug.url);
+        this.mainWindow.loadURL(enviroment.development.url);
         // this.mainWindow.webContents.executeJavaScript(`let sound = new Audio('file: //' + './assets/audio/error.mp3');
         // sound.play();`);
 
