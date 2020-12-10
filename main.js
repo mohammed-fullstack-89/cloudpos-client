@@ -4,6 +4,7 @@ const windowManager = require('./services/window-manager-service')
 const notificationService = require('./services/notification-service');
 const { app, BrowserWindow, Tray, autoUpdater, dialog } = require('electron');
 const commons = require('./commons');
+const { APPNAME } = require('./commons');
 
 let tray = null;
 
@@ -28,16 +29,17 @@ app.whenReady().then(() => {
    require('./services/index');
 })
 app.on('ready', async () => {
+   app.setAppUserModelId(APPNAME)
    tray = new Tray(__dirname + '/assets/icons/app.ico')
    windowManager.showSplash();
-   notificationService.showNotification(commons.APPNAME, 'Initiating ...');
+   notificationService.showNotification('App Initiating', 'app is loading important data ...');
    await db.setup().then(() => {
       // autoUpdater.checkForUpdates();
       windowManager.createAppWindow();
       windowManager.initTray(tray);
-      notificationService.showNotification(commons.APPNAME, 'App is ready');
+      notificationService.showNotification('App is ready', 'app has successfully initiated');
    }).catch((error) => {
-      notificationService.showNotification(commons.APPNAME, 'Something went wrong initiating ...');
+      notificationService.showNotification('Error', 'Something went wrong initiating,please contact the support team. ');
       console.log(`error : ${error}`);
    });
 });

@@ -4,9 +4,9 @@ const commons = require('../commons');
 class NotificationService {
 
 
-    showNotification(messageTitle = '', messageBody) {
+    showNotification(messageTitle, messageBody) {
         const notificationPayload = {
-            title: commons.APPNAME,
+            title: messageTitle,
             body: messageBody,
             icon: __dirname + '/../assets/icons/app.ico',
             subtitle: 'app notification'
