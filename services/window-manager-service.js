@@ -3,9 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const enviroment = require('../enviroment');
 const customContextMenu = require('../components/menu/context_menu');
-const { app, BrowserWindow, Menu, dialog } = require('electron');
+const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const utility = require('./utility-service');
-const { electron } = require('process');
 class InitializerService {
 
     constructor() {
@@ -22,37 +21,21 @@ class InitializerService {
             {
                 label: 'Clear data',
                 click: () => {
-                    const clearAppDataMessage = 'are you sure ?';
+                    const clearAppDataMessage = 'Are you sure ?';
                     dialog.showMessageBox({
                         type: 'warning',
                         buttons: ['YES', 'NO'],
                         defaultId: 0,
-                        message: 'Are you sure',
+                        message: 'Clear data',
                         detail: clearAppDataMessage
                     }).then((dialogRes) => {
-                        // const getAppPath = path.join(app.getPath('appData'), app.getName());
-                        // console.log("getAppPath " + getAppPath);
+
                         if (dialogRes.response === 0) {
 
                             this.this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                             this.this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                             this.this.mainWindow.webContents.executeJavaScript("window.location.reload()");
 
-                            // app.relaunch();
-                            // app.exit()
-                            // fs.unlinkSync(getAppPath, () => {
-                            //     fs.rmdir(getAppPath, {
-                            //         recursive: false,
-                            //     }, (error) => {
-                            //         if (error) {
-                            //             console.log(error);
-                            //         }
-                            //         else {
-                            //             console.log("Non Recursive: Directories Deleted!");
-                            //         }
-                            //     });
-                            // });
-                            // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
                         }
 
                     })
@@ -87,12 +70,12 @@ class InitializerService {
                     {
                         label: 'Clear data',
                         click: () => {
-                            const clearAppDataMessage = 'are you sure ?';
+                            const clearAppDataMessage = 'Are you sure ?';
                             dialog.showMessageBox({
                                 type: 'warning',
                                 buttons: ['YES', 'NO'],
                                 defaultId: 0,
-                                message: 'Are you sure',
+                                message: 'Clear Data',
                                 detail: clearAppDataMessage
                             }).then((dialogRes) => {
                                 const getAppPath = path.join(app.getPath('appData'), app.getName());
@@ -100,20 +83,19 @@ class InitializerService {
                                     this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("window.location.reload()");
-                                    fs.unlinkSync(getAppPath, () => {
-                                        fs.rmdir(getAppPath, {
-                                            recursive: true,
-                                        }, (error) => {
-                                            if (error) {
-                                                console.log(error);
-                                            }
-                                            else {
-                                                console.log("Non Recursive: Directories Deleted!");
-                                            }
-                                        });
-                                    });
+                                    // fs.unlinkSync(getAppPath, () => {
+                                    //     fs.rmdir(getAppPath, {
+                                    //         recursive: true,
+                                    //     }, (error) => {
+                                    //         if (error) {
+                                    //             console.log(error);
+                                    //         }
+                                    //         else {
+                                    //             console.log("Non Recursive: Directories Deleted!");
+                                    //         }
+                                    //     });
+                                    // });
 
-                                    // setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
                                 }
 
                             })
@@ -196,12 +178,10 @@ class InitializerService {
                 role: 'help',
                 submenu: [
                     {
-                        label: 'Learn More',
+                        label: 'Remote Assistance',
                         click() {
-                            // const p = encodeURI(path.win32.normalize(path.join(__dirname, '/assets/audio')));
-                            // console.log(p);
-                            // shell.openExternal('http://Rubikomm.com')
-                            // this.mainWindow.webContents.executeJavaScript(`obj.playSound('${p}', 'error')`);
+
+                            shell.openExternal('https://download.anydesk.com/AnyDesk.exe')
 
                         }
 
@@ -223,56 +203,9 @@ class InitializerService {
             callback(true);
         });
 
-        // this.mainWindow.loadURL(url.format({
-        //    hostname: enviroment.maestro.hostname,
-        //    protocol: 'https',
-        //    slashes: true,
-        //    pathname: enviroment.maestro.pathname
-        // }))
-        this.mainWindow.loadURL(enviroment.development.url);
-        // this.mainWindow.webContents.executeJavaScript(`let sound = new Audio('file: //' + './assets/audio/error.mp3');
-        // sound.play();`);
-
+        this.mainWindow.loadURL(enviroment.maestro.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
-            // if (input.type == 'keyDown') {
-            //     const currentTime = Date.now();
-            //     let cal = currentTime - lastKeyTime;
-            //     if (currentTime - lastKeyTime > 500) {
-            //         code = "";
-            //     }
-            //     if (input.code == "ShiftLeft" || input.code == "ShiftRight") {
-
-            //     } else {
-
-            //         if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
-            //             if (code.length > 1) {
-            //                 // let items = [];
-            //                 this.mainWindow.webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(code)}).then((searchedItems)=>{barcode(searchedItems)});`);
-            //                 // this.mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
-            //                 // const scaleIdentifierCode = code.substr(0, 2);
-            //                 // const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);
-            //                 // if (scale !== undefined) {
-            //                 //    const scaleObject = JSON.parse(scale);
-            //                 //    end = scaleObject.number_of_digits;
-            //                 //    const trimmedCode = code.substr(0, code.length - end);
-            //                 //    // const item = await item_service.getItemFromScale(JSON.stringify(scale), code);
-            //                 //    this.mainWindow.webContents.executeJavaScript(`obj.getItemFromScale(${JSON.stringify(scale)},${trimmedCode}).then((item)=>{barcode(item,${code})});`);
-            //                 // } else {
-            //                 // this.mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(code)} ).then((searchedItems)=>{barcode(searchedItems)});`);
-
-            //                 // }
-
-            //                 code = "";
-            //             }
-            //         } else {
-            //             code += input.key
-
-            //         }
-            //     }
-            //     lastKeyTime = currentTime;
-
-            // }
 
         });
         this.hideSplash();
@@ -295,13 +228,12 @@ class InitializerService {
                 devTools: false,
                 nodeIntegration: true,
             },
-            // backgroundColor: '#2e2c29' 
+
         });
 
         settingsWindow.removeMenu();
         settingsWindow.menu = null;
         settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
-        // win.loadFile(path.join(rootPath, 'windows/settings/settings.html'));
 
     }
 

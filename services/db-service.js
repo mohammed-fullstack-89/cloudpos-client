@@ -189,7 +189,7 @@ class DbStore {
         })
         ipc.handle('updateSaleInvoice', async (event, ...args) => {
             const saleTable = require('../repositories/sale-repo');
-            await saleTable.updateSaleInvoice();
+            await saleTable.updateSaleInvoice(args[0], args[1]);
 
         })
     }

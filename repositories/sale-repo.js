@@ -77,7 +77,11 @@ class SaleService {
     }
     async updateSaleInvoice(invoice_number, status) {
         const saleTable = db.model("sale");
-        const result = await saleTable.upsert({ invoice_number, status });
+        await saleTable.update({ invoice_number: invoice_number, status: status }, {
+            where: {
+                invoice_number: invoice_number
+            }
+        });
     }
 
 }

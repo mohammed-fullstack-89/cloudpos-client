@@ -30,7 +30,7 @@ class PrintHelper {
 
     printDocument(html, copies) {
         const mainPrinter = appStore.getValue("mainPrinter");
-        notificationService.showNotification('Printing', `using ${mainPrinter}`);
+        // notificationService.showNotification('Printing', `using ${mainPrinter}`);
         if (mainPrinter !== "--choose Printer--") {
             for (let i = 1; i <= copies; i++) {
                 let printWindow = new BrowserWindow({

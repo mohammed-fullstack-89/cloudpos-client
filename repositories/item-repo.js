@@ -426,9 +426,7 @@ class ItemService {
 
         } catch (error) {
             console.log("error " + error);
-        } finally {
-            console.log("settings item end")
-        }
+        } finally { }
     }
 }
 

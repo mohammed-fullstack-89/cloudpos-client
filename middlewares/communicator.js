@@ -101,7 +101,7 @@ class CommunicatorMiddleware {
         const sales = await ipc.invoke('getFailedSales');
         return sales;
     }
-    async deleteSalesInvoice(filter) {
+    async deleteSalesInvoice() {
         const sales = await ipc.invoke('deleteSalesInvoice');
         return sales;
     }
