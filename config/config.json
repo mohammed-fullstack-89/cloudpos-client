@@ -3,7 +3,7 @@
     "dialect": "sqlite",
     "storage": "./pos.sqlite3",
     "pool": {
-      "max": 500,
+      "max": 1000,
       "min": 0,
       "idle": 10000
     },
@@ -17,7 +17,7 @@
     "dialect": "sqlite",
     "storage": "./pos.sqlite3",
     "pool": {
-      "max": 500,
+      "max": 1000,
       "min": 0,
       "idle": 10000
     },

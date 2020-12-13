@@ -139,9 +139,9 @@ class InitializerService {
                     {
                         role: 'reload'
                     },
-                    // {
-                    //     role: 'toggledevtools'
-                    // },
+                    {
+                        role: 'toggledevtools'
+                    },
                     {
                         type: 'separator'
                     },

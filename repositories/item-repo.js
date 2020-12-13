@@ -307,8 +307,20 @@ class ItemService {
             const itemSupplierTable = db.model("variant_suppliers");
 
             try {
+                await scaleTable.destroy({   truncate: false,where: {}, });
+                await variantTable.destroy({   truncate: false,where: {}, });
+                await taxTable.destroy({   truncate: false,where: {}, });
+                await supplierTable.destroy({   truncate: false,where: {},});
+                await segmentTable.destroy({   truncate: false,where: {}, });
+                await serialTable.destroy({   truncate: false,where: {}, });
+                await priceTable.destroy({   truncate: false,where: {}, });
+                await itemAlternativeTable.destroy({   truncate: false,where: {}, });
+                await itemCategoriesTable.destroy({   truncate: false,where: {}, });
+                await itemSupplierTable.destroy({   truncate: false,where: {},});
+                await itemTaxesTable.destroy({   truncate: false,where: {}, });
+                await stockTable.destroy({   truncate: false,where: {}, });
+
                 if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
-                    await scaleTable.destroy({ truncate: true })
                     await scaleTable.bulkCreate(scaleBarcodeList);
                 }
             } catch (error) {
@@ -317,7 +329,6 @@ class ItemService {
             try {
                 if (itemsInfo != [] && itemsInfo != undefined) {
 
-                    await variantTable.destroy({ truncate: true });
                     await variantTable.bulkCreate(itemsInfo);
                     //     , {
 
@@ -344,7 +355,6 @@ class ItemService {
 
             try {
                 if (taxesList != [] && taxesList != undefined) {
-                    await taxTable.destroy({ truncate: true })
                     await taxTable.bulkCreate(taxesList);
                 }
             } catch (error) {
@@ -352,7 +362,6 @@ class ItemService {
             }
             try {
                 if (suppliersList != [] && suppliersList != undefined) {
-                    await supplierTable.destroy({ truncate: true })
                     await supplierTable.bulkCreate(suppliersList);
 
                 }
@@ -361,7 +370,6 @@ class ItemService {
             }
             try {
                 if (segmantsList != [] && segmantsList != undefined) {
-                    await segmentTable.destroy({ truncate: true })
                     await segmentTable.bulkCreate(segmantsList);
                 }
             } catch (error) {
@@ -369,7 +377,6 @@ class ItemService {
             }
             try {
                 if (serialsList != [] && serialsList != undefined) {
-                    await serialTable.destroy({ truncate: true })
                     await serialTable.bulkCreate(serialsList);
                 }
             } catch (error) {
@@ -377,7 +384,6 @@ class ItemService {
             }
             try {
                 if (pricesList != [] && pricesList != undefined) {
-                    await priceTable.destroy({ truncate: true })
                     await priceTable.bulkCreate(pricesList);
                 }
             } catch (error) {
@@ -385,7 +391,6 @@ class ItemService {
             }
             try {
                 if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
-                    await itemAlternativeTable.destroy({ truncate: true })
                     await itemAlternativeTable.bulkCreate(itemAlternativesRel);
                 }
             } catch (error) {
@@ -393,7 +398,6 @@ class ItemService {
             }
             try {
                 if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
-                    await itemCategoriesTable.destroy({ truncate: true })
                     await itemCategoriesTable.bulkCreate(itemCategoriesRel);
                 }
             } catch (error) {
@@ -401,7 +405,6 @@ class ItemService {
             }
             try {
                 if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
-                    await itemSupplierTable.destroy({ truncate: true })
                     await itemSupplierTable.bulkCreate(suppliersItemsRelation);
                 }
             } catch (error) {
@@ -409,7 +412,6 @@ class ItemService {
             }
             try {
                 if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
-                    await itemTaxesTable.destroy({ truncate: true });
                     await itemTaxesTable.bulkCreate(taxesItemsRelation);
                 }
             } catch (error) {
@@ -417,7 +419,6 @@ class ItemService {
             }
             try {
                 if (itemStockslist != [] && itemStockslist != undefined) {
-                    await stockTable.destroy({ truncate: true });
                     await stockTable.bulkCreate(itemStockslist);
                 }
             } catch (error) {

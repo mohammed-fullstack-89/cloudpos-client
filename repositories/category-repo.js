@@ -21,9 +21,12 @@ class CategoriesService {
         return categories;
     }
 
-    setCategories(categoriesList) {
+    async setCategories(categoriesList) {
         let categoryTable = db.model("category");
-        categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
+        await categoryTable.destroy({ truncate: true });
+        categoryTable.bulkCreate(JSON.parse(categoriesList));
+
+        // categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
     }
 
 

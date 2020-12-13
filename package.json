@@ -1,7 +1,7 @@
 {
-  "name": "MaestroPos",
-  "productName": "MaestroPos",
-  "version": "1.0.0",
+  "name": "ZUG",
+  "productName": "ZUG",
+  "version": "1.0.10",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -17,7 +17,7 @@
   },
   "build": {
     "electronVersion": "8.5.3",
-    "appId": "com.rubikomm.maestropos",
+    "appId": "com.rubikomm.stagingpos",
     "directories": {
       "buildResources": "resources",
       "output": "packages"

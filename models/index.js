@@ -41,7 +41,7 @@ class DbManager {
       this.db.sequelize = this.sequelize;
       this.db.Sequelize = Sequelize;
       this.db.sequelize.authenticate().then(async () => {
-        this.db.sequelize.sync({ force: false }).catch((error) => {
+        this.db.sequelize.sync({ force: true }).catch((error) => {
           console.log("error : ! " + error);
         }).then(() => {
           resolve("done");
