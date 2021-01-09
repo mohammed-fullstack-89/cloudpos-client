@@ -12,21 +12,21 @@ module.exports = (sequelize, DataTypes) => {
     };
     VariantCategory.init({
         // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        variant_id: {
+        item_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
             references: {
                 model: 'variant',
                 key: 'id'
             },
-            unique: 'unique-genre-per-variant'
+            // unique: 'unique-genre-per-variant'
         },
         category_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'category',
                 key: 'id'
             },
-            unique: 'unique-genre-per-category'
+            // unique: 'unique-genre-per-category'
         },
     }, {
         sequelize,

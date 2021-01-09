@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'item_suppliers',
         through: models.variant_suppliers,
         foreignKey: 'supplier_id',
-        otherKey: { name: 'variant_id', field: 'item_id' },
+        otherKey: { name: 'item_id', field: 'item_id' },
       })
     }
   };

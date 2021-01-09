@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     CompanyRatio.init({
-        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
+        // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         company_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
@@ -20,14 +20,14 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             },
 
-            unique: 'unique-genre-per-company'
+            // unique: 'unique-genre-per-company'
         },
         ratio_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'ratio',
                 key: 'id'
             },
-            unique: 'unique-genre-per-ratio'
+            // unique: 'unique-genre-per-ratio'
         },
     }, {
         sequelize,

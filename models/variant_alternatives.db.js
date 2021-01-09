@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             VariantAlternative.belongsTo(models.variant, { foreignKey: 'item_id', targetKey: 'id' });
-            VariantAlternative.belongsTo(models.variant, { foreignKey: 'alternative_id', targetKey: 'id' });
+            VariantAlternative.belongsTo(models.variant, { foreignKey: 'item_id', targetKey: 'id' });
 
         }
     };
     VariantAlternative.init({
         // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        variant_id: {
+        item_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
             references: {
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-variant'
+            // unique: 'unique-genre-per-variant'
         },
         alternative_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-alternative'
+            // unique: 'unique-genre-per-alternative'
         },
     }, {
         sequelize,

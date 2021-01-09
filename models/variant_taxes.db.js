@@ -12,20 +12,20 @@ module.exports = (sequelize, DataTypes) => {
     };
     VariantTax.init({
         // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        variant_id: {
+        item_id: {
             type: DataTypes.BIGINT, allowNull: false,
             references: {
                 model: 'variant',
                 key: 'id'
             },
-            unique: 'unique-genre-per-variant'
+            // unique: 'unique-genre-per-variant'
         },
         tax_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'tax',
                 key: 'id'
             },
-            unique: 'unique-genre-per-tax'
+            // unique: 'unique-genre-per-tax'
         },
     }, {
         sequelize,

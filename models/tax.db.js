@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'variant_tax',
         through: models.variant_taxes,
         foreignKey: 'tax_id',
-        otherKey: { name: 'variant_id', field: 'item_id' },
+        otherKey: { name: 'item_id', field: 'item_id' },
 
 
       })

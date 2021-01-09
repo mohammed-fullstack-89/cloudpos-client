@@ -13,20 +13,20 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     CompanyTerms.init({
-        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
+        // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         company_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'company',
                 key: 'id'
             },
-            unique: 'unique-genre-per-company'
+            // unique: 'unique-genre-per-company'
         },
         term_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'term',
                 key: 'id'
             },
-            unique: 'unique-genre-per-term'
+            // unique: 'unique-genre-per-term'
         },
 
     }, {

@@ -7,31 +7,38 @@ module.exports = (sequelize, DataTypes) => {
         as: 'item_suppliers',
         through: models.variant_suppliers,
         foreignKey: 'item_id',
+        otherKey: { name: 'supplier_id', field: 'supplier_id' },
       })
 
       this.belongsToMany(models.tax, {
         as: 'variant_tax',
         through: models.variant_taxes,
         foreignKey: 'item_id',
+        foreignKey: 'item_id',
+        otherKey: { name: 'tax_id', field: 'tax_id' },
+    
 
       })
       this.belongsToMany(models.variant, {
         as: 'items',
         through: models.variant_alternatives,
         foreignKey: 'alternative_id',
-        otherKey: { name: 'variant_id', field: 'item_id' },
+        otherKey: { name: 'item_id', field: 'item_id' },
 
       })
       this.belongsToMany(models.variant, {
         as: 'alternatives',
         through: models.variant_alternatives,
         foreignKey: 'item_id',
+        otherKey: { name: 'alternative_id',field: 'alternative_id' },
       })
 
       this.belongsToMany(models.category, {
         as: 'variant_item_categories',
         through: models.variant_categories,
         foreignKey: 'item_id',
+        otherKey: { name: 'category_id', field: 'category_id' },
+
       })
 
       this.belongsTo(models.scale, {

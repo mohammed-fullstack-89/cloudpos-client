@@ -20,7 +20,7 @@ class ItemService {
         let offset = args[2];
         let filter = (parentId != null && parentId != undefined) ?
             {
-                id: parentId
+                id: parentId,
             } : null;
 
         items = await variantTable.findAll({
@@ -44,18 +44,18 @@ class ItemService {
                 },
                 { model: db.model('serial'), as: 'variant_serials' },
                 { model: db.model('tax'), as: 'variant_tax' },
-                {
-                    model: db.model('category'), as: 'variant_item_categories', where: filter
-                },
+                { model: db.model('category'), as: 'variant_item_categories', where: filter, },
                 { model: db.model('supplier'), as: 'item_suppliers' },
 
             ],
 
             offset: offset,
-            limit: limit
+            limit: limit,
+
         });
 
         items = JSON.stringify(items);
+
         return items;
     }
 
@@ -292,7 +292,8 @@ class ItemService {
             // let itemCategoriesRel = args[10];
             // let scaleBarcodeList = args[11];
             // let itemStockslist = args[12];
-
+            // console.log("taxesItemsRelation : " + JSON.stringify(taxesItemsRelation));
+     
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
@@ -306,19 +307,20 @@ class ItemService {
             const itemTaxesTable = db.model("variant_taxes");
             const itemSupplierTable = db.model("variant_suppliers");
 
+
             try {
-                await scaleTable.destroy({   truncate: false,where: {}, });
-                await variantTable.destroy({   truncate: false,where: {}, });
-                await taxTable.destroy({   truncate: false,where: {}, });
-                await supplierTable.destroy({   truncate: false,where: {},});
-                await segmentTable.destroy({   truncate: false,where: {}, });
-                await serialTable.destroy({   truncate: false,where: {}, });
-                await priceTable.destroy({   truncate: false,where: {}, });
-                await itemAlternativeTable.destroy({   truncate: false,where: {}, });
-                await itemCategoriesTable.destroy({   truncate: false,where: {}, });
-                await itemSupplierTable.destroy({   truncate: false,where: {},});
-                await itemTaxesTable.destroy({   truncate: false,where: {}, });
-                await stockTable.destroy({   truncate: false,where: {}, });
+                await scaleTable.destroy({ truncate: false, where: {}, });
+                await variantTable.destroy({ truncate: false, where: {}, });
+                await taxTable.destroy({ truncate: false, where: {}, });
+                await supplierTable.destroy({ truncate: false, where: {}, });
+                await segmentTable.destroy({ truncate: false, where: {}, });
+                await serialTable.destroy({ truncate: false, where: {}, });
+                await priceTable.destroy({ truncate: false, where: {}, });
+                await itemAlternativeTable.destroy({ truncate: false, where: {}, });
+                await itemCategoriesTable.destroy({ truncate: false, where: {}, });
+                await itemSupplierTable.destroy({ truncate: false, where: {}, });
+                await itemTaxesTable.destroy({ truncate: false, where: {}, });
+                await stockTable.destroy({ truncate: false, where: {}, });
 
                 if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
                     await scaleTable.bulkCreate(scaleBarcodeList);
@@ -429,6 +431,8 @@ class ItemService {
             console.log("error " + error);
         } finally { }
     }
+
+
 }
 
 

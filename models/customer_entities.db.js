@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     CustomerEntity.init({
-        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
+        // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         customer_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
@@ -21,14 +21,14 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             },
 
-            unique: 'unique-genre-per-customer'
+            // unique: 'unique-genre-per-customer'
         },
         entity_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'entity',
                 key: 'id'
             },
-            unique: 'unique-genre-per-entity'
+            // unique: 'unique-genre-per-entity'
         },
     }, {
         sequelize,

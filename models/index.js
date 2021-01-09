@@ -16,13 +16,15 @@ class DbManager {
 
 
   async setup() {
+
+
     const Sequelize = require('sequelize');
     return new Promise(async (resolve, reject) => {
       if (config.use_env_variable) {
         this.sequelize = new Sequelize(process.env[config.use_env_variable], config);
       } else {
         this.sequelize = new Sequelize(config.database, config.username, config.password, config);
-      }
+        }
 
       fs.readdirSync(__dirname)
         .filter(file => {

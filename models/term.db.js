@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'company_terms',
         through: models.company_term,
         foreignKey: 'term_id',
+        otherKey:'company_id'
       });
     }
   };

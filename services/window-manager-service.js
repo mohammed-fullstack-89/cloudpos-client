@@ -203,7 +203,7 @@ class InitializerService {
             callback(true);
         });
 
-        this.mainWindow.loadURL(enviroment.maestro.url);
+        this.mainWindow.loadURL(enviroment.development.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
 

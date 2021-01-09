@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     };
     VariantSupplier.init({
         // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        variant_id: {
+        item_id: {
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
             references: {
@@ -21,14 +21,14 @@ module.exports = (sequelize, DataTypes) => {
             },
             // onDelete: 'cascade',
             // onUpdate: 'cascade',
-            unique: 'unique-genre-per-variant'
+            // unique: 'unique-genre-per-variant'
         },
         supplier_id: {
             type: DataTypes.BIGINT, allowNull: false, references: {
                 model: 'supplier',
                 key: 'id'
             },
-            unique: 'unique-genre-per-supplier'
+            // unique: 'unique-genre-per-supplier'
         },
     }, {
         sequelize,

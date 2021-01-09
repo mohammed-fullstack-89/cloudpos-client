@@ -9,11 +9,14 @@ module.exports = (sequelize, DataTypes) => {
         as: 'company_ratio',
         through: models.company_ratios,
         foreignKey: 'company_id',
+         otherKey: { name: 'ratio_id', field: 'ratio_id' },
+
       });
       this.belongsToMany(models.term, {
         as: 'company_terms',
         through: models.company_term,
         foreignKey: 'company_id',
+        otherKey: { name: 'term_id', field: 'term_id' },
       });
 
     }
