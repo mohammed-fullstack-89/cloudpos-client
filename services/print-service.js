@@ -29,6 +29,7 @@ class PrintHelper {
     }
 
     printDocument(html, copies) {
+        // console.log("html" + html);
         const mainPrinter = appStore.getValue("mainPrinter");
         // notificationService.showNotification('Printing', `using ${mainPrinter}`);
         if (mainPrinter !== "--choose Printer--") {
@@ -37,16 +38,23 @@ class PrintHelper {
                     webPreferences: {
                         javascript: false,
                         contextIsolation: true,
+
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: false,
-                    show: false,
+                    show: true,
                 });
 
                 printWindow.removeMenu();
                 printWindow.menu = null;
                 printWindow.loadURL("data:text/html;charset=utf-8," + html);
-
+                const fs = require('fs');
+                fs.writeFile("receipt.txt", html, function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    console.log("The file was saved!");
+                });
                 const options = { collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: true, }
                 printWindow.webContents.on("did-finish-load", () => {
                     try {
@@ -55,7 +63,7 @@ class PrintHelper {
                                 console.log("check printer");
                                 console.log(errorType);
                                 printWindow.close();
-                                this.notificationService.showNotification('Printing Error : ', errorType);
+                                notificationService.showNotification('Printing Error : ', errorType);
 
                             } else {
                                 console.log("success");
@@ -65,7 +73,7 @@ class PrintHelper {
                             }
                         }, (failureReason, errorType) => {
                             if (!failureReason == null || !failureReason == '') {
-                                this.notificationService.showNotification('Printing Error: ', failureReason)
+                                notificationService.showNotification('Printing Error: ', failureReason)
                             }
                             else {
                                 console.log(errorType)
@@ -91,7 +99,7 @@ class PrintHelper {
                     console.log("sent to printer with ID: " + jobID);
 
                 }
-                , error: function (err) { this.notificationService.showNotification('cash drawer', 'Failed opening cash drawer . please check if the cash drawer is connected to the printer .'); console.log(err); }
+                , error: function (err) { notificationService.showNotification('cash drawer', 'Failed opening cash drawer . please check if the cash drawer is connected to the printer .'); console.log(err); }
             });
 
         }

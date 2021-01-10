@@ -93,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
     min_order: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), allowNull: true },
     discount_value: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    max_discoun: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    max_discount: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     commission_type: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     commission_value: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     commission_base_on: { type: DataTypes.STRING, defualtValue: null, allowNull: true },

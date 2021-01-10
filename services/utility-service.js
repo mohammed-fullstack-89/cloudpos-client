@@ -13,6 +13,7 @@ class UtilityService {
     }
 
     playSound(type) {
+        console.log("type" + type);
         const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/${type}.mp3`;
         BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`new Audio('${dir}').play();`);
     }

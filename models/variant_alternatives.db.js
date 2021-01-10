@@ -16,8 +16,13 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     VariantAlternative.init({
+<<<<<<< HEAD
         // id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         item_id: {
+=======
+        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
+        variant_id: {
+>>>>>>> ..
             type: DataTypes.BIGINT, allowNull: false, primaryKey: false,
 
             references: {

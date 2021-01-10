@@ -22,6 +22,7 @@ class ItemService {
             {
                 id: parentId,
             } : null;
+        console.log("parentId" + parentId)
 
         items = await variantTable.findAll({
             where: {
@@ -60,74 +61,74 @@ class ItemService {
     }
 
     async updateSerialQty(args) {
-        try{
-        const id = args[0];
-        const serial_qty = args[0];
-        const serialTable = db.model('serial');
-        await serialTable.update({ serial_qty }, {
-            where: {
-                id
-            }
-        });
-        return true;
-    }catch(ex){
-        return false;
-    }
+        try {
+            const id = args[0];
+            const serial_qty = args[0];
+            const serialTable = db.model('serial');
+            await serialTable.update({ serial_qty }, {
+                where: {
+                    id
+                }
+            });
+            return true;
+        } catch (ex) {
+            return false;
+        }
 
     }
     async searchBarcode(args) {
-try{
-        console.log("search");
-        const code = args[0];
+        try {
+            console.log("search");
+            const code = args[0];
 
-        let item = [];
-        if (code == '' || code == null || code == undefined) {
-            item = [];
-            return item;
-        }
-        else {
+            let item = [];
+            if (code == '' || code == null || code == undefined) {
+                item = [];
+                return item;
+            }
+            else {
 
-            let variantTable = db.model('variant');
+                let variantTable = db.model('variant');
 
-            item = await variantTable.findAll({
-                where: {
-                   
-                    // show_in_sale_screen: 1
-                    [db.Seq().Op.or]: {
-                        barcode: code,
-                        '$variant_serials.serial$': code
-                     }
-                },
+                item = await variantTable.findAll({
+                    where: {
 
-                include: [
-                    {
-                        model: db.model('stock'), as: 'stock', include: [
-                            { model: db.model('price'), as: 'variant_price', }]
-                    },
-
-                    {
-                        model: db.model('segment'), as: 'variant_segment', include: [{
-                            model: db.model('stock'), as: 'stock'
+                        // show_in_sale_screen: 1
+                        [db.Seq().Op.or]: {
+                            barcode: code,
+                            '$variant_serials.serial$': code
                         }
-                        ]
-
                     },
-                    { model: db.model('serial'), as: 'variant_serials' },
-                    { model: db.model('tax'), as: 'variant_tax' },
-                    {
-                        model: db.model('category'), as: 'variant_item_categories'
-                    },
-                    { model: db.model('supplier'), as: 'item_suppliers' },
 
-                ],
+                    include: [
+                        {
+                            model: db.model('stock'), as: 'stock', include: [
+                                { model: db.model('price'), as: 'variant_price', }]
+                        },
 
-            });
-            item = JSON.stringify(item);
-            return item;
+                        {
+                            model: db.model('segment'), as: 'variant_segment', include: [{
+                                model: db.model('stock'), as: 'stock'
+                            }
+                            ]
+
+                        },
+                        { model: db.model('serial'), as: 'variant_serials' },
+                        { model: db.model('tax'), as: 'variant_tax' },
+                        {
+                            model: db.model('category'), as: 'variant_item_categories'
+                        },
+                        { model: db.model('supplier'), as: 'item_suppliers' },
+
+                    ],
+
+                });
+                item = JSON.stringify(item);
+                return item;
+            }
+        } catch (ex) {
+            console.log("ex " + ex);
         }
-    }catch(ex){
-        console.log("ex "+ex);
-    }
     }
 
     async searchItems(args) {
@@ -284,6 +285,7 @@ try{
     }
     async setItems(args) {
         try {
+
             const { 0: itemsInfo, 1: serialsList,
                 2: pricesList, 3: segmantsList, 4: suppliersList,
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
@@ -333,119 +335,176 @@ try{
                 await itemTaxesTable.destroy({ truncate: false, where: {}, });
                 await stockTable.destroy({ truncate: false, where: {}, });
 
-                if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
-                    await scaleTable.bulkCreate(scaleBarcodeList);
-                }
-            } catch (error) {
-                console.log("scaleBarcodeList error : " + error);
-            }
-            try {
-                if (itemsInfo != [] && itemsInfo != undefined) {
+                await itemAlternativeTable.destroy({
+                    where: {},
+                    truncate: false
+                })
+                await itemCategoriesTable.destroy({
+                    where: {},
+                    truncate: false
+                })
+                await itemSupplierTable.destroy({
+                    where: {},
+                    truncate: false
+                })
+                await itemTaxesTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await stockTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await scaleTable.destroy({
+                    where: {},
+                    truncate: false
+                })
+                await taxTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await supplierTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await segmentTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await serialTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await priceTable.destroy({
+                    where: {},
+                    truncate: false
+                });
+                await variantTable.destroy({
+                    where: {},
+                    truncate: false
+                });
 
-                    await variantTable.bulkCreate(itemsInfo);
-                    //     , {
 
-                    //     include: [
-                    //         { model: db.model('price'), as: 'variant_price', },
-                    //         { model: db.model('segment'), as: 'variant_segment' },
-                    //         {
-                    //             model: db.model('serial'), as: 'variant_serials',
+                try {
+                    if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
+                        await scaleTable.bulkCreate(scaleBarcodeList);
+                    }
+                } catch (error) {
+                    console.log("scaleBarcodeList error : " + error);
+                }
+                try {
+                    if (itemsInfo != [] && itemsInfo != undefined) {
 
-                    //         },
-                    //         { model: db.model('tax'), as: 'variant_tax' },
-                    //         { model: db.model('category'), as: 'variant_item_categories' },
-                    //         { model: db.model('supplier'), as: 'item_suppliers' },
-                    //         { model: scaleTable, as: 'variant_scale_barcode', ignoreDuplicates: true },
+                        await variantTable.bulkCreate(itemsInfo);
+                        //     , {
 
-                    //     ]
-                    // }
+                        //     include: [
+                        //         { model: db.model('price'), as: 'variant_price', },
+                        //         { model: db.model('segment'), as: 'variant_segment' },
+                        //         {
+                        //             model: db.model('serial'), as: 'variant_serials',
 
-                    // )
-                }
-            } catch (error) {
-                console.log("itemsInfo error :" + error);
-            }
+                        //         },
+                        //         { model: db.model('tax'), as: 'variant_tax' },
+                        //         { model: db.model('category'), as: 'variant_item_categories' },
+                        //         { model: db.model('supplier'), as: 'item_suppliers' },
+                        //         { model: scaleTable, as: 'variant_scale_barcode', ignoreDuplicates: true },
 
-            try {
-                if (taxesList != [] && taxesList != undefined) {
-                    await taxTable.bulkCreate(taxesList);
-                }
-            } catch (error) {
-                console.log("taxesList error : " + error);
-            }
-            try {
-                if (suppliersList != [] && suppliersList != undefined) {
-                    await supplierTable.bulkCreate(suppliersList);
+                        //     ]
+                        // }
 
+                        // )
+                    }
+                } catch (error) {
+                    console.log("itemsInfo error :" + error);
                 }
-            } catch (error) {
-                console.log("suppliersList error : " + error);
-            }
-            try {
-                if (segmantsList != [] && segmantsList != undefined) {
-                    await segmentTable.bulkCreate(segmantsList);
+
+                try {
+                    if (taxesList != [] && taxesList != undefined) {
+                        await taxTable.bulkCreate(taxesList);
+                    }
+                } catch (error) {
+                    console.log("taxesList error : " + error);
                 }
-            } catch (error) {
-                console.log("segmantsList error :" + error);
-            }
-            try {
-                console.log("serialsList "+JSON.stringify(serialsList));
-                if (serialsList != [] && serialsList != undefined) {
-                    await serialTable.bulkCreate(serialsList);
+                try {
+                    if (suppliersList != [] && suppliersList != undefined) {
+                        await supplierTable.bulkCreate(suppliersList);
+
+                    }
+                } catch (error) {
+                    console.log("suppliersList error : " + error);
                 }
-            } catch (error) {
-                console.log("serialsList error: " + error);
-            }
-            try {
-                if (pricesList != [] && pricesList != undefined) {
-                    await priceTable.bulkCreate(pricesList);
+                try {
+                    if (segmantsList != [] && segmantsList != undefined) {
+                        await segmentTable.bulkCreate(segmantsList);
+                    }
+                } catch (error) {
+                    console.log("segmantsList error :" + error);
                 }
-            } catch (error) {
-                console.log("pricesList error: " + error);
-            }
-            try {
-                if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
-                    await itemAlternativeTable.bulkCreate(itemAlternativesRel);
+                try {
+                    console.log("serialsList " + JSON.stringify(serialsList));
+                    if (serialsList != [] && serialsList != undefined) {
+                        await serialTable.bulkCreate(serialsList);
+                    }
+                } catch (error) {
+                    console.log("serialsList error: " + error);
                 }
-            } catch (error) {
-                console.log("itemAlternativesRel error : " + error);
-            }
-            try {
-                if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
-                    await itemCategoriesTable.bulkCreate(itemCategoriesRel);
+                try {
+                    if (pricesList != [] && pricesList != undefined) {
+                        await priceTable.bulkCreate(pricesList);
+                    }
+                } catch (error) {
+                    console.log("pricesList error: " + error);
                 }
-            } catch (error) {
-                console.log("itemCategoriesRel error : " + error);
-            }
-            try {
-                if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
-                    await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+                try {
+                    if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
+                        await itemAlternativeTable.bulkCreate(itemAlternativesRel);
+                    }
+                } catch (error) {
+                    console.log("itemAlternativesRel error : " + error);
                 }
-            } catch (error) {
-                console.log("suppliersItemsRelation error :" + error);
-            }
-            try {
-                if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
-                    await itemTaxesTable.bulkCreate(taxesItemsRelation);
+                try {
+                    if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
+                        await itemCategoriesTable.bulkCreate(itemCategoriesRel);
+                    }
+                } catch (error) {
+                    console.log("itemCategoriesRel error : " + error);
                 }
-            } catch (error) {
-                console.log("taxesItemsRelation error :" + error);
-            }
-            try {
-                if (itemStockslist != [] && itemStockslist != undefined) {
-                    await stockTable.bulkCreate(itemStockslist);
+                try {
+                    if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
+
+                        await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+                    }
+                } catch (error) {
+                    console.log("suppliersItemsRelation error :" + error);
                 }
+                try {
+                    if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
+
+                        await itemTaxesTable.bulkCreate(taxesItemsRelation);
+                    }
+                } catch (error) {
+                    console.log("taxesItemsRelation error :" + error);
+                }
+                try {
+                    if (itemStockslist != [] && itemStockslist != undefined) {
+                        await stockTable.bulkCreate(itemStockslist);
+                    }
+                } catch (error) {
+                    console.log("stockTable error :" + error);
+                }
+
             } catch (error) {
-                console.log("taxesItemsRelation error :" + error);
-            }
+                console.log("error " + error);
+            } finally { }
+
 
         } catch (error) {
             console.log("error " + error);
-        } finally { }
+        }
     }
-
-
 }
+
 
 
 

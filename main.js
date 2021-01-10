@@ -4,8 +4,9 @@ const windowManager = require('./services/window-manager-service')
 const notificationService = require('./services/notification-service');
 const { app, BrowserWindow, Tray } = require('electron');
 const { APPNAME } = require('./commons');
-let tray = null;
 
+let tray = null;
+app.disableHardwareAcceleration();
 app.whenReady().then(() => {
    require('./services/index');
 })
