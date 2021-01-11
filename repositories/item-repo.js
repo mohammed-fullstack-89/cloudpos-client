@@ -22,6 +22,7 @@ class ItemService {
             {
                 id: parentId,
             } : null;
+            console.log("iteparentIdms "+parentId);
 
         items = await variantTable.findAll({
             where: {
@@ -53,7 +54,7 @@ class ItemService {
             limit: limit,
 
         });
-
+    
         items = JSON.stringify(items);
 
         return items;
@@ -194,6 +195,7 @@ class ItemService {
                 offset: offset,
                 limit: limit
             });
+
             items = JSON.stringify(items);
             return items;
         }
@@ -278,7 +280,8 @@ class ItemService {
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
                 11: itemStockslist } = args;
-
+              
+            
             // let itemsInfo = args[0];
             // let serialsList = args[1];
             // let alternatives = args[2];
@@ -306,7 +309,6 @@ class ItemService {
             const itemCategoriesTable = db.model("variant_categories");
             const itemTaxesTable = db.model("variant_taxes");
             const itemSupplierTable = db.model("variant_suppliers");
-
 
             try {
                 await scaleTable.destroy({ truncate: false, where: {}, });

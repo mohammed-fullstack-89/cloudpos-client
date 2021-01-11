@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'customer_addresses',
       });
       this.belongsToMany(models.entity, {
-        // as: 'customer_entities',
-        through: models.customer_entities,
+        as: 'customer_entities',
+        through: models.customer_entity,
         foreignKey: 'customer_id',
         otherKey: { name: 'entity_id', field: 'entity_id' },
 

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
 
       this.belongsToMany(models.customer, {
-        through: models.customer_entities,
+        through: models.customer_entity,
         foreignKey: 'entity_id',
         otherKey:'customer_id'
       });

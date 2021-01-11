@@ -14,6 +14,12 @@ class CommunicatorMiddleware {
     async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
         await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
+    async saveCustomer(customer) {
+        await ipc.invoke('saveCustomer', JSON.parse(customer))
+    }
+    async deleteCustomer(customerId) {
+        await ipc.invoke('deleteCustomer', customerId)
+    }
 
 
     async playSound(type) {

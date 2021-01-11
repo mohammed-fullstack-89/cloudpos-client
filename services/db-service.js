@@ -17,6 +17,15 @@ class DbStore {
             return categories;
 
         })
+        ipc.handle('deleteCustomer', async (event, ...args) => {
+            try {
+                let customerService = require('../repositories/customer-repo');
+                await customerService.deleteCustomer(args[0]);
+            } catch (error) {
+                console.log("error : " + error);
+            }
+
+        });
 
         ipc.handle('setItems', async (event, ...args) => {
             try {
@@ -41,6 +50,11 @@ class DbStore {
         ipc.handle('setCustomers', async (event, ...args) => {
             let customerService = require('../repositories/customer-repo');
             await customerService.setCustomers(args);
+            return;
+        });
+        ipc.handle('saveCustomer', async (event, ...args) => {
+            let customerService = require('../repositories/customer-repo');
+            await customerService.saveCustomer(args[0]);
             return;
         });
         ipc.handle('getQtyByStockId', async (event, args) => {

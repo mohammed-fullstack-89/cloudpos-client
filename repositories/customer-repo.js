@@ -31,6 +31,22 @@ class CustomerService {
         return customers;
     }
 
+    async deleteCustomer(customerId) {
+        let customerTable = db.model('customer');
+        await customerTable.destroy({
+            where: {
+                id: customerId
+            }
+        });
+    }
+    async saveCustomer(customer) {
+        let customerTable = db.model("customer");
+        await customerTable.upsert(customer, {
+            // include: [
+            //     { model: db.model('address'), as: 'get_customer_address', }
+            // ]
+        });
+    }
     async setCustomers(args) {
         try {
             const customersList = args[0];
@@ -42,7 +58,7 @@ class CustomerService {
             let addressesTable = db.model("address");
             let tiersTable = db.model("tier");
             let entitesTable = db.model("entity");
-            let customerEntitesRelTable = db.model("customer_entities");
+            let customerEntitesRelTable = db.model("customer_entity");
             try {
                 if (tiers_list != [] && tiers_list != undefined) {
                     await tiersTable.destroy({ truncate: true });
