@@ -21,9 +21,11 @@ class CustomerService {
         else {
             customers = await customerTable.findAll({
                 include: { all: true, nested: true, },
-
                 where: {
                     name: { [Seq.Op.like]: `%${val}%` },
+                    nick_name: { [Seq.Op.like]: `%${val}%` },
+                    mobile_1: { [Seq.Op.like]: `%${val}%` },
+                    mobile_2: { [Seq.Op.like]: `%${val}%` },
                 }
             });
         }
