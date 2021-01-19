@@ -225,14 +225,14 @@ class InitializerService {
             useContentSize: true,
             title: "Settings",
             webPreferences: {
-                devTools: false,
+                devTools: true,
                 nodeIntegration: true,
             },
 
         });
 
-        settingsWindow.removeMenu();
-        settingsWindow.menu = null;
+        // settingsWindow.removeMenu();
+        // settingsWindow.menu = null;
         settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
 
     }

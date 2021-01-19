@@ -1,31 +1,170 @@
-.main-container-card{
-    height: 100%;
-   
-}
-.tab-content {
-    padding: 0rem; 
-     padding-top: 0rem; 
-}
-.card-body {
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    padding: 0rem;
-}
-.tab-content.vertical {
-    padding-top: 0;
-    position: relative !important;
-    top: -42px;
-}
-table.table th, table.table td {
-    padding-top: 0.6rem;
-    /* padding-bottom: 1rem; */
-}
-.card-footer {
-    padding: .75rem 1.25rem;
-    background-color: rgba(0,0,0,.03);
-    border-top: 1px none rgba(0,0,0,.125);
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    direction: ltr;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: normal;
 }
 
-  ::-webkit-scrollbar {
+*:focus {
+    outline: none !important;
+}
+
+.main-layout {
+    width: 98vw;
+    height: 90vh;
+    display: grid;
+    grid-template-areas: 'menu content'
+        'buttons buttons';
+    grid-template-columns: 200px auto;
+    grid-template-rows: auto 20px;
+
+}
+
+.content {
+
+    grid-area: content;
+    font-size: medium;
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.side-menu {
+    grid-area: menu;
+    text-align: center;
+    font-size: large;
+    direction: rtl;
+    margin: 5px;
+    padding: 5px;
+    /* width: 100px; */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+
+}
+
+.buttons-container {
+    grid-area: buttons;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+button {
+    background: #007ad9;
+    color: white;
+    width: 120px;
+    height: 60px;
+    border-radius: 10px;
+
+}
+
+
+#menu-list {
+    display: flex;
+    flex-direction: column;
+}
+
+#menu-item {
+    /* padding: 4px 0px 0px 0px; */
+    text-decoration: none;
+    font-size: 23px;
+    color: #818181;
+    display: block;
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+    padding: 5px !important;
+
+}
+
+#menu-item:hover,
+.active {
+    color: white;
+    background: #007ad9;
+    transition: 0.3s;
+    padding: 5px !important;
+    border-radius: 10px;
+
+
+
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-start; */
+    justify-content: space-between
+}
+
+.printer-container {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+select {
+    flex-grow: 5;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #007ad9;
+    background-image: none;
+}
+
+/* Remove IE arrow */
+select::-ms-expand {
     display: none;
+}
+
+/* Custom Select */
+.printer-select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #007ad9;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+select {
+    flex: 1;
+    padding: 0 .5em;
+    color: white;
+    cursor: pointer;
+}
+
+/* Arrow */
+.printer-select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #007ad9;
+    color: white;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+
+#printer-name {
+    margin: auto;
+}
+
+/* Transition */
+.printer-select:hover::after {
+    color: white;
 }

@@ -2,15 +2,38 @@
 const ipcRenderer = require('electron').ipcRenderer;
 const printers = ipcRenderer.sendSync("getPrinters");
 
-$(document).ready(() => {
+let activeMenuItemElement = null;
+let activeContentContainerElement = null;
+
+document.addEventListener("DOMContentLoaded", function () {
     console.log("ready");
-    init();
+    init()
 });
 
 function init() {
+    activeMenuItemElement = document.getElementsByClassName('active')[0];
+    Array.prototype.forEach.call(document.getElementsByClassName('container'), (element) => {
+        element.style.display = 'none';
+    })
+    activeContentContainerElement = document.getElementsByClassName('container')[0];
+    activeContentContainerElement.style.display = 'flex';
     getPrinters();
 }
 
+showContentRelated = (element, contentToShow) => {
+    if (activeMenuItemElement != element) {
+
+        activeMenuItemElement.classList.remove('active');
+        element.classList.add('active');
+        activeMenuItemElement = element;
+
+        activeContentContainerElement.style.display = 'none';
+        let active_content = document.getElementsByClassName(contentToShow)[0];
+        active_content.style.display = 'flex';
+        activeContentContainerElement = active_content;
+
+    }
+}
 function savePreferances() {
     const localSettings = ipcRenderer.sendSync("getlocalSettings");
 
