@@ -20,8 +20,13 @@ class CommunicatorMiddleware {
     async deleteCustomer(customerId) {
         await ipc.invoke('deleteCustomer', customerId)
     }
-
-
+    async saveUsers(usersArray) {
+        await ipc.invoke('saveUsers', JSON.parse(usersArray))
+    }
+    async getUserByCode(code) {
+     return ipc.invoke('getUserByCode', code);
+       
+    }
     async playSound(type) {
         await ipc.invoke('playSound', type);
     }
@@ -46,6 +51,10 @@ class CommunicatorMiddleware {
 
     async searchItems(type, value, offset, limit) {
         const items = await ipc.invoke('searchItems', type, value, offset, limit);
+        return items
+    }
+    async updateSerialQty(serialId,qty) {
+        const items = await ipc.invoke('updateSerialQty', serialId,qty);
         return items
     }
     async searchBarcode(code) {

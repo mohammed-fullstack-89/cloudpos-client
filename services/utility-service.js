@@ -16,6 +16,7 @@ class UtilityService {
         const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/${type}.mp3`;
         BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`new Audio('${dir}').play();`);
     }
+
     barcode(event, input) {
         if (input.type == 'keyDown') {
             const currentTime = Date.now();
@@ -27,6 +28,7 @@ class UtilityService {
 
             } else {
                 if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
+                    console.log("ddss"+this.code);
                     if (this.code.length > 1) {
                         // let items = [];
                         BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems) }); `);

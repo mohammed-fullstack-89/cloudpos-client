@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     model: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     variant_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
     item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-    color_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-    unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-    size_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
+    color_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    size_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     user_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: false },
-
+    serial_qty: { type: DataTypes.BIGINT, defaultValue: 0, allowNull: false },
   }, {
     sequelize,
     modelName: 'serial',
@@ -51,7 +51,8 @@ module.exports = (sequelize, DataTypes) => {
     }, {
       name: 'serials_item_id_foreign',
       fields: [`item_id`]
-    }]
+    },
+    ]
   });
   return Serial;
 };

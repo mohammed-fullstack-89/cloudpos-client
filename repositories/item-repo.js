@@ -22,7 +22,6 @@ class ItemService {
             {
                 id: parentId,
             } : null;
-            console.log("iteparentIdms "+parentId);
 
         items = await variantTable.findAll({
             where: {
@@ -54,13 +53,31 @@ class ItemService {
             limit: limit,
 
         });
-    
+
         items = JSON.stringify(items);
 
         return items;
     }
 
+    async updateSerialQty(args) {
+        try{
+        const id = args[0];
+        const serial_qty = args[0];
+        const serialTable = db.model('serial');
+        await serialTable.update({ serial_qty }, {
+            where: {
+                id
+            }
+        });
+        return true;
+    }catch(ex){
+        return false;
+    }
+
+    }
     async searchBarcode(args) {
+try{
+        console.log("search");
         const code = args[0];
 
         let item = [];
@@ -74,15 +91,18 @@ class ItemService {
 
             item = await variantTable.findAll({
                 where: {
-                    barcode: code
+                   
                     // show_in_sale_screen: 1
+                    [db.Seq().Op.or]: {
+                        barcode: code,
+                        '$variant_serials.serial$': code
+                     }
                 },
+
                 include: [
                     {
                         model: db.model('stock'), as: 'stock', include: [
-
                             { model: db.model('price'), as: 'variant_price', }]
-
                     },
 
                     {
@@ -105,6 +125,9 @@ class ItemService {
             item = JSON.stringify(item);
             return item;
         }
+    }catch(ex){
+        console.log("ex "+ex);
+    }
     }
 
     async searchItems(args) {
@@ -122,10 +145,8 @@ class ItemService {
 
             let variantTable = db.model('variant');
             let filter = null;
-            let serialFilter = null;
             switch (type) {
                 case 'name':
-                    serialFilter = null;
                     filter = {
                         [db.Seq().Op.or]: {
                             name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
@@ -142,27 +163,15 @@ class ItemService {
                         }
                     };
                     break;
-                case 'barcode':
-                    serialFilter = null;
+                case 'barcode' || 'serial':
                     filter = {
                         [db.Seq().Op.or]: {
-
                             barcode: { [db.Seq().Op.like]: '%' + value + '%' },
-
+                            serial: { [db.Seq().Op.like]: '%' + value + '%' }
                         }
                     };
                     break;
-                case 'serial':
-                    filter = null;
-                    serialFilter = {
-                        serial: {
-                            [db.Seq().Op.like]: '%' + value + '%'
-                        }
-                    }
-                    break;
             }
-
-
 
             items = await variantTable.findAll({
                 where: {
@@ -206,7 +215,7 @@ class ItemService {
             let newStockValues = [];
             newStockValues = args[0];
             let priceTable = db.model('stock');
-            priceTable.bulkCreate(args, { updateOnDuplicate: ['qty'], attributes: ['qty'] },)
+            priceTable.bulkCreate(args, { updateOnDuplicate: ['qty'], attributes: ['qty'] })
         }
         catch (error) {
             console.log("error " + error);
@@ -280,8 +289,8 @@ class ItemService {
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
                 11: itemStockslist } = args;
-              
-            
+
+
             // let itemsInfo = args[0];
             // let serialsList = args[1];
             // let alternatives = args[2];
@@ -296,7 +305,7 @@ class ItemService {
             // let scaleBarcodeList = args[11];
             // let itemStockslist = args[12];
             // console.log("taxesItemsRelation : " + JSON.stringify(taxesItemsRelation));
-     
+
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
@@ -380,6 +389,7 @@ class ItemService {
                 console.log("segmantsList error :" + error);
             }
             try {
+                console.log("serialsList "+JSON.stringify(serialsList));
                 if (serialsList != [] && serialsList != undefined) {
                     await serialTable.bulkCreate(serialsList);
                 }

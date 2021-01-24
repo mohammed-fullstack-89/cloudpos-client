@@ -11,13 +11,13 @@ app.whenReady().then(() => {
 })
 app.on('ready', async () => {
    app.setAppUserModelId(APPNAME)
-   tray = new Tray(__dirname + '/assets/icons/app.ico')
+   // tray = new Tray(__dirname + '/assets/icons/app.ico')
    windowManager.showSplash();
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
    await db.setup().then(() => {
       // autoUpdater.checkForUpdates();
       windowManager.createAppWindow();
-      windowManager.initTray(tray);
+      // windowManager.initTray(tray);
       notificationService.showNotification('App is ready', 'app has successfully initiated');
    }).catch((error) => {
       notificationService.showNotification('Error', 'Something went wrong initiating,please contact the support team. ');

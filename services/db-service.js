@@ -37,7 +37,25 @@ class DbStore {
             }
 
         });
+        ipc.handle('saveUsers', async (event, ...args) => {
+            try {
+                let userService = require('../repositories/user-repo');
+                   await userService.saveUsers(args[0]);
+            } catch (error) {
+                console.log("error : " + error);
+            }
 
+        });
+        ipc.handle('getUserByCode', async (event, ...args) => {
+            try {
+                let userService = require('../repositories/user-repo');
+                  const user= await userService.getUserByCode(args[0]);
+                  return user;
+            } catch (error) {
+                console.log("error : " + error);
+            }
+
+        });
         ipc.handle('updateStockQty', (event, args) => {
             let itemsService = require('../repositories/item-repo');
             itemsService.updateStock(args);
@@ -136,6 +154,11 @@ class DbStore {
             let itemsService = require('../repositories/item-repo');
             let scale = await itemsService.getScaleFromBarcode(args);
             return scale
+        })
+        ipc.handle('updateSerialQty', async (event, ...args) => {
+            let itemsService = require('../repositories/item-repo');
+            let result = await itemsService.updateSerialQty(args);
+            return result;
         })
         ipc.handle('getItemFromScale', async (event, ...args) => {
             let itemsService = require('../repositories/item-repo');

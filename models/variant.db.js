@@ -122,6 +122,8 @@ module.exports = (sequelize, DataTypes) => {
     description: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
     has_serial: { type: DataTypes.TINYINT, defualtValue: 0 },
     color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
+    is_manufacturing: {type:DataTypes.STRING,defaultValue:null,allowNull:true}
+
   },
     {
       sequelize,
@@ -175,6 +177,10 @@ module.exports = (sequelize, DataTypes) => {
         name: 'variants_brand_id_foreign',
         fields: [`brand_id`]
       },
+      {
+        name: 'variants_is_manufacturing_foreign',
+        fields: [`is_manufacturing`]
+      }
 
       ]
     });
