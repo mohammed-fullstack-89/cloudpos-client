@@ -41,12 +41,33 @@ class CustomerService {
             }
         });
     }
-    async saveCustomer(customer) {
+    async saveCustomer(args) {
         let customerTable = db.model("customer");
+        console.log("customer " + JSON.stringify(customer));
         await customerTable.upsert(customer, {
-            // include: [
-            //     { model: db.model('address'), as: 'get_customer_address', }
-            // ]
+            include: [
+                { model: db.model('address'), as: 'get_customer_address', },
+                // {model:db.model('address'), as: 'get_customer_address', },
+                // {model:db.model('address'), as: 'get_customer_address', },
+                // {model:db.model('address'), as: 'get_customer_address', }
+            ]
+        });
+    }
+    async updateCustomer(args) {
+        let customerTable = db.model("customer");
+        console.log("customer " + JSON.stringify(customer));
+        await customerTable.destroy({
+            where: {
+                id: customer.id
+            }
+        })
+        await customerTable.save(customer, {
+            include: [
+                { model: db.model('address'), as: 'get_customer_address', },
+                // {model:db.model('address'), as: 'get_customer_address', },
+                // {model:db.model('address'), as: 'get_customer_address', },
+                // {model:db.model('address'), as: 'get_customer_address', }
+            ]
         });
     }
     async setCustomers(args) {
