@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.hasMany(models.address, {
-        as: 'customer_addresses',
+        as: 'get_customer_address',
       });
       this.belongsToMany(models.entity, {
         as: 'customer_entities',

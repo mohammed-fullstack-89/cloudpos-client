@@ -41,35 +41,61 @@ class CustomerService {
             }
         });
     }
+
     async saveCustomer(args) {
+        const customer = args[0];
+        const addressesList = args[1];
+        const customerEntitiesRel = args[2];
+        const customerId = args[3];
+
         let customerTable = db.model("customer");
-        console.log("customer " + JSON.stringify(customer));
-        await customerTable.upsert(customer, {
-            include: [
-                { model: db.model('address'), as: 'get_customer_address', },
-                // {model:db.model('address'), as: 'get_customer_address', },
-                // {model:db.model('address'), as: 'get_customer_address', },
-                // {model:db.model('address'), as: 'get_customer_address', }
-            ]
-        });
-    }
-    async updateCustomer(args) {
-        let customerTable = db.model("customer");
-        console.log("customer " + JSON.stringify(customer));
-        await customerTable.destroy({
-            where: {
-                id: customer.id
+        let addressesTable = db.model("address");
+        let customerEntitesRelTable = db.model("customer_entity");
+        if (customerId) {
+            // try {
+            //     await customerTable.destroy({ truncate: true })
+            // } catch (error) {..
+            //     console.log("error" + error);
+            // }
+            try {
+                await addressesTable.destroy({ truncate: true, where: { customer_id: customerId } })
+
+            } catch (error) {
+                console.log("error" + error);
             }
-        })
-        await customerTable.save(customer, {
-            include: [
-                { model: db.model('address'), as: 'get_customer_address', },
-                // {model:db.model('address'), as: 'get_customer_address', },
-                // {model:db.model('address'), as: 'get_customer_address', },
-                // {model:db.model('address'), as: 'get_customer_address', }
-            ]
-        });
+            try {
+                await customerEntitesRelTable.destroy({ truncate: true, where: { customer_id: customerId } })
+            } catch (error) {
+                console.log("error" + error);
+            }
+        }
+
+        try {
+            if (customer != "" && customer != undefined) {
+                await customerTable.create(customer[0]);
+            }
+        } catch (error) {
+            console.log("error" + error);
+        }
+        try {
+            if (addressesList != "" && addressesList != undefined) {
+                await addressesTable.bulkCreate(addressesList);
+            }
+        } catch (error) {
+            console.log("error" + error);
+        }
+
+
+        try {
+            if (customerEntitiesRel != "" && customerEntitiesRel != undefined) {
+                await customerEntitesRelTable.bulkCreate(customerEntitiesRel);
+            }
+        } catch (error) {
+            console.log("error" + error);
+        }
+        return true;
     }
+
     async setCustomers(args) {
         try {
             const customersList = args[0];

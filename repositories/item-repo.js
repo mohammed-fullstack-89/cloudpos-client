@@ -22,7 +22,6 @@ class ItemService {
             {
                 id: parentId,
             } : null;
-        console.log("parentId" + parentId)
 
         items = await variantTable.findAll({
             where: {
@@ -32,7 +31,8 @@ class ItemService {
                 {
                     model: db.model('stock'), as: 'stock', include: [
 
-                        { model: db.model('price'), as: 'variant_price', }]
+                        { model: db.model('price'), as: 'variant_price', },
+                        { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
 
                 },
 
@@ -56,7 +56,6 @@ class ItemService {
         });
 
         items = JSON.stringify(items);
-
         return items;
     }
 
@@ -103,7 +102,8 @@ class ItemService {
                     include: [
                         {
                             model: db.model('stock'), as: 'stock', include: [
-                                { model: db.model('price'), as: 'variant_price', }]
+                                { model: db.model('price'), as: 'variant_price', },
+                                { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                         },
 
                         {
@@ -183,7 +183,8 @@ class ItemService {
                     {
                         model: db.model('stock'), as: 'stock', include: [
 
-                            { model: db.model('price'), as: 'variant_price', }]
+                            { model: db.model('price'), as: 'variant_price', },
+                            { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
 
                     },
                     {
@@ -270,6 +271,13 @@ class ItemService {
             include: [
                 //     all: true
                 // }
+                {
+                    model: db.model('stock'), as: 'stock', include: [
+
+                        { model: db.model('price'), as: 'variant_price', },
+                        { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
+
+                },
                 { model: db.model('price'), as: 'variant_price', },
                 { model: db.model('segment'), as: 'variant_segment' },
                 {
@@ -290,7 +298,7 @@ class ItemService {
                 2: pricesList, 3: segmantsList, 4: suppliersList,
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
-                11: itemStockslist } = args;
+                11: itemStockslist, 12: itemManufacturingList } = args;
 
 
             // let itemsInfo = args[0];
@@ -320,6 +328,7 @@ class ItemService {
             const itemCategoriesTable = db.model("variant_categories");
             const itemTaxesTable = db.model("variant_taxes");
             const itemSupplierTable = db.model("variant_suppliers");
+            const itemManufacturingTable = db.model("itemManufacturing");
 
             try {
                 await scaleTable.destroy({ truncate: false, where: {}, });
@@ -334,55 +343,7 @@ class ItemService {
                 await itemSupplierTable.destroy({ truncate: false, where: {}, });
                 await itemTaxesTable.destroy({ truncate: false, where: {}, });
                 await stockTable.destroy({ truncate: false, where: {}, });
-
-                await itemAlternativeTable.destroy({
-                    where: {},
-                    truncate: false
-                })
-                await itemCategoriesTable.destroy({
-                    where: {},
-                    truncate: false
-                })
-                await itemSupplierTable.destroy({
-                    where: {},
-                    truncate: false
-                })
-                await itemTaxesTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await stockTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await scaleTable.destroy({
-                    where: {},
-                    truncate: false
-                })
-                await taxTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await supplierTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await segmentTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await serialTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await priceTable.destroy({
-                    where: {},
-                    truncate: false
-                });
-                await variantTable.destroy({
-                    where: {},
-                    truncate: false
-                });
+                await itemManufacturingTable.destroy({ truncate: false, where: {} })
 
 
                 try {
@@ -493,7 +454,14 @@ class ItemService {
                 } catch (error) {
                     console.log("stockTable error :" + error);
                 }
-
+                try {
+                    console.log("itemManufacturingList " + itemManufacturingList)
+                    if (itemManufacturingList != [] && itemManufacturingList != undefined) {
+                        await itemManufacturingTable.bulkCreate(itemManufacturingList);
+                    }
+                } catch (error) {
+                    console.log("itemManufacturingList error : " + error);
+                }
             } catch (error) {
                 console.log("error " + error);
             } finally { }

@@ -40,7 +40,7 @@ class DbStore {
         ipc.handle('saveUsers', async (event, ...args) => {
             try {
                 let userService = require('../repositories/user-repo');
-                   await userService.saveUsers(args[0]);
+                await userService.saveUsers(args[0]);
             } catch (error) {
                 console.log("error : " + error);
             }
@@ -49,8 +49,8 @@ class DbStore {
         ipc.handle('getUserByCode', async (event, ...args) => {
             try {
                 let userService = require('../repositories/user-repo');
-                  const user= await userService.getUserByCode(args[0]);
-                  return user;
+                const user = await userService.getUserByCode(args[0]);
+                return user;
             } catch (error) {
                 console.log("error : " + error);
             }
@@ -67,13 +67,13 @@ class DbStore {
 
         ipc.handle('setCustomers', async (event, ...args) => {
             let customerService = require('../repositories/customer-repo');
-            await customerService.setCustomers(args);
-            return;
+            return (await customerService.setCustomers(args));
+            ;
         });
         ipc.handle('saveCustomer', async (event, ...args) => {
             let customerService = require('../repositories/customer-repo');
-            await customerService.saveCustomer(args[0]);
-            return;
+            return (await customerService.saveCustomer(args));
+
         });
         ipc.handle('getQtyByStockId', async (event, args) => {
             let itemsService = require('../repositories/item-repo');

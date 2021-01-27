@@ -14,8 +14,8 @@ class CommunicatorMiddleware {
     async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
         await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
-    async saveCustomer(customer) {
-        await ipc.invoke('saveCustomer', JSON.parse(customer))
+    async saveCustomer(customer, addressesList, customerEntitiesRel, customerId) {
+        await ipc.invoke('saveCustomer', JSON.parse(customer), JSON.parse(addressesList), JSON.parse(customerEntitiesRel), customerId)
     }
     async deleteCustomer(customerId) {
         await ipc.invoke('deleteCustomer', customerId)
@@ -24,8 +24,8 @@ class CommunicatorMiddleware {
         await ipc.invoke('saveUsers', JSON.parse(usersArray))
     }
     async getUserByCode(code) {
-     return ipc.invoke('getUserByCode', code);
-       
+        return ipc.invoke('getUserByCode', code);
+
     }
     async playSound(type) {
         await ipc.invoke('playSound', type);
@@ -35,9 +35,8 @@ class CommunicatorMiddleware {
         return customers;
     }
 
-    async setItems(itemsInfo, serialsList, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList, itemStockslist) {
-
-        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList), JSON.parse(itemStockslist));
+    async setItems(itemsInfo, serialsList, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList, itemStockslist, itemManufacturingList) {
+        await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList), JSON.parse(itemStockslist), JSON.parse(itemManufacturingList));
     }
 
     async getItems() {
@@ -53,8 +52,8 @@ class CommunicatorMiddleware {
         const items = await ipc.invoke('searchItems', type, value, offset, limit);
         return items
     }
-    async updateSerialQty(serialId,qty) {
-        const items = await ipc.invoke('updateSerialQty', serialId,qty);
+    async updateSerialQty(serialId, qty) {
+        const items = await ipc.invoke('updateSerialQty', serialId, qty);
         return items
     }
     async searchBarcode(code) {

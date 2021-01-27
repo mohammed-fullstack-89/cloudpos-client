@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
                     name: 'variant_id'
                 }
             });
+            this.hasMany(models.itemManufacturing, { as: 'item_manufacturing' })
 
             this.belongsTo(models.price, {
                 as: 'variant_price',
