@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
   }, {
     sequelize,
+    underscored: true,
     modelName: 'tax',
     indexes: [{
       name: 'taxes_name_ar_foreign',

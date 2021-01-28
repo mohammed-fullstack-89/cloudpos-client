@@ -30,8 +30,8 @@ class CommunicatorMiddleware {
     async playSound(type) {
         await ipc.invoke('playSound', type);
     }
-    async searchCustomers(val) {
-        const customers = await ipc.invoke('searchCustomers', val)
+    async searchCustomers(val, offset, limit) {
+        const customers = await ipc.invoke('searchCustomers', val, offset, limit)
         return customers;
     }
 

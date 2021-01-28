@@ -5,10 +5,8 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       this.belongsTo(models.customer, {
-        foreignKey: {
-          field: 'customer_id',
-          name: 'customerId',
-        }
+        foreignKey: 'customer_id',
+        as: 'customer_addresses'
       });
     }
   };
@@ -27,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     customer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true, }
   }, {
     sequelize,
+    underscored: true,
     modelName: 'address',
   });
   return Address;

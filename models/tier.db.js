@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
   }, {
     sequelize,
+    underscored: true,
     modelName: 'tier',
     indexes: [{
       name: 'customers_tiers_name_ar_foreign',

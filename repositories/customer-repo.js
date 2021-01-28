@@ -9,12 +9,17 @@ class CustomerService {
         let customerTable = db.model('customers');
         let customers = [];
         customers = await customerTable.findAll({ include: { all: true, nested: true } });
+        console.log("customers " + JSON.stringify(customers));
+
         return customers;
     }
 
-    async searchCustomers(val) {
+    async searchCustomers(args) {
         let customerTable = db.model('customer');
         let customers = [];
+        const val = args[0];
+        const offset = args[1];
+        const limit = args[2];
         if (val == null || val == undefined || val == "undefined") {
             customers = await customerTable.findAll({ include: { all: true, nested: true } });
         }
@@ -26,10 +31,14 @@ class CustomerService {
                     nick_name: { [Seq.Op.like]: `%${val}%` },
                     mobile_1: { [Seq.Op.like]: `%${val}%` },
                     mobile_2: { [Seq.Op.like]: `%${val}%` },
-                }
+                },
+                limit,
+                offset
             });
         }
         customers = JSON.stringify(customers);
+        console.log("customers " + JSON.stringify(customers));
+
         return customers;
     }
 
@@ -43,11 +52,11 @@ class CustomerService {
     }
 
     async saveCustomer(args) {
-        const customer = args[0];
+        const customer = (args[0])[0];
         const addressesList = args[1];
         const customerEntitiesRel = args[2];
         const customerId = args[3];
-
+        console.log("addressesList " + JSON.stringify(addressesList));
         let customerTable = db.model("customer");
         let addressesTable = db.model("address");
         let customerEntitesRelTable = db.model("customer_entity");
@@ -58,13 +67,12 @@ class CustomerService {
             //     console.log("error" + error);
             // }
             try {
-                await addressesTable.destroy({ truncate: true, where: { customer_id: customerId } })
-
+                await addressesTable.destroy({ where: { customer_id: customerId } })
             } catch (error) {
                 console.log("error" + error);
             }
             try {
-                await customerEntitesRelTable.destroy({ truncate: true, where: { customer_id: customerId } })
+                await customerEntitesRelTable.destroy({ where: { customer_id: customerId } })
             } catch (error) {
                 console.log("error" + error);
             }
@@ -72,7 +80,7 @@ class CustomerService {
 
         try {
             if (customer != "" && customer != undefined) {
-                await customerTable.create(customer[0]);
+                await customerTable.create(customer, { updateOnDuplicate: Object.keys(customer.rawAttributes), });
             }
         } catch (error) {
             console.log("error" + error);

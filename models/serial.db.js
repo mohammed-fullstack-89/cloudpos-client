@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     serial_qty: { type: DataTypes.BIGINT, defaultValue: 0, allowNull: false },
   }, {
     sequelize,
+    underscored: true,
     modelName: 'serial',
     indexes: [{
       name: 'serials_serial_foreign',

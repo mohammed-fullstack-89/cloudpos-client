@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'company_ratio',
         through: models.company_ratios,
         foreignKey: 'company_id',
-         otherKey: { name: 'ratio_id', field: 'ratio_id' },
+        otherKey: { name: 'ratio_id', field: 'ratio_id' },
 
       });
       this.belongsToMany(models.term, {
@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     email: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
   }, {
     sequelize,
+    underscored: true,
     modelName: 'company',
     indexes: [{
       name: 'companies_name_ar_foreign',

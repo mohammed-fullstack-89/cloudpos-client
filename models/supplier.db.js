@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 
   }, {
     sequelize,
+    underscored: true,
     modelName: 'supplier',
     indexes: [{
       name: 'suppliers_name_ar_foreign',

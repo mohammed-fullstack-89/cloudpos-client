@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'company_ratio',
         through: models.company_ratios,
         foreignKey: 'ratio_id',
-        otherKey:'company_id'
+        otherKey: 'company_id'
       })
     }
   };
@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     value: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
   }, {
     sequelize,
+    underscored: true,
     modelName: 'ratio',
     indexes: [{
       name: 'ratios_value_foreign',

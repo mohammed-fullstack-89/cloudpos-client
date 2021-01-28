@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
   }, {
     sequelize,
+    underscored: true,
     modelName: 'segment',
     indexes: [{
       name: 'segments_name_ar_foreign',

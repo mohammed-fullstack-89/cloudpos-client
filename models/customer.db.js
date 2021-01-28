@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.hasMany(models.address, {
-        as: 'get_customer_address',
+        foreignKey: 'customer_id',
+        as: 'customer_addresses',
       });
       this.belongsToMany(models.entity, {
         as: 'customer_entities',
@@ -49,7 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     note: { type: DataTypes.TEXT, defualtValue: null, allowNull: true }
   }, {
     sequelize,
+    underscored: true,
     modelName: 'customer',
+
     indexes: [{
       name: 'customers_name_foreign',
       fields: [`name`]

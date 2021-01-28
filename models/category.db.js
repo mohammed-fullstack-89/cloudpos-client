@@ -52,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
 
   }, {
     sequelize,
+    underscored: true,
     modelName: 'category',
     indexes: [{
       name: 'categories_branch_id_foreign',

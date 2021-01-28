@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     is_active: { type: DataTypes.ENUM('active', 'inactive'), allowNull: true }
   }, {
     sequelize,
+    underscored: true,
     modelName: 'card',
     indexes: [{
       name: 'cards_name_ar_foreign',

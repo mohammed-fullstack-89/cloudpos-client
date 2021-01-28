@@ -84,7 +84,7 @@ class DbStore {
 
         ipc.handle('searchCustomers', async (event, ...args) => {
             let customerService = require('../repositories/customer-repo');
-            let customers = await customerService.searchCustomers(args[0]);
+            let customers = await customerService.searchCustomers(args);
             return customers;
 
         });

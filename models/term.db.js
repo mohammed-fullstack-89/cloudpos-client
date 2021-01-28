@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'company_terms',
         through: models.company_term,
         foreignKey: 'term_id',
-        otherKey:'company_id'
+        otherKey: 'company_id'
       });
     }
   };
@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     name_ar: { type: DataTypes.STRING, defualtValue: true, allowNull: true },
   }, {
     sequelize,
+    underscored: true,
     modelName: 'term',
 
     indexes: [{

@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsToMany(models.customer, {
         through: models.customer_entity,
         foreignKey: 'entity_id',
-        otherKey:'customer_id'
+        otherKey: 'customer_id'
       });
     }
   };
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     tax_exemption_number: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
   }, {
     sequelize,
+    underscored: true,
     modelName: 'entity',
   });
   return Entity;
