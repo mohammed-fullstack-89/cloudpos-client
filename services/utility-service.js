@@ -1,15 +1,16 @@
 const electron = require("electron");
 const { ipcMain, app, BrowserWindow } = electron;
 const path = require('path');
-
 class UtilityService {
-
+    ;
     constructor() {
         this.code = "";
         this.lastKeyTime = Date.now();
         ipcMain.handle('playSound', (event, args) => {
             this.playSound(args)
         })
+        this.item_service = require('../repositories/item-repo');
+
     }
 
     playSound(type) {
@@ -18,7 +19,7 @@ class UtilityService {
         BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`new Audio('${dir}').play();`);
     }
 
-    barcode(event, input) {
+    async barcode(event, input) {
         if (input.type == 'keyDown') {
             const currentTime = Date.now();
             let cal = currentTime - this.lastKeyTime;
@@ -29,23 +30,22 @@ class UtilityService {
 
             } else {
                 if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
-                    console.log("ddss"+this.code);
                     if (this.code.length > 1) {
                         // let items = [];
-                        BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems) }); `);
+                        // BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems) }); `);
                         // this.mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${ JSON.stringify(code) }).then((searchedItems) => { barcode(searchedItems) }); `);
-                        // const scaleIdentifierCode = code.substr(0, 2);
-                        // const scale = await item_service.getScaleFromBarcode(scaleIdentifierCode);
-                        // if (scale !== undefined) {
-                        //    const scaleObject = JSON.parse(scale);
-                        //    end = scaleObject.number_of_digits;
-                        //    const trimmedCode = code.substr(0, code.length - end);
-                        //    // const item = await item_service.getItemFromScale(JSON.stringify(scale), code);
-                        //    this.mainWindow.webContents.executeJavaScript(`obj.getItemFromScale(${ JSON.stringify(scale) }, ${ trimmedCode }).then((item) => { barcode(item, ${ code }) }); `);
-                        // } else {
-                        // this.mainWindow.webContents.executeJavaScript(`obj.searchItems('barcode', ${ JSON.stringify(code) }).then((searchedItems) => { barcode(searchedItems) }); `);
+                        const scaleIdentifierCode = this.code.substr(0, 2);
+                        const scale = await (this.item_service.getScaleFromBarcode(scaleIdentifierCode));
+                        const scaleObject = JSON.parse(scale);
+                        if (scaleObject !== undefined) {
+                            const end = scaleObject.number_of_digits;
+                            const trimmedCode = this.code.substr(0, this.code.length - end);
+                            // const item = await item_service.getItemFromScale(JSON.stringify(scale), code);
+                            BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.getItemFromScale(${JSON.stringify(scale)}, ${trimmedCode}).then((item) => { barcode(item, ${this.code}) }); `);
+                        } else {
+                            BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchItems('barcode', ${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems) }); `);
 
-                        // }
+                        }
                         this.code = "";
                     }
                 } else {

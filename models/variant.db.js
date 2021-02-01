@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'item_id',
         foreignKey: 'item_id',
         otherKey: { name: 'tax_id', field: 'tax_id' },
-    
+
 
       })
       this.belongsToMany(models.variant, {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'alternatives',
         through: models.variant_alternatives,
         foreignKey: 'item_id',
-        otherKey: { name: 'alternative_id',field: 'alternative_id' },
+        otherKey: { name: 'alternative_id', field: 'alternative_id' },
       })
 
       this.belongsToMany(models.category, {
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.scale, {
         as: 'variant_scale_barcode',
         foreignKey: {
-          field: 'scale_id', name: 'scaleId',
+          field: 'scale_barcode_id', name: 'scaleId',
         }
       })
 
@@ -122,7 +122,8 @@ module.exports = (sequelize, DataTypes) => {
     description: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
     has_serial: { type: DataTypes.TINYINT, defualtValue: 0 },
     color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
-    is_manufacturing: {type:DataTypes.STRING,defaultValue:null,allowNull:true}
+    is_manufacturing: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
+    scale_barcode_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true }
 
   },
     {

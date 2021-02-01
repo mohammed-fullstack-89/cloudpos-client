@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             this.hasMany(models.variant, {
                 as: 'variant_scale_barcode',
                 foreignKey: {
-                    field: 'scale_id', name: 'scaleId',
+                    field: 'scale_barcode_id', name: 'scaleId',
                 }
             })
 

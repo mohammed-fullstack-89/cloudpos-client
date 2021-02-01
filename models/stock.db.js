@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
                     name: 'price_id',
                     field: 'price_id'
                 }
-
             });
 
             this.belongsTo(models.segment, {

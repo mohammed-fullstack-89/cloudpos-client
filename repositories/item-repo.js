@@ -233,11 +233,11 @@ class ItemService {
     // }
 
     async getScaleFromBarcode(args) {
-        let scaleIdentifier = args[0];
+        let scaleIdentifier = args;
         const scaleTable = db.model('scale');
+        console.log("getScaleFromBarcode" + scaleIdentifier);
         const scale = await scaleTable.findOne({
             where: {
-
                 start: { [db.Seq().Op.like]: scaleIdentifier + '%' }
             }
 
@@ -260,17 +260,17 @@ class ItemService {
         let scale = JSON.parse(args[0]);
         let barcode = args[1];
 
-
+        console.log("barcode " + barcode);
         const itemTable = db.model('variant');
         const items = await itemTable.findAll({
             where: {
 
-                barcode: { [db.Seq().Op.like]: barcode + '%' },
-                scale_id: scale.id
+                barcode: {
+                    [db.Seq().Op.like]: '%' + barcode + '%'
+                },
+                scale_barcode_id: scale.id
             },
             include: [
-                //     all: true
-                // }
                 {
                     model: db.model('stock'), as: 'stock', include: [
 
@@ -278,15 +278,21 @@ class ItemService {
                         { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
 
                 },
-                { model: db.model('price'), as: 'variant_price', },
-                { model: db.model('segment'), as: 'variant_segment' },
                 {
-                    model: db.model('serial'), as: 'variant_serials',
-                    // where: serialFilter
+                    model: db.model('segment'), as: 'variant_segment', include: [{
+                        model: db.model('stock'), as: 'stock'
+                    }
+                    ]
+
                 },
+                { model: db.model('serial'), as: 'variant_serials' },
                 { model: db.model('tax'), as: 'variant_tax' },
-                { model: db.model('category'), as: 'variant_item_categories' },
-                { model: db.model('supplier'), as: 'item_suppliers' }]
+                {
+                    model: db.model('category'), as: 'variant_item_categories'
+                },
+                { model: db.model('supplier'), as: 'item_suppliers' },
+
+            ],
 
         });
         return JSON.stringify(items);
@@ -345,7 +351,6 @@ class ItemService {
                 await stockTable.destroy({ truncate: false, where: {}, });
                 await itemManufacturingTable.destroy({ truncate: false, where: {} })
 
-
                 try {
                     if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
                         await scaleTable.bulkCreate(scaleBarcodeList);
@@ -355,8 +360,11 @@ class ItemService {
                 }
                 try {
                     if (itemsInfo != [] && itemsInfo != undefined) {
-
+                        // if (itemsInfo[4503]) {
+                        //     console.log("itemsInfo " + JSON.stringify(itemsInfo));
+                        // }
                         await variantTable.bulkCreate(itemsInfo);
+
                         //     , {
 
                         //     include: [
@@ -403,7 +411,6 @@ class ItemService {
                     console.log("segmantsList error :" + error);
                 }
                 try {
-                    console.log("serialsList " + JSON.stringify(serialsList));
                     if (serialsList != [] && serialsList != undefined) {
                         await serialTable.bulkCreate(serialsList);
                     }
@@ -455,7 +462,6 @@ class ItemService {
                     console.log("stockTable error :" + error);
                 }
                 try {
-                    console.log("itemManufacturingList " + itemManufacturingList)
                     if (itemManufacturingList != [] && itemManufacturingList != undefined) {
                         await itemManufacturingTable.bulkCreate(itemManufacturingList);
                     }
