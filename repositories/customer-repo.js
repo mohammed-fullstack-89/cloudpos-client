@@ -9,7 +9,6 @@ class CustomerService {
         let customerTable = db.model('customers');
         let customers = [];
         customers = await customerTable.findAll({ include: { all: true, nested: true } });
-        console.log("customers " + JSON.stringify(customers));
 
         return customers;
     }
@@ -27,17 +26,18 @@ class CustomerService {
             customers = await customerTable.findAll({
                 include: { all: true, nested: true, },
                 where: {
-                    name: { [Seq.Op.like]: `%${val}%` },
-                    nick_name: { [Seq.Op.like]: `%${val}%` },
-                    mobile_1: { [Seq.Op.like]: `%${val}%` },
-                    mobile_2: { [Seq.Op.like]: `%${val}%` },
+                    [Seq.Op.or]: {
+                        name: { [Seq.Op.like]: `%${val}%` },
+                        nick_name: { [Seq.Op.like]: `%${val}%` },
+                        mobile_1: { [Seq.Op.like]: `%${val}%` },
+                        mobile_2: { [Seq.Op.like]: `%${val}%` },
+                    }
                 },
                 limit,
                 offset
             });
         }
         customers = JSON.stringify(customers);
-        console.log("customers " + JSON.stringify(customers));
 
         return customers;
     }
@@ -56,16 +56,11 @@ class CustomerService {
         const addressesList = args[1];
         const customerEntitiesRel = args[2];
         const customerId = args[3];
-        console.log("addressesList " + JSON.stringify(addressesList));
         let customerTable = db.model("customer");
         let addressesTable = db.model("address");
         let customerEntitesRelTable = db.model("customer_entity");
         if (customerId) {
-            // try {
-            //     await customerTable.destroy({ truncate: true })
-            // } catch (error) {..
-            //     console.log("error" + error);
-            // }
+
             try {
                 await addressesTable.destroy({ where: { customer_id: customerId } })
             } catch (error) {
@@ -80,7 +75,7 @@ class CustomerService {
 
         try {
             if (customer != "" && customer != undefined) {
-                await customerTable.create(customer, { updateOnDuplicate: Object.keys(customer.rawAttributes), });
+                await customerTable.upsert(customer);
             }
         } catch (error) {
             console.log("error" + error);

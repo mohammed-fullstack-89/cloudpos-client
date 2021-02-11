@@ -3,20 +3,20 @@ const db = require('../models/index');
 class UserService {
 
     async saveUsers(userArray) {
-       try{
-           if(userArray&&userArray!=[]){
-        const userTable= db.model('user');
-        await userTable.destroy({truncate:false,where:{}});
-        await userTable.bulkCreate(userArray);
-           }
-       }catch(ex){
-           console.log(ex);
-       }
+        try {
+            if (userArray && userArray != []) {
+                const userTable = db.model('user');
+                await userTable.destroy({ truncate: false, where: {} });
+                await userTable.bulkCreate(userArray);
+            }
+        } catch (error) {
+            console.log("error : " + error);
+        }
 
     }
     async getUserByCode(code) {
         const userTable = db.model('user');
-       const result= await userTable.findOne({
+        const result = await userTable.findOne({
             where: {
                 code
             },

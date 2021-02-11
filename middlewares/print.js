@@ -23,7 +23,6 @@ class PrintMiddleware {
 
     printersSettings() {
         this.win = ipc.send("openPrintersSettings");
-
     }
 
 }

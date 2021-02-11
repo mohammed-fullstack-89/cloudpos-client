@@ -23,8 +23,8 @@ module.exports = {
     },
     stagging: {
         production: false,
-        url: "https://rpos.live/staff/#/login",
-        protocol: 'https',
+        url: "http://167.71.72.20/staff/#/login",
+        protocol: 'http',
         hostname: 'rpos.live',
         pathname: '/staff/#/login',
     },
@@ -40,6 +40,13 @@ module.exports = {
         url: "http://192.168.1.90:4200/#/login",
         protocol: 'https',
         hostname: '192.168.1.90',
+        pathname: '/#/login',
+    },
+    zugMac: {
+        production: false,
+        url: "http://192.168.1.6:4200/#/login",
+        protocol: 'https',
+        hostname: '192.168.1.6',
         pathname: '/#/login',
     },
     remoteZug: {

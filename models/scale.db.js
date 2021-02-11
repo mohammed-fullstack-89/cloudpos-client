@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         name: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         start: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         end: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-        number_of_digits: { type: DataTypes.INTEGER, allowNull: true },
+        number_of_digit: { type: DataTypes.INTEGER, allowNull: true },
         number_of_digits_before_fraction: { type: DataTypes.INTEGER, allowNull: true },
         has_serial: { type: DataTypes.TINYINT, allowNull: true },
     }, {

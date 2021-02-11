@@ -19,7 +19,7 @@ class PrintHelper {
         });
 
         ipcMain.on('openPrintersSettings', (event, ...args) => {
-            windowManager.createSettingsWindow();
+            return windowManager.createSettingsWindow();
         });
 
         ipcMain.on('openDrawer', (event, ...args) => {
@@ -29,35 +29,30 @@ class PrintHelper {
     }
 
     printDocument(html, copies) {
-        // console.log("html" + html);
         const mainPrinter = appStore.getValue("mainPrinter");
-        // notificationService.showNotification('Printing', `using ${mainPrinter}`);
+        notificationService.showNotification('Printing', `using ${mainPrinter}`);
         if (mainPrinter !== "--choose Printer--") {
             for (let i = 1; i <= copies; i++) {
                 let printWindow = new BrowserWindow({
                     webPreferences: {
                         javascript: false,
                         contextIsolation: true,
+                        devTools: false
 
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: false,
-                    show: true,
+                    show: false,
                 });
-
                 printWindow.removeMenu();
                 printWindow.menu = null;
                 printWindow.loadURL("data:text/html;charset=utf-8," + html);
-                const fs = require('fs');
-                fs.writeFile("receipt.txt", html, function (err) {
-                    if (err) {
-                        return console.log(err);
-                    }
-                    console.log("The file was saved!");
-                });
-                const options = { collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: true, }
+                const options = {
+                    collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: false, margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 }
+                }
                 printWindow.webContents.on("did-finish-load", () => {
                     try {
+
                         printWindow.webContents.print(options, (success, errorType) => {
                             if (!success) {
                                 console.log("check printer");

@@ -5,10 +5,11 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       this.belongsTo(models.variant, {
+        as: 'variant_serial',
         foreignKey: {
           field: 'item_id',
           name: 'variantId'
-        }
+        },
       });
     }
   };

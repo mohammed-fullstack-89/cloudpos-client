@@ -35,6 +35,7 @@ class ItemService {
                         { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
 
                 },
+                { model: db.model('scale'), as: 'variant_scale_barcode' },
 
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
@@ -43,7 +44,7 @@ class ItemService {
                     ]
 
                 },
-                { model: db.model('serial'), as: 'variant_serials' },
+                { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
                 { model: db.model('category'), as: 'variant_item_categories', where: filter, },
                 { model: db.model('supplier'), as: 'item_suppliers' },
@@ -62,11 +63,11 @@ class ItemService {
     async updateSerialQty(args) {
         try {
             const id = args[0];
-            const serial_qty = args[0];
+            const serial_qty = args[1];
             const serialTable = db.model('serial');
             await serialTable.update({ serial_qty }, {
                 where: {
-                    id
+                    id: id
                 }
             });
             return true;
@@ -77,7 +78,6 @@ class ItemService {
     }
     async searchBarcode(args) {
         try {
-            console.log("search");
             const code = args[0];
 
             let item = [];
@@ -95,7 +95,7 @@ class ItemService {
                         // show_in_sale_screen: 1
                         [db.Seq().Op.or]: {
                             barcode: code,
-                            '$variant_serials.serial$': code
+                            '$variant_serial.serial$': code
                         }
                     },
 
@@ -105,6 +105,7 @@ class ItemService {
                                 { model: db.model('price'), as: 'variant_price', },
                                 { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                         },
+                        { model: db.model('scale'), as: 'variant_scale_barcode' },
 
                         {
                             model: db.model('segment'), as: 'variant_segment', include: [{
@@ -113,7 +114,7 @@ class ItemService {
                             ]
 
                         },
-                        { model: db.model('serial'), as: 'variant_serials' },
+                        { model: db.model('serial'), as: 'variant_serial' },
                         { model: db.model('tax'), as: 'variant_tax' },
                         {
                             model: db.model('category'), as: 'variant_item_categories'
@@ -124,10 +125,11 @@ class ItemService {
 
                 });
                 item = JSON.stringify(item);
+
                 return item;
             }
         } catch (ex) {
-            console.log("ex " + ex);
+            console.log("error:  " + ex);
         }
     }
 
@@ -136,7 +138,6 @@ class ItemService {
         const value = args[1];
         const offset = args[2];
         const limit = args[3];
-
         let items = [];
         if (value == '' || value == null || value == undefined) {
             items = [];
@@ -164,29 +165,29 @@ class ItemService {
                         }
                     };
                     break;
-                case 'barcode' || 'serial':
+                case 'barcode+serial':
+
                     filter = {
                         [db.Seq().Op.or]: {
-                            barcode: { [db.Seq().Op.like]: '%' + value + '%' },
-                            serial: { [db.Seq().Op.like]: '%' + value + '%' }
+                            barcode: value,
+                            '$variant_serial.serial$': value
                         }
+
                     };
                     break;
             }
 
+
             items = await variantTable.findAll({
-                where: {
-                    [db.Seq().Op.and]: filter,
-                    // show_in_sale_screen: 1
-                },
+
                 include: [
                     {
                         model: db.model('stock'), as: 'stock', include: [
-
                             { model: db.model('price'), as: 'variant_price', },
                             { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
-
                     },
+                    { model: db.model('scale'), as: 'variant_scale_barcode' },
+
                     {
                         model: db.model('segment'), as: 'variant_segment', include: [{
                             model: db.model('stock'), as: 'stock'
@@ -194,7 +195,7 @@ class ItemService {
                         ]
 
                     },
-                    { model: db.model('serial'), as: 'variant_serials' },
+                    { model: db.model('serial'), as: 'variant_serial' },
                     { model: db.model('tax'), as: 'variant_tax' },
                     {
                         model: db.model('category'), as: 'variant_item_categories'
@@ -202,6 +203,10 @@ class ItemService {
                     { model: db.model('supplier'), as: 'item_suppliers' },
 
                 ],
+                where: filter,
+                // show_in_sale_screen: 1
+
+                subQuery: false, //top level where with limit bug in sequelize (solution)
 
                 offset: offset,
                 limit: limit
@@ -223,34 +228,16 @@ class ItemService {
             console.log("error " + error);
         }
     }
-    // async getStockData() {
 
-    //     const priceTable = db.model('stock');
-    //     const stockData = priceTable.findAll({
-    //         attributes: ['id', 'qty']
-    //     });
-    //     return JSON.stringify(stockData);
-    // }
 
     async getScaleFromBarcode(args) {
         let scaleIdentifier = args;
         const scaleTable = db.model('scale');
-        console.log("getScaleFromBarcode" + scaleIdentifier);
         const scale = await scaleTable.findOne({
             where: {
-                start: { [db.Seq().Op.like]: scaleIdentifier + '%' }
-            }
-
-            // include: [
-            //     {
-            //         model: db.model('scale'), as: 'variant_scale_barcode', where: {
-            //             [db.Seq().Op.like]: {
-            //                 start: '%' + barcode + '%'
-            //             }
-            //         }
-            //     }
-            // ],
-            // limit: 1
+                start: scaleIdentifier
+            },
+            limit: 1
         });
         return JSON.stringify(scale);
     }
@@ -260,24 +247,21 @@ class ItemService {
         let scale = JSON.parse(args[0]);
         let barcode = args[1];
 
-        console.log("barcode " + barcode);
         const itemTable = db.model('variant');
         const items = await itemTable.findAll({
             where: {
-
-                barcode: {
-                    [db.Seq().Op.like]: '%' + barcode + '%'
-                },
+                barcode: barcode,
                 scale_barcode_id: scale.id
             },
             include: [
                 {
                     model: db.model('stock'), as: 'stock', include: [
-
                         { model: db.model('price'), as: 'variant_price', },
                         { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
 
                 },
+                { model: db.model('scale'), as: 'variant_scale_barcode' },
+
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
                         model: db.model('stock'), as: 'stock'
@@ -285,7 +269,7 @@ class ItemService {
                     ]
 
                 },
-                { model: db.model('serial'), as: 'variant_serials' },
+                { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
                 {
                     model: db.model('category'), as: 'variant_item_categories'
@@ -293,6 +277,7 @@ class ItemService {
                 { model: db.model('supplier'), as: 'item_suppliers' },
 
             ],
+            limit: 1
 
         });
         return JSON.stringify(items);
@@ -307,20 +292,7 @@ class ItemService {
                 11: itemStockslist, 12: itemManufacturingList } = args;
 
 
-            // let itemsInfo = args[0];
-            // let serialsList = args[1];
-            // let alternatives = args[2];
-            // let pricesList = args[3];
-            // let segmantsList = args[4];
-            // let suppliersList = args[5];
-            // let taxesList = args[6];
-            // let taxesItemsRelation = args[7];
-            // let suppliersItemsRelation = args[8];
-            // let itemAlternativesRel = args[9];
-            // let itemCategoriesRel = args[10];
-            // let scaleBarcodeList = args[11];
-            // let itemStockslist = args[12];
-            // console.log("taxesItemsRelation : " + JSON.stringify(taxesItemsRelation));
+
 
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
@@ -360,29 +332,9 @@ class ItemService {
                 }
                 try {
                     if (itemsInfo != [] && itemsInfo != undefined) {
-                        // if (itemsInfo[4503]) {
-                        //     console.log("itemsInfo " + JSON.stringify(itemsInfo));
-                        // }
+
                         await variantTable.bulkCreate(itemsInfo);
 
-                        //     , {
-
-                        //     include: [
-                        //         { model: db.model('price'), as: 'variant_price', },
-                        //         { model: db.model('segment'), as: 'variant_segment' },
-                        //         {
-                        //             model: db.model('serial'), as: 'variant_serials',
-
-                        //         },
-                        //         { model: db.model('tax'), as: 'variant_tax' },
-                        //         { model: db.model('category'), as: 'variant_item_categories' },
-                        //         { model: db.model('supplier'), as: 'item_suppliers' },
-                        //         { model: scaleTable, as: 'variant_scale_barcode', ignoreDuplicates: true },
-
-                        //     ]
-                        // }
-
-                        // )
                     }
                 } catch (error) {
                     console.log("itemsInfo error :" + error);

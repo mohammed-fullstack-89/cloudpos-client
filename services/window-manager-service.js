@@ -5,6 +5,7 @@ const enviroment = require('../enviroment');
 const customContextMenu = require('../components/menu/context_menu');
 const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const utility = require('./utility-service');
+const { APPNAME } = require('../commons');
 class InitializerService {
 
     constructor() {
@@ -51,7 +52,7 @@ class InitializerService {
 
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('Maestro');
+        tray.setToolTip('Cloudpos');
         tray.setContextMenu(contextMenu);
     }
     createAppWindow() {
@@ -139,9 +140,9 @@ class InitializerService {
                     {
                         role: 'reload'
                     },
-                    {
-                        role: 'toggledevtools'
-                    },
+                    // {
+                    //     role: 'toggledevtools'
+                    // },
                     {
                         type: 'separator'
                     },
@@ -202,8 +203,11 @@ class InitializerService {
             event.preventDefault();
             callback(true);
         });
-
-        this.mainWindow.loadURL(enviroment.development.url);
+        this.mainWindow.webContents.on("did-finish-load", () => {
+            // const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/.mp3`;
+            // BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`var audioManager=new Audio('${dir}').play();`);
+        });
+        this.mainWindow.loadURL(enviroment.maestro.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
@@ -224,7 +228,7 @@ class InitializerService {
             useContentSize: true,
             title: "Settings",
             webPreferences: {
-                devTools: true,
+                devTools: false,
                 nodeIntegration: true,
             },
 
@@ -233,7 +237,7 @@ class InitializerService {
         // settingsWindow.removeMenu();
         // settingsWindow.menu = null;
         settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
-
+        return settingsWindow;
     }
 
     hideSplash() {

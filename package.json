@@ -1,12 +1,12 @@
 {
-  "name": "StaggingPos",
-  "productName": "StaggingPos",
+  "name": "MaestroPos",
+  "productName": "MaestroPos",
   "version": "1.0.4",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "post-install": "electron-builder install-app-deps",
-    "rebuild": "electron-rebuild -f -w sqlite3",
+    "rebuild": "electron-rebuild -f -w *",
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",
@@ -17,7 +17,7 @@
   },
   "build": {
     "electronVersion": "8.5.3",
-    "appId": "com.rubikomm.staggingpos",
+    "appId": "com.rubikomm.maestropos",
     "directories": {
       "buildResources": "resources",
       "output": "packages"
@@ -79,8 +79,6 @@
   "dependencies": {
     "@thiagoelg/node-printer": "^0.5.3",
     "electron-root-path": "^1.0.16",
-    "howler": "^2.2.1",
-    "jquery": "^3.5.1",
     "node-gyp": "^7.1.2",
     "sequelize": "^6.3.5",
     "sqlite3": "^5.0.0"

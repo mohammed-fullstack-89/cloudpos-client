@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       })
       this.hasMany(models.serial, {
-        as: 'variant_serials',
+        as: 'variant_serial',
         foreignKey: {
           field: 'variant_id',
           name: 'variantId'
