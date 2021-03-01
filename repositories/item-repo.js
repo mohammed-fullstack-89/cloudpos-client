@@ -36,6 +36,10 @@ class ItemService {
 
                 },
                 { model: db.model('scale'), as: 'variant_scale_barcode' },
+                { model: db.model('color'), as: 'variant_color' },
+                { model: db.model('unit'), as: 'variant_unit' },
+                { model: db.model('size'), as: 'variant_size' },
+                { model: db.model('brand'), as: 'variant_brand' },
 
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
@@ -106,6 +110,10 @@ class ItemService {
                                 { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                         },
                         { model: db.model('scale'), as: 'variant_scale_barcode' },
+                        { model: db.model('color'), as: 'variant_color' },
+                        { model: db.model('unit'), as: 'variant_unit' },
+                        { model: db.model('size'), as: 'variant_size' },
+                        { model: db.model('brand'), as: 'variant_brand' },
 
                         {
                             model: db.model('segment'), as: 'variant_segment', include: [{
@@ -187,6 +195,10 @@ class ItemService {
                             { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                     },
                     { model: db.model('scale'), as: 'variant_scale_barcode' },
+                    { model: db.model('color'), as: 'variant_color' },
+                    { model: db.model('unit'), as: 'variant_unit' },
+                    { model: db.model('size'), as: 'variant_size' },
+                    { model: db.model('brand'), as: 'variant_brand' },
 
                     {
                         model: db.model('segment'), as: 'variant_segment', include: [{
@@ -262,6 +274,10 @@ class ItemService {
                 },
                 { model: db.model('scale'), as: 'variant_scale_barcode' },
 
+                { model: db.model('color'), as: 'variant_color' },
+                { model: db.model('unit'), as: 'variant_unit' },
+                { model: db.model('size'), as: 'variant_size' },
+                { model: db.model('brand'), as: 'variant_brand' },
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
                         model: db.model('stock'), as: 'stock'
@@ -289,11 +305,7 @@ class ItemService {
                 2: pricesList, 3: segmantsList, 4: suppliersList,
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
-                11: itemStockslist, 12: itemManufacturingList } = args;
-
-
-
-
+                11: itemStockslist, 12: itemManufacturingList, 13: itemsUnitsList, 14: itemsSizesList, 15: itemsColorsList, 16: itemsBrandsList } = args;
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
@@ -307,6 +319,10 @@ class ItemService {
             const itemTaxesTable = db.model("variant_taxes");
             const itemSupplierTable = db.model("variant_suppliers");
             const itemManufacturingTable = db.model("itemManufacturing");
+            const colorTable = db.model("color");
+            const unitTable = db.model("unit");
+            const sizeTable = db.model("size");
+            const brandTable = db.model("brand");
 
             try {
                 await scaleTable.destroy({ truncate: false, where: {}, });
@@ -322,6 +338,10 @@ class ItemService {
                 await itemTaxesTable.destroy({ truncate: false, where: {}, });
                 await stockTable.destroy({ truncate: false, where: {}, });
                 await itemManufacturingTable.destroy({ truncate: false, where: {} })
+                await unitTable.destroy({ truncate: false, where: {} })
+                await sizeTable.destroy({ truncate: false, where: {} })
+                await brandTable.destroy({ truncate: false, where: {} })
+                await colorTable.destroy({ truncate: false, where: {} })
 
                 try {
                     if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
@@ -330,11 +350,39 @@ class ItemService {
                 } catch (error) {
                     console.log("scaleBarcodeList error : " + error);
                 }
+
+                try {
+                    if (itemsUnitsList != [] && itemsUnitsList != undefined) {
+                        await unitTable.bulkCreate(itemsUnitsList);
+                    }
+                } catch (error) {
+                    console.log("itemsUnitsList error : " + error);
+                }
+                try {
+                    if (itemsSizesList != [] && itemsSizesList != undefined) {
+                        await sizeTable.bulkCreate(itemsSizesList);
+                    }
+                } catch (error) {
+                    console.log("itemsSizesList error : " + error);
+                }
+                try {
+                    if (itemsColorsList != [] && itemsColorsList != undefined) {
+                        await colorTable.bulkCreate(itemsColorsList);
+                    }
+                } catch (error) {
+                    console.log("itemsColorsList error : " + error);
+                }
+                try {
+                    if (itemsBrandsList != [] && itemsBrandsList != undefined) {
+                        await brandTable.bulkCreate(itemsBrandsList);
+                    }
+                } catch (error) {
+                    console.log("itemsBrandsList error : " + error);
+                }
                 try {
                     if (itemsInfo != [] && itemsInfo != undefined) {
 
                         await variantTable.bulkCreate(itemsInfo);
-
                     }
                 } catch (error) {
                     console.log("itemsInfo error :" + error);
@@ -420,6 +468,9 @@ class ItemService {
                 } catch (error) {
                     console.log("itemManufacturingList error : " + error);
                 }
+
+
+
             } catch (error) {
                 console.log("error " + error);
             } finally { }

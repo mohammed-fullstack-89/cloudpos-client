@@ -3,6 +3,40 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     static associate(models) {
+
+      this.belongsTo(models.color,
+        {
+          as: 'variant_color',
+          foreignKey: {
+            field: 'colorId',
+            name: 'color_id'
+          }
+        });
+      this.belongsTo(models.brand,
+        {
+          as: 'variant_brand',
+          foreignKey: {
+            field: 'brandId',
+            name: 'brand_id'
+          }
+        });
+      this.belongsTo(models.unit,
+        {
+          as: 'variant_unit',
+          foreignKey: {
+            field: 'unitId',
+            name: 'unit_id'
+          }
+        });
+      this.belongsTo(models.size,
+        {
+          as: 'variant_size',
+          foreignKey: {
+            field: 'sizeId',
+            name: 'size_id'
+          }
+        });
+
       this.belongsToMany(models.supplier, {
         as: 'item_suppliers',
         through: models.variant_suppliers,
@@ -81,17 +115,17 @@ module.exports = (sequelize, DataTypes) => {
     nick_name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     barcode: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     code: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    unit_id: { type: DataTypes.BIGINT, defaultValue: null },
-    brand_id: { type: DataTypes.BIGINT, defaultValue: null },
-    color_id: { type: DataTypes.BIGINT, defaultValue: null },
-    size_id: { type: DataTypes.BIGINT, defaultValue: null },
+    unit_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
+    brand_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
+    color_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
+    size_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
     category_id: { type: DataTypes.BIGINT, defaultValue: null },
     column: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     row: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     shelf: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     max_order: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     min_order: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), allowNull: true },
+    discount_type: { type: DataTypes.STRING, allowNull: true },
     discount_value: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     max_discount: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     commission_type: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
@@ -124,7 +158,6 @@ module.exports = (sequelize, DataTypes) => {
     color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     is_manufacturing: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     scale_barcode_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true }
-
   },
     {
       sequelize,

@@ -92,7 +92,6 @@ class PrintHelper {
                 , type: 'RAW' // type: RAW, TEXT, PDF, JPEG, .. depends on platform
                 , success: function (jobID) {
                     console.log("sent to printer with ID: " + jobID);
-
                 }
                 , error: function (err) { notificationService.showNotification('cash drawer', 'Failed opening cash drawer . please check if the cash drawer is connected to the printer .'); console.log(err); }
             });

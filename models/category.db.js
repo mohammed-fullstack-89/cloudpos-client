@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     name_en: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     description: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     image: { type: DataTypes.STRING, allowNull: true },
-    discount_type: { type: DataTypes.ENUM('percentage', 'value', 'undefined'), allowNull: true },
+    discount_type: { type: DataTypes.STRING, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
     branch_id: { type: DataTypes.BIGINT, allowNull: true },
     // tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },

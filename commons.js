@@ -1,3 +1,3 @@
 module.exports = {
-    APPNAME: 'MaestroPos'
+    APPNAME: 'StaggingPos'
 }

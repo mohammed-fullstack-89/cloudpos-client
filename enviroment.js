@@ -7,14 +7,14 @@ module.exports = {
         hostname: 'localhost:4200',
         pathname: '/#/login',
     },
-    cloudPos: {
+    CloudPos: {
         production: true,
-        url: "https://188.166.99.43/staff/#/login",
+        url: "http://rpos.live/staff/#/login",
         protocol: 'https',
-        hostname: '188.166.99.43',
+        hostname: 'rpos.live',
         pathname: '/staff/#/login',
     },
-    maestro: {
+    MaestroPos: {
         production: true,
         url: "https://64.227.66.157/staff/#/login",
         protocol: 'https',
