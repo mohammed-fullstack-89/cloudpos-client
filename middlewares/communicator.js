@@ -35,14 +35,14 @@ class CommunicatorMiddleware {
         return customers;
     }
 
-    async setItems(itemsInfo, serialsList, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList, itemStockslist, itemManufacturingList, itemsUnitsList, itemsSizesList, itemsColorsList, itemsBrandsList) {
+    async setItems(itemsInfo, serialsList, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList, itemStockslist, itemManufacturingList, itemsUnitsList, itemsSizesList, itemsColorsList, itemsBrandsList, force) {
         try {
-            console.log(itemsBrandsList);
-            await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList), JSON.parse(itemStockslist), JSON.parse(itemManufacturingList), JSON.parse(itemsUnitsList), JSON.parse(itemsSizesList), JSON.parse(itemsColorsList), JSON.parse(itemsBrandsList));
+            await ipc.invoke('setItems', JSON.parse(itemsInfo), JSON.parse(serialsList), JSON.parse(pricesList), JSON.parse(segmantsList), JSON.parse(suppliersList), JSON.parse(taxesList), JSON.parse(taxesItemsRelation), JSON.parse(suppliersItemsRelation), JSON.parse(itemAlternativesRel), JSON.parse(itemCategoriesRel), JSON.parse(scaleBarcodeList), JSON.parse(itemStockslist), JSON.parse(itemManufacturingList), JSON.parse(itemsUnitsList), JSON.parse(itemsSizesList), JSON.parse(itemsColorsList), JSON.parse(itemsBrandsList), JSON.parse(force));
         } catch (error) {
             console.log("error : " + error);
         }
     }
+
 
     async getItems() {
         return ipc.invoke('getItems');

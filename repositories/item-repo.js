@@ -99,7 +99,9 @@ class ItemService {
                         // show_in_sale_screen: 1
                         [db.Seq().Op.or]: {
                             barcode: code,
-                            '$variant_serial.serial$': code
+                            '$variant_segment.barcode$': code,
+                            '$variant_serial.serial$': code,
+
                         }
                     },
 
@@ -178,7 +180,8 @@ class ItemService {
                     filter = {
                         [db.Seq().Op.or]: {
                             barcode: value,
-                            '$variant_serial.serial$': value
+                            '$variant_serial.serial$': value,
+                            '$variant_segment.barcode$': value,
                         }
 
                     };
@@ -219,7 +222,18 @@ class ItemService {
                 // show_in_sale_screen: 1
 
                 subQuery: false, //top level where with limit bug in sequelize (solution)
-
+                order: [
+                    ['name_ar', 'ASC'],
+                    ['name_en', 'ASC'],
+                    ['nick_name_ar', 'ASC'],
+                    ['nick_name_en', 'ASC'],
+                    ['trade_name_ar', 'ASC'],
+                    ['trade_name_en', 'ASC'],
+                    ['scientific_name_ar', 'ASC'],
+                    ['scientific_name_en', 'ASC'],
+                    ['brief_name_ar', 'ASC'],
+                    ['brief_name_en', 'ASC'],
+                ],
                 offset: offset,
                 limit: limit
             });
@@ -298,14 +312,14 @@ class ItemService {
         });
         return JSON.stringify(items);
     }
+
     async setItems(args) {
         try {
-
             const { 0: itemsInfo, 1: serialsList,
                 2: pricesList, 3: segmantsList, 4: suppliersList,
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
-                11: itemStockslist, 12: itemManufacturingList, 13: itemsUnitsList, 14: itemsSizesList, 15: itemsColorsList, 16: itemsBrandsList } = args;
+                11: itemStockslist, 12: itemManufacturingList, 13: itemsUnitsList, 14: itemsSizesList, 15: itemsColorsList, 16: itemsBrandsList, 17: force } = args;
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
@@ -325,27 +339,30 @@ class ItemService {
             const brandTable = db.model("brand");
 
             try {
-                await scaleTable.destroy({ truncate: false, where: {}, });
-                await variantTable.destroy({ truncate: false, where: {}, });
-                await taxTable.destroy({ truncate: false, where: {}, });
-                await supplierTable.destroy({ truncate: false, where: {}, });
-                await segmentTable.destroy({ truncate: false, where: {}, });
-                await serialTable.destroy({ truncate: false, where: {}, });
-                await priceTable.destroy({ truncate: false, where: {}, });
-                await itemAlternativeTable.destroy({ truncate: false, where: {}, });
-                await itemCategoriesTable.destroy({ truncate: false, where: {}, });
-                await itemSupplierTable.destroy({ truncate: false, where: {}, });
-                await itemTaxesTable.destroy({ truncate: false, where: {}, });
-                await stockTable.destroy({ truncate: false, where: {}, });
-                await itemManufacturingTable.destroy({ truncate: false, where: {} })
-                await unitTable.destroy({ truncate: false, where: {} })
-                await sizeTable.destroy({ truncate: false, where: {} })
-                await brandTable.destroy({ truncate: false, where: {} })
-                await colorTable.destroy({ truncate: false, where: {} })
 
+                if (force) {
+                    await scaleTable.destroy({ truncate: false, where: {}, });
+                    await variantTable.destroy({ truncate: false, where: {}, });
+                    await taxTable.destroy({ truncate: false, where: {}, });
+                    await supplierTable.destroy({ truncate: false, where: {}, });
+                    await segmentTable.destroy({ truncate: false, where: {}, });
+                    await serialTable.destroy({ truncate: false, where: {}, });
+                    await priceTable.destroy({ truncate: false, where: {}, });
+                    await itemAlternativeTable.destroy({ truncate: false, where: {}, });
+                    await itemCategoriesTable.destroy({ truncate: false, where: {}, });
+                    await itemSupplierTable.destroy({ truncate: false, where: {}, });
+                    await itemTaxesTable.destroy({ truncate: false, where: {}, });
+                    await stockTable.destroy({ truncate: false, where: {}, });
+                    await itemManufacturingTable.destroy({ truncate: false, where: {} })
+                    await unitTable.destroy({ truncate: false, where: {} })
+                    await sizeTable.destroy({ truncate: false, where: {} })
+                    await brandTable.destroy({ truncate: false, where: {} })
+                    await colorTable.destroy({ truncate: false, where: {} })
+                }
                 try {
+
                     if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
-                        await scaleTable.bulkCreate(scaleBarcodeList);
+                        await scaleTable.bulkCreate(scaleBarcodeList, { updateOnDuplicate: [...Object.keys(scaleTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("scaleBarcodeList error : " + error);
@@ -353,28 +370,28 @@ class ItemService {
 
                 try {
                     if (itemsUnitsList != [] && itemsUnitsList != undefined) {
-                        await unitTable.bulkCreate(itemsUnitsList);
+                        await unitTable.bulkCreate(itemsUnitsList, { updateOnDuplicate: [...Object.keys(unitTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemsUnitsList error : " + error);
                 }
                 try {
                     if (itemsSizesList != [] && itemsSizesList != undefined) {
-                        await sizeTable.bulkCreate(itemsSizesList);
+                        await sizeTable.bulkCreate(itemsSizesList, { updateOnDuplicate: [...Object.keys(sizeTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemsSizesList error : " + error);
                 }
                 try {
                     if (itemsColorsList != [] && itemsColorsList != undefined) {
-                        await colorTable.bulkCreate(itemsColorsList);
+                        await colorTable.bulkCreate(itemsColorsList, { updateOnDuplicate: [...Object.keys(colorTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemsColorsList error : " + error);
                 }
                 try {
                     if (itemsBrandsList != [] && itemsBrandsList != undefined) {
-                        await brandTable.bulkCreate(itemsBrandsList);
+                        await brandTable.bulkCreate(itemsBrandsList, { updateOnDuplicate: [...Object.keys(brandTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemsBrandsList error : " + error);
@@ -382,7 +399,7 @@ class ItemService {
                 try {
                     if (itemsInfo != [] && itemsInfo != undefined) {
 
-                        await variantTable.bulkCreate(itemsInfo);
+                        await variantTable.bulkCreate(itemsInfo, { updateOnDuplicate: [...Object.keys(variantTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemsInfo error :" + error);
@@ -390,14 +407,14 @@ class ItemService {
 
                 try {
                     if (taxesList != [] && taxesList != undefined) {
-                        await taxTable.bulkCreate(taxesList);
+                        await taxTable.bulkCreate(taxesList, { updateOnDuplicate: [...Object.keys(taxTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("taxesList error : " + error);
                 }
                 try {
                     if (suppliersList != [] && suppliersList != undefined) {
-                        await supplierTable.bulkCreate(suppliersList);
+                        await supplierTable.bulkCreate(suppliersList, { updateOnDuplicate: [...Object.keys(supplierTable.rawAttributes)] });
 
                     }
                 } catch (error) {
@@ -405,35 +422,35 @@ class ItemService {
                 }
                 try {
                     if (segmantsList != [] && segmantsList != undefined) {
-                        await segmentTable.bulkCreate(segmantsList);
+                        await segmentTable.bulkCreate(segmantsList, { updateOnDuplicate: [...Object.keys(segmentTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("segmantsList error :" + error);
                 }
                 try {
                     if (serialsList != [] && serialsList != undefined) {
-                        await serialTable.bulkCreate(serialsList);
+                        await serialTable.bulkCreate(serialsList, { updateOnDuplicate: [...Object.keys(serialTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("serialsList error: " + error);
                 }
                 try {
                     if (pricesList != [] && pricesList != undefined) {
-                        await priceTable.bulkCreate(pricesList);
+                        await priceTable.bulkCreate(pricesList, { updateOnDuplicate: [...Object.keys(priceTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("pricesList error: " + error);
                 }
                 try {
                     if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
-                        await itemAlternativeTable.bulkCreate(itemAlternativesRel);
+                        await itemAlternativeTable.bulkCreate(itemAlternativesRel, { updateOnDuplicate: [...Object.keys(itemAlternativeTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemAlternativesRel error : " + error);
                 }
                 try {
                     if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
-                        await itemCategoriesTable.bulkCreate(itemCategoriesRel);
+                        await itemCategoriesTable.bulkCreate(itemCategoriesRel, { updateOnDuplicate: [...Object.keys(itemCategoriesTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemCategoriesRel error : " + error);
@@ -441,7 +458,7 @@ class ItemService {
                 try {
                     if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
 
-                        await itemSupplierTable.bulkCreate(suppliersItemsRelation);
+                        await itemSupplierTable.bulkCreate(suppliersItemsRelation, { updateOnDuplicate: [...Object.keys(itemSupplierTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("suppliersItemsRelation error :" + error);
@@ -449,21 +466,21 @@ class ItemService {
                 try {
                     if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
 
-                        await itemTaxesTable.bulkCreate(taxesItemsRelation);
+                        await itemTaxesTable.bulkCreate(taxesItemsRelation, { updateOnDuplicate: [...Object.keys(itemTaxesTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("taxesItemsRelation error :" + error);
                 }
                 try {
                     if (itemStockslist != [] && itemStockslist != undefined) {
-                        await stockTable.bulkCreate(itemStockslist);
+                        await stockTable.bulkCreate(itemStockslist, { updateOnDuplicate: [...Object.keys(stockTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("stockTable error :" + error);
                 }
                 try {
                     if (itemManufacturingList != [] && itemManufacturingList != undefined) {
-                        await itemManufacturingTable.bulkCreate(itemManufacturingList);
+                        await itemManufacturingTable.bulkCreate(itemManufacturingList, { updateOnDuplicate: [...Object.keys(itemManufacturingTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("itemManufacturingList error : " + error);
@@ -477,7 +494,7 @@ class ItemService {
 
 
         } catch (error) {
-            console.log("error " + error);
+            console.log("error" + error);
         }
     }
 }

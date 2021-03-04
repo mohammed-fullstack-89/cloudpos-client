@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
 
 
       })
-      this.hasOne(models.category, {
-        as: 'category_tax',
-        foreignKey: {
-          name: 'tax_id',
-          field: 'tax_id',
-        },
-        sourceKey: 'id'
-      })
+      // this.hasOne(models.category, {
+      //   as: 'category_tax',
+      //   foreignKey: {
+      //     name: 'tax_id',
+      //     field: 'tax_id',
+      //   },
+      //   sourceKey: 'id'
+      // })
     }
   };
   Tax.init({

@@ -207,7 +207,7 @@ class InitializerService {
             // const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/.mp3`;
             // BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`var audioManager=new Audio('${dir}').play();`);
         });
-        this.mainWindow.loadURL(enviroment.development.url);
+        this.mainWindow.loadURL(enviroment.zugMac.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });

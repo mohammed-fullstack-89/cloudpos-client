@@ -14,7 +14,7 @@ class UtilityService {
 
     }
     connectToLogger(args) {
-        const identifier = JSON.parse(args[0]);
+        const identifier = args[0];
         if (identifier && identifier.code) {
             const LogRocket = require('logrocket');
             const os = require('os');
@@ -23,8 +23,8 @@ class UtilityService {
             const userInfo = os.userInfo();
             console.log("computerName : " + computerName);
             console.log("userInfo : " + JSON.stringify(userInfo));
-            LogRocket.init('windows/poswindows');
-            LogRocket.identify(identifier.code, { ...identifier, computerName, ...UserInfo });
+            // LogRocket.init('windows/poswindows');
+            // LogRocket.identify(identifier.code, { ...identifier, computerName, ...UserInfo });
         }
     }
     playSound(type) {

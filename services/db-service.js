@@ -22,27 +22,30 @@ class DbStore {
                 let customerService = require('../repositories/customer-repo');
                 await customerService.deleteCustomer(args[0]);
             } catch (error) {
-                console.log("error : " + error);
+                console.log("delete customer => error : " + error);
             }
 
         });
 
         ipc.handle('setItems', async (event, ...args) => {
             try {
+
                 let itemsService = require('../repositories/item-repo');
                 await itemsService.setItems(args);
 
             } catch (error) {
-                console.log("error : " + error);
+                console.log("setting items => error : " + error);
             }
 
         });
+
         ipc.handle('saveUsers', async (event, ...args) => {
             try {
                 let userService = require('../repositories/user-repo');
                 await userService.saveUsers(args[0]);
             } catch (error) {
-                console.log("error : " + error);
+                console.log("save users => error : " + error);
+
             }
 
         });

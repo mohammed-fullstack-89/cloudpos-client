@@ -23,13 +23,13 @@ module.exports = (sequelize, DataTypes) => {
 
       });
 
-      this.belongsTo(models.tax, {
-        as: 'category_tax',
-        foreignKey: {
-          name: 'categoryTaxId',
-          field: 'tax_id'
-        }
-      })
+      // this.belongsTo(models.tax, {
+      //   as: 'category_tax',
+      //   foreignKey: {
+      //     name: 'categoryTaxId',
+      //     field: 'tax_id'
+      //   }
+      // })
       // this.hasMany(models.variant, {
       //   as: 'main_category',
       //   foreignKey: { name: 'categoryId', field: 'category_id' },
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     discount_type: { type: DataTypes.STRING, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
     branch_id: { type: DataTypes.BIGINT, allowNull: true },
-    // tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     printer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
 
