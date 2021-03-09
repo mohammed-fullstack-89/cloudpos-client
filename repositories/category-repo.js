@@ -25,7 +25,6 @@ class CategoriesService {
         let categoryTable = db.model("category");
         await categoryTable.destroy({ truncate: true });
         categoryTable.bulkCreate(JSON.parse(categoriesList));
-
         // categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
     }
 

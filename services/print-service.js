@@ -37,15 +37,15 @@ class PrintHelper {
                     webPreferences: {
                         javascript: false,
                         contextIsolation: true,
-                        devTools: false
+                        devTools: true
 
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: false,
-                    show: false,
+                    show: true,
                 });
-                printWindow.removeMenu();
-                printWindow.menu = null;
+                // printWindow.removeMenu();
+                // printWindow.menu = null;
                 printWindow.loadURL("data:text/html;charset=utf-8," + html);
                 const options = {
                     collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: false, margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 }

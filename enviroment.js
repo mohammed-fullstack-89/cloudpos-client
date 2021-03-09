@@ -14,7 +14,7 @@ module.exports = {
         hostname: 'rpos.live',
         pathname: '/staff/#/login',
     },
-    MaestroPos: {
+    maestroPos: {
         production: true,
         url: "https://64.227.66.157/staff/#/login",
         protocol: 'https',

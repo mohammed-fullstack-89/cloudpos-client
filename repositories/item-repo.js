@@ -135,7 +135,6 @@ class ItemService {
 
                 });
                 item = JSON.stringify(item);
-
                 return item;
             }
         } catch (ex) {
@@ -223,16 +222,16 @@ class ItemService {
 
                 subQuery: false, //top level where with limit bug in sequelize (solution)
                 order: [
-                    ['name_ar', 'ASC'],
-                    ['name_en', 'ASC'],
-                    ['nick_name_ar', 'ASC'],
-                    ['nick_name_en', 'ASC'],
-                    ['trade_name_ar', 'ASC'],
-                    ['trade_name_en', 'ASC'],
-                    ['scientific_name_ar', 'ASC'],
-                    ['scientific_name_en', 'ASC'],
-                    ['brief_name_ar', 'ASC'],
-                    ['brief_name_en', 'ASC'],
+                    ['name_ar', 'DESC'],
+                    ['name_en', 'DESC'],
+                    ['nick_name_ar', 'DESC'],
+                    ['nick_name_en', 'DESC'],
+                    ['trade_name_ar', 'DESC'],
+                    ['trade_name_en', 'DESC'],
+                    ['scientific_name_ar', 'DESC'],
+                    ['scientific_name_en', 'DESC'],
+                    ['brief_name_ar', 'DESC'],
+                    ['brief_name_en', 'DESC'],
                 ],
                 offset: offset,
                 limit: limit
