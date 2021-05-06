@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         qty: { type: DataTypes.BIGINT, allowNull: false, defaultValue: 0 },
         manufacture_type: { type: DataTypes.ENUM('one', 'multiple', 'none'), allowNull: true },
+        status: { type: DataTypes.TINYINT(1), defualtValue: 1, allowNull: false, },
         qty_in: { type: DataTypes.ENUM('branch', 'store'), defaultValue: 'branch', allowNull: false },
     },
         {

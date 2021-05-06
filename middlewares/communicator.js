@@ -2,8 +2,8 @@ const ipc = require('electron').ipcRenderer;
 
 class CommunicatorMiddleware {
 
-    setCategories(categoriesList) {
-        ipc.sendSync('setCategories', categoriesList);
+    setCategories(categoriesList, force) {
+        ipc.sendSync('setCategories', categoriesList, force);
     }
 
     async getCategories(parentId) {

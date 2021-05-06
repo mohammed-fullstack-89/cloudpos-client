@@ -11,6 +11,8 @@ class InitializerService {
     constructor() {
         this.splash = null;
         this.mainWindow = null;
+        app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
     }
     initTray(tray) {
         const trayMenu = [
@@ -56,7 +58,7 @@ class InitializerService {
         tray.setContextMenu(contextMenu);
     }
     createAppWindow() {
-        app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
         this.mainWindow = new BrowserWindow(windowsConfig.mainWindowConfig);
         this.mainWindow.webContents.setAudioMuted(false);
 
@@ -228,7 +230,7 @@ class InitializerService {
             useContentSize: true,
             title: "Settings",
             webPreferences: {
-                devTools: false,
+                devTools: true,
                 nodeIntegration: true,
             },
 

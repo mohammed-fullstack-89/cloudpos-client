@@ -1,7 +1,7 @@
 {
   "name": "StaggingPos",
   "productName": "StaggingPos",
-  "version": "1.0.6",
+  "version": "1.1.2",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -24,7 +24,7 @@
     },
     "mac": {
       "artifactName": "${name}-${version}-${os}.${ext}",
-      "category": "public.app-category.wallet",
+      "category": "com.rubikomm.StaggingPos",
       "target": [
         "zip"
       ]

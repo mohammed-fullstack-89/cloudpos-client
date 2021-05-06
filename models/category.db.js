@@ -19,8 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         through: models.variant_categories,
         foreignKey: 'category_id',
         otherKey: { name: 'item_id', field: 'item_id' },
-
-
       });
 
       // this.belongsTo(models.tax, {

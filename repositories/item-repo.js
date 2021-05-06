@@ -29,7 +29,7 @@ class ItemService {
             },
             include: [
                 {
-                    model: db.model('stock'), as: 'stock', include: [
+                    model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
 
                         { model: db.model('price'), as: 'variant_price', },
                         { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
@@ -43,7 +43,7 @@ class ItemService {
 
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
-                        model: db.model('stock'), as: 'stock'
+                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
                     }
                     ]
 
@@ -107,7 +107,7 @@ class ItemService {
 
                     include: [
                         {
-                            model: db.model('stock'), as: 'stock', include: [
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
                                 { model: db.model('price'), as: 'variant_price', },
                                 { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                         },
@@ -119,10 +119,9 @@ class ItemService {
 
                         {
                             model: db.model('segment'), as: 'variant_segment', include: [{
-                                model: db.model('stock'), as: 'stock'
+                                model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
                             }
                             ]
-
                         },
                         { model: db.model('serial'), as: 'variant_serial' },
                         { model: db.model('tax'), as: 'variant_tax' },
@@ -132,7 +131,6 @@ class ItemService {
                         { model: db.model('supplier'), as: 'item_suppliers' },
 
                     ],
-
                 });
                 item = JSON.stringify(item);
                 return item;
@@ -192,7 +190,7 @@ class ItemService {
 
                 include: [
                     {
-                        model: db.model('stock'), as: 'stock', include: [
+                        model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
                             { model: db.model('price'), as: 'variant_price', },
                             { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                     },
@@ -204,7 +202,7 @@ class ItemService {
 
                     {
                         model: db.model('segment'), as: 'variant_segment', include: [{
-                            model: db.model('stock'), as: 'stock'
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
                         }
                         ]
 
@@ -280,7 +278,7 @@ class ItemService {
             },
             include: [
                 {
-                    model: db.model('stock'), as: 'stock', include: [
+                    model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
                         { model: db.model('price'), as: 'variant_price', },
                         { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
 
@@ -293,7 +291,7 @@ class ItemService {
                 { model: db.model('brand'), as: 'variant_brand' },
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
-                        model: db.model('stock'), as: 'stock'
+                        model: db.model('stock'), where: { status: 1 }, required: false, as: 'stock'
                     }
                     ]
 
@@ -340,23 +338,23 @@ class ItemService {
             try {
 
                 if (force) {
-                    await scaleTable.destroy({ truncate: false, where: {}, });
-                    await variantTable.destroy({ truncate: false, where: {}, });
-                    await taxTable.destroy({ truncate: false, where: {}, });
-                    await supplierTable.destroy({ truncate: false, where: {}, });
-                    await segmentTable.destroy({ truncate: false, where: {}, });
-                    await serialTable.destroy({ truncate: false, where: {}, });
-                    await priceTable.destroy({ truncate: false, where: {}, });
-                    await itemAlternativeTable.destroy({ truncate: false, where: {}, });
-                    await itemCategoriesTable.destroy({ truncate: false, where: {}, });
-                    await itemSupplierTable.destroy({ truncate: false, where: {}, });
-                    await itemTaxesTable.destroy({ truncate: false, where: {}, });
-                    await stockTable.destroy({ truncate: false, where: {}, });
-                    await itemManufacturingTable.destroy({ truncate: false, where: {} })
-                    await unitTable.destroy({ truncate: false, where: {} })
-                    await sizeTable.destroy({ truncate: false, where: {} })
-                    await brandTable.destroy({ truncate: false, where: {} })
-                    await colorTable.destroy({ truncate: false, where: {} })
+                    await scaleTable.destroy({ truncate: true });
+                    await variantTable.destroy({ truncate: true });
+                    await taxTable.destroy({ truncate: true });
+                    await supplierTable.destroy({ truncate: true });
+                    await segmentTable.destroy({ truncate: true });
+                    await serialTable.destroy({ truncate: true });
+                    await priceTable.destroy({ truncate: true });
+                    await itemAlternativeTable.destroy({ truncate: true, });
+                    await itemCategoriesTable.destroy({ truncate: true });
+                    await itemSupplierTable.destroy({ truncate: true });
+                    await itemTaxesTable.destroy({ truncate: true });
+                    await stockTable.destroy({ truncate: true });
+                    await itemManufacturingTable.destroy({ truncate: true })
+                    await unitTable.destroy({ truncate: true })
+                    await sizeTable.destroy({ truncate: true })
+                    await brandTable.destroy({ truncate: true })
+                    await colorTable.destroy({ truncate: true })
                 }
                 try {
 

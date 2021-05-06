@@ -9,7 +9,7 @@ module.exports = {
     },
     CloudPos: {
         production: true,
-        url: "http://rpos.live/staff/#/login",
+        url: "https://rpos.live/staff/#/login",
         protocol: 'https',
         hostname: 'rpos.live',
         pathname: '/staff/#/login',
@@ -42,11 +42,12 @@ module.exports = {
         hostname: '192.168.1.90',
         pathname: '/#/login',
     },
+
     zugMac: {
         production: false,
-        url: "http://192.168.1.6:4200/#/login",
-        protocol: 'https',
-        hostname: '192.168.1.6',
+        url: "http://192.168.1.7:4200/#/login",
+        protocol: 'http',
+        hostname: '192.168.1.7',
         pathname: '/#/login',
     },
     remoteZug: {
@@ -56,4 +57,11 @@ module.exports = {
         hostname: '711fd7558428.ngrok.io',
         pathname: '',
     },
+    EgyptRpos: {
+        production: true,
+        url: "https://188.166.8.54/staff/#/login",
+        protocol: 'https',
+        hostname: '188.166.8.54',
+        pathname: '/staff/#/login',
+    }
 }
