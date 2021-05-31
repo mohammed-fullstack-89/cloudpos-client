@@ -51,73 +51,73 @@ class PrintHelper {
                                 enableRemoteModule: false,
                             },
                         });
-                        labelWindow.webContents.on('did-stop-loading', () => {
-                            labelWindow.webContents.capturePage({
-                                x: 0,
-                                y: 0,
-                            }).then((image) => {
-                                fs.writeFileSync('./receipt.jpg', image.toPNG(), (err) => {
-                                    if (err) throw err
-                                    console.log('Image Saved')
+                        // labelWindow.webContents.on('did-stop-loading', () => {
+                        //     labelWindow.webContents.capturePage({
+                        //         x: 0,
+                        //         y: 0,
+                        //     }).then((image) => {
+                        //         fs.writeFileSync('./receipt.jpg', image.toPNG(), (err) => {
+                        //             if (err) throw err
+                        //             console.log('Image Saved')
+                        //         });
+                        // }).then(async () => {
+                        //     console.log('The image was created successfully!');
+                        // const jimp = require('jimp');
+                        // console.log('The image was created successfully!');
+                        // const jimp = require('jimp');
+                        // const receiptImage = await (await jimp.read('./receipt.jpg')).scale(0.2);
+                        // [
+                        //     // DataForSendToPrinterTSC.sizeBymm(60, 30),
+                        //     // DataForSendToPrinterTSC.gapBymm(0, 0),
+                        //     // DataForSendToPrinterTSC.shift(0),
+                        //     // DataForSendToPrinterTSC.direction(1),
+                        //     DataForSendToPrinterTSC.cls(),
+                        //     DataForSendToPrinterTSC.bitmap(0, 0, receiptImage.bitmap),
+                        //     DataForSendToPrinterTSC.print(1)
+                        // ]
+                        //     .forEach(data =>
+                        //         printer.printDirect({
+                        //             data: data
+                        //             , printer: appStore.getValue("mainPrinter") // printer name, if missing then will print to default printer
+                        //             , type: 'RAW' // type: RAW, TEXT, PDF, JPEG, .. depends on platform
+                        //             , success: function (jobID) {
+                        //                 console.log("sent to printer with ID: " + jobID);
+                        //             }
+                        //             , error: function (err) { notificationService.showNotification('Printing', 'Failed Printingr . please check the printer driver.'); console.log(err); }
+                        //         })
+                        //     )
+                        const printBarcode = () => {
+
+                            const options = {
+                                preview: false,
+                                //  width of content body
+                                silent: true,
+                                width: '400px',
+                                margin: '0 0 0 0',            // margin of content body
+                                copies: 1,                    // Number of copies to print
+                                printerName: appStore.getValue("mainPrinter"),        // printerName: string, check with webContent.getPrinters()
+                                timeOutPerLine: 4000000,
+                                pageSize: { height: 301000, width: 71000 }  // page size
+                            }
+                            const path = require("path");
+                            const data = [
+                                {
+                                    type: 'text',
+                                    value: html,
+                                    width: '100px',
+                                    style: 'direction:rtl;text-align:center',
+
+                                },
+                            ]
+                            PosPrinter.print(data, options)
+                                .then(() => { })
+                                .catch((error) => {
+                                    console.error(error);
                                 });
-                            }).then(async () => {
-                                console.log('The image was created successfully!');
-                                // const jimp = require('jimp');
-                                // console.log('The image was created successfully!');
-                                const jimp = require('jimp');
-                                // const receiptImage = await (await jimp.read('./receipt.jpg')).scale(0.2);
-                                // [
-                                //     // DataForSendToPrinterTSC.sizeBymm(60, 30),
-                                //     // DataForSendToPrinterTSC.gapBymm(0, 0),
-                                //     // DataForSendToPrinterTSC.shift(0),
-                                //     // DataForSendToPrinterTSC.direction(1),
-                                //     DataForSendToPrinterTSC.cls(),
-                                //     DataForSendToPrinterTSC.bitmap(0, 0, receiptImage.bitmap),
-                                //     DataForSendToPrinterTSC.print(1)
-                                // ]
-                                //     .forEach(data =>
-                                //         printer.printDirect({
-                                //             data: data
-                                //             , printer: appStore.getValue("mainPrinter") // printer name, if missing then will print to default printer
-                                //             , type: 'RAW' // type: RAW, TEXT, PDF, JPEG, .. depends on platform
-                                //             , success: function (jobID) {
-                                //                 console.log("sent to printer with ID: " + jobID);
-                                //             }
-                                //             , error: function (err) { notificationService.showNotification('Printing', 'Failed Printingr . please check the printer driver.'); console.log(err); }
-                                //         })
-                                //     )
-                                const printBarcode = () => {
-
-                                    const options = {
-                                        preview: false,
-                                        //  width of content body
-                                        silent: true,
-                                        width: '400px',
-                                        margin: '0 0 0 0',            // margin of content body
-                                        copies: 1,                    // Number of copies to print
-                                        printerName: appStore.getValue("mainPrinter"),        // printerName: string, check with webContent.getPrinters()
-                                        timeOutPerLine: 4000000,
-                                        pageSize: { height: 301000, width: 71000 }  // page size
-                                    }
-                                    const path = require("path");
-                                    const data = [
-                                        {
-                                            type: 'text',
-                                            value: html,
-                                            width: '100px',
-                                            style: 'direction:rtl;text-align:center',
-
-                                        },
-                                    ]
-                                    PosPrinter.print(data, options)
-                                        .then(() => { })
-                                        .catch((error) => {
-                                            console.error(error);
-                                        });
-                                }
-                                printBarcode();
-                            })
-                        })
+                        }
+                        printBarcode();
+                        //     })
+                        // })
                         labelWindow.loadURL("data:text/html;charset=utf-8," + html);
                     } catch (err) {
                         console.log(`error : ${err}`);
