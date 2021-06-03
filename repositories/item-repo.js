@@ -336,7 +336,6 @@ class ItemService {
             const brandTable = db.model("brand");
 
             try {
-
                 if (force) {
                     await scaleTable.destroy({ truncate: true });
                     await variantTable.destroy({ truncate: true });
@@ -357,6 +356,15 @@ class ItemService {
                     await colorTable.destroy({ truncate: true })
                 }
                 try {
+                    for (let i = itemsInfo.length - 1; i >= 0; i--) {
+                        await variantTable.destroy({ where: { id: itemsInfo[i].id }, force: true });
+                    }
+                } catch (error) {
+                    console.log("destroying variant table and its relations  for item history error : " + error);
+                }
+
+                try {
+
 
                     if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
                         await scaleTable.bulkCreate(scaleBarcodeList, { updateOnDuplicate: [...Object.keys(scaleTable.rawAttributes)] });

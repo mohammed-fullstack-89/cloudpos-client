@@ -47,3 +47,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# others
+.env
+.sqlite3
+.jpg
+.png
+.txt
