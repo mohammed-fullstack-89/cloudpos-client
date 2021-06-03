@@ -38,7 +38,7 @@ class PrintHelper {
                     var fs = require('fs');
                     try {
                         const labelWindow = new BrowserWindow({
-                            show: true,
+                            show: false,
                             backgroundColor: '#ffffff',
                             width: 800,
                             fullscreen: fullscreen,
@@ -108,13 +108,13 @@ class PrintHelper {
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: false,
-                    show: true,
+                    show: false,
                 });
                 printWindow.removeMenu();
                 printWindow.menu = null;
                 printWindow.loadURL("data:text/html;charset=utf-8," + html);
                 const options = {
-                    collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: true, margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 }
+                    collate: false, silent: true, deviceName: mainPrinter, copies: 1, show: false, margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 }
                 }
                 printWindow.webContents.on("did-finish-load", () => {
                     try {
