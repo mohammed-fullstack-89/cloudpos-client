@@ -12,7 +12,7 @@ class PrintHelper {
         ipcMain.on('printHtmlDocument', (event, ...args) => {
             const html = args[0];
             const copies = args[1];
-            this.printBarcodeHtmlAsImage(html, copies);
+            this.printReceiptHtmlAsImage(html, copies);
         });
 
         ipcMain.on('getPrinters', (event, ...args) => {
@@ -28,7 +28,7 @@ class PrintHelper {
         })
 
     }
-    async printBarcodeHtmlAsImage(html, copies) {
+    async printReceiptHtmlAsImage(html, copies) {
         let fullscreen = true;
         try {
             const mainPrinter = appStore.getValue("mainPrinter");
@@ -50,7 +50,7 @@ class PrintHelper {
                             },
                         });
 
-                        const printBarcode = () => {
+                        const printReceipt = () => {
 
                             const options = {
                                 preview: false,
@@ -79,7 +79,7 @@ class PrintHelper {
                                     console.error(error);
                                 });
                         }
-                        printBarcode();
+                        printReceipt();
 
                         labelWindow.loadURL("data:text/html;charset=utf-8," + html);
                     } catch (err) {
