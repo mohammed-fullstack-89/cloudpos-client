@@ -11,7 +11,7 @@ app.whenReady().then(() => {
    require('./services/index');
 })
 app.on('ready', async () => {
-   app.setAppUserModelId(APPNAME)
+   app.setAppUserModelId(APPNAME);
    // tray = new Tray(__dirname + '/assets/icons/app.ico')
    windowManager.showSplash();
    notificationService.showNotification('App Initiating', 'app is loading important data ...');

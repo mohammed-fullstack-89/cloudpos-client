@@ -1,7 +1,7 @@
 {
-  "name": "localPos",
-  "productName": "localPos",
-  "version": "1.1.7",
+  "name": "CloudPos",
+  "productName": "CloudPos",
+  "version": "1.1.8",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -69,7 +69,7 @@
   "license": "Licensed",
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^8.5.3",
+    "electron": "^8.5.1",
     "electron-builder": "^20.0.4",
     "electron-packager": "^15.1.0",
     "electron-rebuild": "^2.2.0",
@@ -77,12 +77,12 @@
     "sequelize-cli": "^6.2.0"
   },
   "dependencies": {
-    "@thiagoelg/node-printer": "^0.5.3",
+    "@thiagoelg/node-printer": "^0.5.5",
     "bufferutil": "^4.0.3",
     "electron-pos-printer": "^1.2.4",
     "electron-root-path": "^1.0.16",
     "jimp": "^0.16.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "logrocket": "^1.0.14",
     "node-gyp": "^3.8.0",
     "sequelize": "^6.3.5",
