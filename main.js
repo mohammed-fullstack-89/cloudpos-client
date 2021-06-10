@@ -9,7 +9,8 @@ let tray = null;
 app.disableHardwareAcceleration();
 app.whenReady().then(() => {
    require('./services/index');
-})
+});
+
 app.on('ready', async () => {
    app.setAppUserModelId(APPNAME);
    // tray = new Tray(__dirname + '/assets/icons/app.ico')
@@ -40,7 +41,7 @@ app.on('window-all-closed', () => {
       db.close();
       app.quit();
    }
-})
+});
 
 app.on('activate', () => {
    if (BrowserWindow.getAllWindows().length === 0) {

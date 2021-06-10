@@ -2,7 +2,6 @@
 
 let db = require('../models/index');
 
-
 class CardService {
 
 

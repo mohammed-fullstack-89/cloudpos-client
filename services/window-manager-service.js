@@ -1,23 +1,20 @@
 const windowsConfig = require('../config/windowsConfig');
-const fs = require('fs');
 const path = require('path');
 const enviroment = require('../enviroment');
 const customContextMenu = require('../components/menu/context_menu');
 const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const utility = require('./utility-service');
-const { APPNAME } = require('../commons');
 class InitializerService {
 
     constructor() {
         this.splash = null;
         this.mainWindow = null;
         app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
-
     }
+
     initTray(tray) {
         const trayMenu = [
             {
-
                 label: 'Settings',
                 click: () => this.createSettingsWindow()
             },
@@ -32,31 +29,25 @@ class InitializerService {
                         message: 'Clear data',
                         detail: clearAppDataMessage
                     }).then((dialogRes) => {
-
                         if (dialogRes.response === 0) {
-
                             this.this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                             this.this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                             this.this.mainWindow.webContents.executeJavaScript("window.location.reload()");
-
                         }
-
-                    })
-
+                    });
                 }
             },
             {
                 label: 'Quit',
-                // accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
                 click: () => app.quit()
             },
-        ]
-
+        ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
         tray.setToolTip('StaggingPos');
         tray.setContextMenu(contextMenu);
     }
+
     createAppWindow() {
 
         this.mainWindow = new BrowserWindow(windowsConfig.mainWindowConfig);
@@ -98,16 +89,12 @@ class InitializerService {
                                     //         }
                                     //     });
                                     // });
-
                                 }
-
-                            })
-
+                            });
                         }
                     },
                     {
                         label: 'Quit',
-                        // accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctr+Q',
                         click: () => app.quit()
                     },
                 ]
@@ -135,16 +122,15 @@ class InitializerService {
                     }
                 ]
             },
-
             {
                 label: 'View',
                 submenu: [
                     {
                         role: 'reload'
                     },
-                    {
-                        role: 'toggledevtools'
-                    },
+                    // {
+                    //     role: 'toggledevtools'
+                    // },
                     {
                         type: 'separator'
                     },
@@ -165,7 +151,6 @@ class InitializerService {
                     }
                 ]
             },
-
             {
                 role: 'window',
                 submenu: [
@@ -182,22 +167,19 @@ class InitializerService {
                 submenu: [
                     {
                         label: 'Remote Assistance',
-                        click() {
-
+                        click: () =>
                             shell.openExternal('https://download.anydesk.com/AnyDesk.exe')
-
-                        }
-
                     }
                 ]
             }
         ];
 
-        const menu = Menu.buildFromTemplate(customMenu)
+        const menu = Menu.buildFromTemplate(customMenu);
         Menu.setApplicationMenu(menu);
         const ctxmenu = Menu.buildFromTemplate(customContextMenu);
+
         this.mainWindow.webContents.on('context-menu', function (e, params) {
-            ctxmenu.popup(this.mainWindow, params.x, params.y)
+            ctxmenu.popup(this.mainWindow, params.x, params.y);
         });
 
         // SSL/TSL: this is the self signed certificate support
@@ -205,16 +187,18 @@ class InitializerService {
             event.preventDefault();
             callback(true);
         });
+
         this.mainWindow.webContents.on("did-finish-load", () => {
             // const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/.mp3`;
             // BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`var audioManager=new Audio('${dir}').play();`);
         });
-        this.mainWindow.loadURL(enviroment.CloudPos.url);
+        this.mainWindow.loadURL(enviroment.stagging.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
         this.hideSplash();
     }
+
     createSettingsWindow() {
         let settingsWindow = null;
         if (settingsWindow !== null) {
@@ -232,8 +216,7 @@ class InitializerService {
             webPreferences: {
                 devTools: true,
                 nodeIntegration: true,
-            },
-
+            }
         });
 
         settingsWindow.removeMenu();
@@ -248,6 +231,7 @@ class InitializerService {
             this.splash = null;
         }
     }
+
     showSplash() {
         this.splash = new BrowserWindow(
             {
@@ -255,7 +239,6 @@ class InitializerService {
                 width: 300,
                 frame: false,
                 paintWhenInitiallyHidden: true,
-
                 webPreferences: {
                     nodeIntegration: false,
                     devTools: false,
@@ -267,11 +250,13 @@ class InitializerService {
         this.splash.loadFile(path.dirname(__dirname) + '/windows/loading/loading.html');
     }
 }
+
 InitializerService._instance = null;
 InitializerService.getInstance = () => {
     if (InitializerService._instance === null) {
         InitializerService._instance = new InitializerService();
     }
-    return InitializerService._instance
-}
+    return InitializerService._instance;
+};
+
 module.exports = InitializerService.getInstance();

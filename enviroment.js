@@ -28,34 +28,12 @@ module.exports = {
         hostname: 'rpos.live',
         pathname: '/staff/#/login',
     },
-    stagging_new: {
-        production: false,
-        url: "http://rpos.live/staff_new/#/login",
-        protocol: 'https',
-        hostname: 'rpos.live',
-        pathname: '/staff/#/login',
-    },
-    zug: {
-        production: false,
-        url: "http://192.168.1.90:4200/#/login",
-        protocol: 'https',
-        hostname: '192.168.1.90',
-        pathname: '/#/login',
-    },
-
     zugMac: {
         production: false,
-        url: "http://192.168.1.7:4200/#/login",
+        url: "http://192.168.1.6:4200/#/login",
         protocol: 'http',
         hostname: '192.168.1.7',
         pathname: '/#/login',
-    },
-    remoteZug: {
-        production: false,
-        url: "http://711fd7558428.ngrok.io",
-        protocol: 'http',
-        hostname: '711fd7558428.ngrok.io',
-        pathname: '',
     },
     EgyptRpos: {
         production: true,

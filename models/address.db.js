@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'customer_addresses'
       });
     }
-  };
+  }
+
   Address.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     location: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
