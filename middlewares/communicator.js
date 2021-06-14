@@ -2,37 +2,28 @@ const ipc = require('electron').ipcRenderer;
 
 class CommunicatorMiddleware {
 
-    setCategories(categoriesList, force) {
-        ipc.sendSync('setCategories', categoriesList, force);
-    }
+    setCategories(categoriesList, force) { ipc.sendSync('setCategories', categoriesList, force); }
 
-    async getCategories(parentId) {
-        const categories = await ipc.invoke('getCategories', parentId)
-        return categories;
-    }
+    async getCategories(parentId) { return await ipc.invoke('getCategories', parentId); }
 
     async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list) {
         await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list))
     }
+
     async saveCustomer(customer, addressesList, customerEntitiesRel, customerId) {
         await ipc.invoke('saveCustomer', JSON.parse(customer), JSON.parse(addressesList), JSON.parse(customerEntitiesRel), customerId)
     }
-    async deleteCustomer(customerId) {
-        await ipc.invoke('deleteCustomer', customerId)
-    }
-    async saveUsers(usersArray) {
-        await ipc.invoke('saveUsers', JSON.parse(usersArray))
-    }
-    async getUserByCode(code) {
-        return ipc.invoke('getUserByCode', code);
 
-    }
-    async playSound(type) {
-        await ipc.invoke('playSound', type);
-    }
+    async deleteCustomer(customerId) { await ipc.invoke('deleteCustomer', customerId); }
+
+    async saveUsers(usersArray) { await ipc.invoke('saveUsers', JSON.parse(usersArray)); }
+
+    async getUserByCode(code) { return ipc.invoke('getUserByCode', code); }
+
+    async playSound(type) { await ipc.invoke('playSound', type); }
+
     async searchCustomers(val, offset, limit) {
-        const customers = await ipc.invoke('searchCustomers', val, offset, limit)
-        return customers;
+        return await ipc.invoke('searchCustomers', val, offset, limit);
     }
 
     async setItems(itemsInfo, serialsList, pricesList, segmantsList, suppliersList, taxesList, taxesItemsRelation, suppliersItemsRelation, itemAlternativesRel, itemCategoriesRel, scaleBarcodeList, itemStockslist, itemManufacturingList, itemsUnitsList, itemsSizesList, itemsColorsList, itemsBrandsList, force) {
@@ -43,99 +34,60 @@ class CommunicatorMiddleware {
         }
     }
 
-
-    async getItems() {
-        return ipc.invoke('getItems');
-    }
+    async getItems() { return ipc.invoke('getItems'); }
 
     async getItemsByCategory(parentId, offset, limit) {
-        const items = await ipc.invoke('getItemsByCategory', parentId, limit, offset);
-        return items
+        return await ipc.invoke('getItemsByCategory', parentId, limit, offset);
     }
 
     async searchItems(type, value, offset, limit) {
-        const items = await ipc.invoke('searchItems', type, value, offset, limit);
-        return items
+        return await ipc.invoke('searchItems', type, value, offset, limit);
     }
+
     async updateSerialQty(serialId, qty) {
-        const items = await ipc.invoke('updateSerialQty', serialId, qty);
-        return items
-    }
-    async searchBarcode(code) {
-        const item = await ipc.invoke('searchBarcode', code);
-        return item
+        return await ipc.invoke('updateSerialQty', serialId, qty);
     }
 
+    async searchBarcode(code) { return await ipc.invoke('searchBarcode', code); }
 
-    async getScaleFromBarcode(value) {
-        const scale = await ipc.invoke('getScaleFromBarcode', value);
-        return scale
-    }
+    async getScaleFromBarcode(value) { return await ipc.invoke('getScaleFromBarcode', value); }
+
     async getItemFromScale(scale, barcode) {
-        const item = await ipc.invoke('getItemFromScale', scale, barcode);
-        return item
+        return await ipc.invoke('getItemFromScale', scale, barcode);
     }
-    async updateStockQty(values) {
-        await ipc.invoke('updateStockQty', JSON.parse(values));
-    }
-    // async getStockData(values) {
 
-    //     const stockData = await ipc.invoke('getStockData');
-    //     return stockData;
-    // }
+    async updateStockQty(values) { await ipc.invoke('updateStockQty', JSON.parse(values)); }
 
     async getQtyByStockId(stockId) {
-        const newQty = await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
-        return newQty
+        return await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
     }
+
     async setInsuranceCompany(companies, companiesRatios, companiesTerms, companyRatiosRel, companyTermsRel) {
         await ipc.invoke('setCompanies', JSON.parse(companies), JSON.parse(companiesRatios), JSON.parse(companiesTerms), JSON.parse(companyRatiosRel), JSON.parse(companyTermsRel));
     }
 
     // obj.setInsuranceCompany(JSON.stringify(sqllightobject.companies),JSON.stringify(sqllightobject.companiesRatios),JSON.stringify(sqllightobject.companiesTerms),JSON.stringify(sqllightobject.companyTermsRel),JSON.stringify(sqllightobject.companyRatiosRel))
-    async getInsuranceCompany() {
-        const companies = await ipc.invoke('getCompanies');
-        return companies;
+    async getInsuranceCompany() { return await ipc.invoke('getCompanies'); }
 
-    }
-    async setCards(cards) {
-        await ipc.invoke('setCards', cards);
-    }
+    async setCards(cards) { await ipc.invoke('setCards', cards); }
 
-    async getCards() {
-        const cards = await ipc.invoke('getCards');
-        return cards;
-    }
+    async getCards() { return await ipc.invoke('getCards'); }
 
+    async saveSale(saleObject) { return await ipc.invoke('saveSale', saleObject); }
 
-    async saveSale(saleObject) {
-        const saved = await ipc.invoke('saveSale', saleObject);
-        return saved;
-    }
-    async getSales(filter) {
-        const sales = await ipc.invoke('getSales', filter);
-        return sales;
-    }
-    async getFailedSales() {
-        const sales = await ipc.invoke('getFailedSales');
-        return sales;
-    }
-    async deleteSalesInvoice() {
-        const sales = await ipc.invoke('deleteSalesInvoice');
-        return sales;
-    }
+    async getSales(filter) { return await ipc.invoke('getSales', filter); }
+
+    async getFailedSales() { return await ipc.invoke('getFailedSales'); }
+
+    async deleteSalesInvoice() { return await ipc.invoke('deleteSalesInvoice'); }
+
     async updateSaleInvoice(invoice_number, status) {
-        const sales = await ipc.invoke('updateSaleInvoice', invoice_number, status);
-        return sales;
+        return await ipc.invoke('updateSaleInvoice', invoice_number, status);
     }
-    connectToLogger(identifier) {
-        ipc.invoke('connectToLogger', identifier);
-    }
+
+    connectToLogger(identifier) { ipc.invoke('connectToLogger', identifier); }
 }
 
-// if (CommunicatorMiddleware.caller != CommunicatorMiddleware.getInstance) {
-//     throw new Error("This object cannot be instanciated");
-// }
 CommunicatorMiddleware.instance = null;
 
 CommunicatorMiddleware.getInstance = function () {
@@ -143,7 +95,7 @@ CommunicatorMiddleware.getInstance = function () {
         CommunicatorMiddleware.instance = new CommunicatorMiddleware();
     }
     return CommunicatorMiddleware.instance;
-}
+};
 
 module.exports = CommunicatorMiddleware.getInstance();
 

@@ -34,7 +34,7 @@ PrintMiddleware.getInstance = function () {
         PrintMiddleware.instance = new PrintMiddleware();
     }
     return PrintMiddleware.instance;
-}
+};
 
 
 module.exports = PrintMiddleware.getInstance();

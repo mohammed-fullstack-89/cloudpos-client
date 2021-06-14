@@ -16,7 +16,7 @@ packager({
     appVersion: "1.0.0",
     win32metadata: {
         CompanyName: "Rubikomm",
-        ProductName: "Rpos",
+        ProductName: "CloudPOS",
     },
     afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
         rebuild.rebuild({ buildPath, electronVersion, arch })
