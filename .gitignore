@@ -54,3 +54,6 @@ Thumbs.db
 .jpg
 .png
 .txt
+
+# Netbeans IDE
+nbproject/*
