@@ -66,7 +66,6 @@ class CommunicatorMiddleware {
         await ipc.invoke('setCompanies', JSON.parse(companies), JSON.parse(companiesRatios), JSON.parse(companiesTerms), JSON.parse(companyRatiosRel), JSON.parse(companyTermsRel));
     }
 
-    // obj.setInsuranceCompany(JSON.stringify(sqllightobject.companies),JSON.stringify(sqllightobject.companiesRatios),JSON.stringify(sqllightobject.companiesTerms),JSON.stringify(sqllightobject.companyTermsRel),JSON.stringify(sqllightobject.companyRatiosRel))
     async getInsuranceCompany() { return await ipc.invoke('getCompanies'); }
 
     async setCards(cards) { await ipc.invoke('setCards', cards); }

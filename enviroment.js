@@ -2,9 +2,9 @@
 module.exports = {
     development: {
         production: false,
-        url: "http://192.168.1.214:4200/#/login",
+        url: "http://192.168.1.6:4200/#/login",
         protocol: 'http',
-        hostname: '192.168.1.214:4200',
+        hostname: '192.168.1.6:4200',
         pathname: '/#/login',
     },
     CloudPos: {

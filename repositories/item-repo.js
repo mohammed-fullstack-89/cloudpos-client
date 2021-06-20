@@ -18,10 +18,7 @@ class ItemService {
         let parentId = args[0] == null || args[0] == "" || args[0] == undefined ? null : args[0];
         let limit = args[1];
         let offset = args[2];
-        let filter = (parentId != null && parentId != undefined) ?
-            {
-                id: parentId,
-            } : null;
+        let filter = (parentId != null && parentId != undefined) ? { id: parentId } : null;
 
         items = await variantTable.findAll({
             where: {
@@ -50,7 +47,7 @@ class ItemService {
                 },
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
-                { model: db.model('category'), as: 'variant_item_categories', where: filter, },
+                { model: db.model('category'), as: 'variant_category', where: filter, },
                 { model: db.model('supplier'), as: 'item_suppliers' },
 
             ],

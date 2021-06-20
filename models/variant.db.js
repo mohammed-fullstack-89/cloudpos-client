@@ -4,38 +4,37 @@ module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     static associate(models) {
 
-      this.belongsTo(models.color,
-        {
-          as: 'variant_color',
-          foreignKey: {
-            field: 'colorId',
-            name: 'color_id'
-          }
-        });
-      this.belongsTo(models.brand,
-        {
-          as: 'variant_brand',
-          foreignKey: {
-            field: 'brandId',
-            name: 'brand_id'
-          }
-        });
-      this.belongsTo(models.unit,
-        {
-          as: 'variant_unit',
-          foreignKey: {
-            field: 'unitId',
-            name: 'unit_id'
-          }
-        });
-      this.belongsTo(models.size,
-        {
-          as: 'variant_size',
-          foreignKey: {
-            field: 'sizeId',
-            name: 'size_id'
-          }
-        });
+      this.belongsTo(models.color, {
+        as: 'variant_color',
+        foreignKey: {
+          field: 'colorId',
+          name: 'color_id'
+        }
+      })
+
+      this.belongsTo(models.brand, {
+        as: 'variant_brand',
+        foreignKey: {
+          field: 'brandId',
+          name: 'brand_id'
+        }
+      })
+
+      this.belongsTo(models.unit, {
+        as: 'variant_unit',
+        foreignKey: {
+          field: 'unitId',
+          name: 'unit_id'
+        }
+      })
+
+      this.belongsTo(models.size, {
+        as: 'variant_size',
+        foreignKey: {
+          field: 'sizeId',
+          name: 'size_id'
+        }
+      })
 
       this.belongsToMany(models.supplier, {
         as: 'item_suppliers',
@@ -50,16 +49,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'item_id',
         foreignKey: 'item_id',
         otherKey: { name: 'tax_id', field: 'tax_id' },
-
-
       })
+
       this.belongsToMany(models.variant, {
         as: 'items',
         through: models.variant_alternatives,
         foreignKey: 'alternative_id',
         otherKey: { name: 'item_id', field: 'item_id' },
-
       })
+
       this.belongsToMany(models.variant, {
         as: 'alternatives',
         through: models.variant_alternatives,
@@ -68,11 +66,10 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       this.belongsToMany(models.category, {
-        as: 'variant_item_categories',
+        as: 'variant_category',
         through: models.variant_categories,
         foreignKey: 'item_id',
         otherKey: { name: 'category_id', field: 'category_id' },
-
       })
 
       this.belongsTo(models.scale, {
@@ -97,16 +94,17 @@ module.exports = (sequelize, DataTypes) => {
           name: 'variantId'
         }
       })
+
       this.hasMany(models.serial, {
         as: 'variant_serial',
         foreignKey: {
           field: 'variant_id',
           name: 'variantId'
         }
-
       })
     }
   };
+
   Item.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name_ar: { type: DataTypes.STRING, allowNull: true, defaultValue: null },

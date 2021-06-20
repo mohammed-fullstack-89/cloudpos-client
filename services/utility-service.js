@@ -1,32 +1,28 @@
 const electron = require("electron");
-const { ipcMain, app, BrowserWindow } = electron;
+const logRocket = require('logrocket');
+const { ipcMain, BrowserWindow } = electron;
 const path = require('path');
+
 class UtilityService {
-    ;
+
     constructor() {
         this.code = "";
         this.lastKeyTime = Date.now();
-        ipcMain.handle('playSound', (event, args) => {
-            this.playSound(args)
-        })
-        ipcMain.handle('connectToLogger', (event, args) => this.connectToLogger(args))
+        ipcMain.handle('playSound', (event, args) => this.playSound(args));
+        ipcMain.handle('connectToLogger', (event, args) => this.connectToLogger(args));
         this.item_service = require('../repositories/item-repo');
+    }
 
-    }
     connectToLogger(args) {
-        // const identifier = args[0];
-        // if (identifier && identifier.code) {
-        //     const LogRocket = require('logrocket');
-        //     const os = require('os');
-        //     // os.uptime(); important 
-        //     const computerName = os.hostname();
-        //     const userInfo = os.userInfo();
-        // console.log("computerName : " + computerName);
-        // console.log("userInfo : " + JSON.stringify(userInfo));
-        // LogRocket.init('windows/poswindows');
-        // LogRocket.identify(identifier.code, { ...identifier, computerName, ...UserInfo });
-        // }
+        const identifier = JSON.parse(args);
+        if (identifier && identifier.code) {
+            const os = require('os');
+            const computerName = os.hostname();
+            const userInfo = os.userInfo();
+            logRocket.identify(identifier.code, { ...identifier, computerName, ...userInfo });
+        }
     }
+
     playSound(type) {
         const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/${type}.mp3`;
         BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`new Audio('${dir}').play();`);
