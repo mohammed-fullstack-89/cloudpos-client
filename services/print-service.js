@@ -12,7 +12,8 @@ class PrintHelper {
         ipcMain.on('printHtmlDocument', (event, ...args) => {
             const html = args[0];
             const copies = args[1];
-            this.printReceiptHtmlAsImage(html, copies);
+            // this.printReceiptHtmlAsImage(html, copies); // print as image
+            this.printDocument(html, copies); // print as text
         });
 
         ipcMain.on('getPrinters', (event, ...args) => {
