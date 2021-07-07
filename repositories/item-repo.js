@@ -26,35 +26,29 @@ class ItemService {
             },
             include: [
                 {
-                    model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
-
-                        { model: db.model('price'), as: 'variant_price', },
-                        { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
-
+                    model: db.model('stock'), as: 'stock', where: { status: 1 },
+                    include: [
+                        { model: db.model('price'), as: 'variant_price' },
+                        { model: db.model('itemManufacturing'), as: 'item_manufacturing' }
+                    ]
                 },
                 { model: db.model('scale'), as: 'variant_scale_barcode' },
                 { model: db.model('color'), as: 'variant_color' },
                 { model: db.model('unit'), as: 'variant_unit' },
                 { model: db.model('size'), as: 'variant_size' },
                 { model: db.model('brand'), as: 'variant_brand' },
-
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
                         model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
-                    }
-                    ]
-
+                    }]
                 },
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
-                { model: db.model('category'), as: 'variant_category', where: filter, },
-                { model: db.model('supplier'), as: 'item_suppliers' },
-
+                { model: db.model('category'), as: 'variant_category', where: filter },
+                { model: db.model('supplier'), as: 'item_suppliers' }
             ],
-
             offset: offset,
-            limit: limit,
-
+            limit: limit
         });
 
         items = JSON.stringify(items);
@@ -123,7 +117,7 @@ class ItemService {
                         { model: db.model('serial'), as: 'variant_serial' },
                         { model: db.model('tax'), as: 'variant_tax' },
                         {
-                            model: db.model('category'), as: 'variant_item_categories'
+                            model: db.model('category'), as: 'variant_category'
                         },
                         { model: db.model('supplier'), as: 'item_suppliers' },
 
@@ -184,7 +178,6 @@ class ItemService {
 
 
             items = await variantTable.findAll({
-
                 include: [
                     {
                         model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
@@ -196,25 +189,18 @@ class ItemService {
                     { model: db.model('unit'), as: 'variant_unit' },
                     { model: db.model('size'), as: 'variant_size' },
                     { model: db.model('brand'), as: 'variant_brand' },
-
                     {
                         model: db.model('segment'), as: 'variant_segment', include: [{
                             model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
-                        }
-                        ]
-
+                        }]
                     },
                     { model: db.model('serial'), as: 'variant_serial' },
                     { model: db.model('tax'), as: 'variant_tax' },
-                    {
-                        model: db.model('category'), as: 'variant_item_categories'
-                    },
+                    { model: db.model('category'), as: 'variant_category' },
                     { model: db.model('supplier'), as: 'item_suppliers' },
 
                 ],
                 where: filter,
-                // show_in_sale_screen: 1
-
                 subQuery: false, //top level where with limit bug in sequelize (solution)
                 order: [
                     ['name_ar', 'DESC'],
@@ -239,8 +225,6 @@ class ItemService {
 
     async updateStock(args) {
         try {
-            let newStockValues = [];
-            newStockValues = args[0];
             let priceTable = db.model('stock');
             priceTable.bulkCreate(args, { updateOnDuplicate: ['qty'], attributes: ['qty'] })
         }
@@ -248,7 +232,6 @@ class ItemService {
             console.log("error " + error);
         }
     }
-
 
     async getScaleFromBarcode(args) {
         let scaleIdentifier = args;
@@ -296,7 +279,7 @@ class ItemService {
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
                 {
-                    model: db.model('category'), as: 'variant_item_categories'
+                    model: db.model('category'), as: 'variant_category'
                 },
                 { model: db.model('supplier'), as: 'item_suppliers' },
 

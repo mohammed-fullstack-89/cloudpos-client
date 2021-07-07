@@ -1,5 +1,5 @@
 {
-  "name": "CloudPos",
+  "name": "cloud-pos",
   "productName": "CloudPos",
   "version": "1.1.9",
   "main": "main.js",
@@ -65,7 +65,7 @@
       "url": "http://server:5080/"
     }
   ],
-  "author": "Hamza alfawaer",
+  "author": "Rubikomm",
   "license": "Licensed",
   "devDependencies": {
     "devtron": "^1.4.0",
