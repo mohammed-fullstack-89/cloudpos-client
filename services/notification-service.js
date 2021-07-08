@@ -8,7 +8,7 @@ class NotificationService {
         const notificationPayload = {
             title: messageTitle,
             body: messageBody,
-            icon: __dirname + '/../assets/icons/app.ico',
+            icon: __dirname + '/../assets/icons/maestro.ico',
             subtitle: 'app notification'
         }
         app.whenReady().then(() => new Notification(notificationPayload).show());
