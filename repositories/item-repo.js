@@ -6,9 +6,7 @@ class ItemService {
         const priceTable = db.model('stock');
         const newStock = await priceTable.findOne({
             attributes: ['qty'],
-            where: {
-                id: stockId
-            }
+            where: { id: stockId }
         });
         return JSON.stringify(newStock.qty);
     }
@@ -61,15 +59,12 @@ class ItemService {
             const serial_qty = args[1];
             const serialTable = db.model('serial');
             await serialTable.update({ serial_qty }, {
-                where: {
-                    id: id
-                }
+                where: { id: id }
             });
             return true;
         } catch (ex) {
             return false;
         }
-
     }
     async searchBarcode(args) {
         try {
@@ -140,9 +135,7 @@ class ItemService {
         if (value == '' || value == null || value == undefined) {
             items = [];
             return items;
-        }
-        else {
-
+        } else {
             let variantTable = db.model('variant');
             let filter = null;
             switch (type) {
@@ -159,30 +152,28 @@ class ItemService {
                             scientific_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
                             brief_name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
                             brief_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
-                            description: { [db.Seq().Op.like]: '%' + value + '%' },
+                            description: { [db.Seq().Op.like]: '%' + value + '%' }
                         }
                     };
                     break;
                 case 'barcode+serial':
-
                     filter = {
                         [db.Seq().Op.or]: {
                             barcode: value,
                             '$variant_serial.serial$': value,
-                            '$variant_segment.barcode$': value,
+                            '$variant_segment.barcode$': value
                         }
-
                     };
                     break;
             }
-
 
             items = await variantTable.findAll({
                 include: [
                     {
                         model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
-                            { model: db.model('price'), as: 'variant_price', },
-                            { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
+                            { model: db.model('price'), as: 'variant_price' },
+                            { model: db.model('itemManufacturing'), as: 'item_manufacturing' }
+                        ]
                     },
                     { model: db.model('scale'), as: 'variant_scale_barcode' },
                     { model: db.model('color'), as: 'variant_color' },
@@ -190,15 +181,14 @@ class ItemService {
                     { model: db.model('size'), as: 'variant_size' },
                     { model: db.model('brand'), as: 'variant_brand' },
                     {
-                        model: db.model('segment'), as: 'variant_segment', include: [{
-                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
-                        }]
+                        model: db.model('segment'), as: 'variant_segment', include: [
+                            { model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false }
+                        ]
                     },
                     { model: db.model('serial'), as: 'variant_serial' },
                     { model: db.model('tax'), as: 'variant_tax' },
                     { model: db.model('category'), as: 'variant_category' },
-                    { model: db.model('supplier'), as: 'item_suppliers' },
-
+                    { model: db.model('supplier'), as: 'item_suppliers' }
                 ],
                 where: filter,
                 subQuery: false, //top level where with limit bug in sequelize (solution)
@@ -212,7 +202,7 @@ class ItemService {
                     ['scientific_name_ar', 'DESC'],
                     ['scientific_name_en', 'DESC'],
                     ['brief_name_ar', 'DESC'],
-                    ['brief_name_en', 'DESC'],
+                    ['brief_name_en', 'DESC']
                 ],
                 offset: offset,
                 limit: limit
@@ -225,11 +215,14 @@ class ItemService {
 
     async updateStock(args) {
         try {
-            let priceTable = db.model('stock');
-            priceTable.bulkCreate(args, { updateOnDuplicate: ['qty'], attributes: ['qty'] })
-        }
-        catch (error) {
-            console.log("error " + error);
+            const stockTable = db.model('stock');
+            for (let i = 0; i < args.length; i++) {
+                stockTable.update({ qty: args[i].qty }, {
+                    where: { id: args[i].id }
+                });
+            }
+        } catch (error) {
+            console.error("error " + error);
         }
     }
 
@@ -237,9 +230,7 @@ class ItemService {
         let scaleIdentifier = args;
         const scaleTable = db.model('scale');
         const scale = await scaleTable.findOne({
-            where: {
-                start: scaleIdentifier
-            },
+            where: { start: scaleIdentifier },
             limit: 1
         });
         return JSON.stringify(scale);
@@ -483,9 +474,6 @@ class ItemService {
         }
     }
 }
-
-
-
 
 ItemService.instance = null;
 ItemService.getInstance = function () {

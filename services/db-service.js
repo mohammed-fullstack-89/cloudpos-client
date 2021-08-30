@@ -6,242 +6,161 @@ class DbStore {
     constructor() {
 
         ipc.on('setCategories', async (event, args) => {
-            let categoryService = require('../repositories/category-repo');
-            await categoryService.setCategories(args)
+            const categoryService = require('../repositories/category-repo');
+            await categoryService.setCategories(args);
             event.returnValue = "Done";
-
         });
-        ipc.handle('getCategories', async (event, ...args) => {
-            let categoryService = require('../repositories/category-repo');
-            let categories = await categoryService.getCategories(args[0]);
-            return categories;
 
-        })
+        ipc.handle('getCategories', async (event, ...args) => {
+            const categoryService = require('../repositories/category-repo');
+            return await categoryService.getCategories(args[0]);
+        });
+
         ipc.handle('deleteCustomer', async (event, ...args) => {
             try {
-                let customerService = require('../repositories/customer-repo');
+                const customerService = require('../repositories/customer-repo');
                 await customerService.deleteCustomer(args[0]);
             } catch (error) {
                 console.log("delete customer => error : " + error);
             }
-
         });
 
         ipc.handle('setItems', async (event, ...args) => {
             try {
-
-                let itemsService = require('../repositories/item-repo');
+                const itemsService = require('../repositories/item-repo');
                 await itemsService.setItems(args);
-
             } catch (error) {
                 console.log("setting items => error : " + error);
             }
-
         });
 
         ipc.handle('saveUsers', async (event, ...args) => {
             try {
-                let userService = require('../repositories/user-repo');
+                const userService = require('../repositories/user-repo');
                 await userService.saveUsers(args[0]);
             } catch (error) {
                 console.log("save users => error : " + error);
-
             }
-
         });
+
         ipc.handle('getUserByCode', async (event, ...args) => {
             try {
-                let userService = require('../repositories/user-repo');
-                const user = await userService.getUserByCode(args[0]);
-                return user;
+                const userService = require('../repositories/user-repo');
+                return await userService.getUserByCode(args[0]);
             } catch (error) {
                 console.log("error : " + error);
             }
-
         });
+
         ipc.handle('updateStockQty', (event, args) => {
-            let itemsService = require('../repositories/item-repo');
+            const itemsService = require('../repositories/item-repo');
             itemsService.updateStock(args);
         });
-        // ipc.handle('getStockData', (event, args) => {
-        //     let itemsService = require('../repositories/item-repo');
-        //     itemsService.getStockData();
-        // })
+
+        ipc.handle('getStockData', async (event, args) => {
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.getStockData();
+        });
 
         ipc.handle('setCustomers', async (event, ...args) => {
-            let customerService = require('../repositories/customer-repo');
-            return (await customerService.setCustomers(args));
-            ;
+            const customerService = require('../repositories/customer-repo');
+            await customerService.setCustomers(args);
         });
+
         ipc.handle('saveCustomer', async (event, ...args) => {
-            let customerService = require('../repositories/customer-repo');
-            return (await customerService.saveCustomer(args));
-
+            const customerService = require('../repositories/customer-repo');
+            await customerService.saveCustomer(args);
         });
+
         ipc.handle('getQtyByStockId', async (event, args) => {
-            let itemsService = require('../repositories/item-repo');
-            const newQty = await itemsService.getQtyByStock(args);
-            return newQty;
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.getQtyByStock(args);
         });
-
 
         ipc.handle('searchCustomers', async (event, ...args) => {
-            let customerService = require('../repositories/customer-repo');
-            let customers = await customerService.searchCustomers(args);
-            return customers;
-
+            const customerService = require('../repositories/customer-repo');
+            return await customerService.searchCustomers(args);
         });
 
-
-        // });
-
-        // this.setCategories = async function (categoriesList) {
-        //     // let categoryService = require('../repositories/category-repo');
-        //     // categoryService.setCategories(categoriesList);
-        // }
-
-        // this.getCategories = async function () {
-        //     let categoryService = require('../repositories/category-repo');
-        //     let categories = await categoryService.getCategories();
-        //     return categories;
-        // }
-
-
-        // this.setCustomers = async function (customersList) {
-        //     let customerService = require('../repositories/customer-repo');
-        //     await customerService.setCustomers(customersList);
-        // }
-
-
-        // this.getCustomers = async function (val) {
-        //     let customerService = require('../repositories/customer-repo');
-        //     let customers = await customerService.searchCustomers(val);
-        //     return customers;
-        // }
-        // this.searchCustomers = async function () {
-        //     let customerService = require('../repositories/customer-repo');
-        //     let customers = await customerService.searchCustomers();
-        //     return customers;
-        // }
-
-        // this.setItems = async function (items) {
-        //     let itemsService = require('../repositories/item-repo');
-        //     await itemsService.setItems(items);
-        // }
-
-        // this.getItems = async function () {
-        //     let itemsService = require('../repositories/item-repo');
-        //     let items = await itemsService.getItems(items);
-        //     return items
-        // }
-
-        // this.searchItems = async function (type, value) {
-        //     let itemsService = require('../repositories/item-repo');
-        //     let items = await itemsService.searchItems(type, value);
-        //     return items
-        // }
-
         ipc.handle('searchItems', async (event, ...args) => {
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.searchItems(args);
+        });
 
-            let itemsService = require('../repositories/item-repo');
-            let items = await itemsService.searchItems(args);
-            return items
-        })
         ipc.handle('searchBarcode', async (event, ...args) => {
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.searchBarcode(args);
+        });
 
-            let itemsService = require('../repositories/item-repo');
-            let item = await itemsService.searchBarcode(args);
-            return item
-        })
         ipc.handle('getScaleFromBarcode', async (event, ...args) => {
-            let itemsService = require('../repositories/item-repo');
-            let scale = await itemsService.getScaleFromBarcode(args);
-            return scale
-        })
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.getScaleFromBarcode(args);
+        });
+
         ipc.handle('updateSerialQty', async (event, ...args) => {
-            let itemsService = require('../repositories/item-repo');
-            let result = await itemsService.updateSerialQty(args);
-            return result;
-        })
+            const itemsService = require('../repositories/item-repo');
+            await itemsService.updateSerialQty(args);
+        });
+
         ipc.handle('getItemFromScale', async (event, ...args) => {
-            let itemsService = require('../repositories/item-repo');
-            let item = await itemsService.getItemFromScale(args);
-            return item
-        })
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.getItemFromScale(args);
+        });
 
         ipc.handle('setCompanies', async (event, ...args) => {
-            let companiesService = require('../repositories/company-repo');
+            const companiesService = require('../repositories/company-repo');
             await companiesService.setCompanies(args);
-        })
+        });
 
         ipc.handle('getCompanies', async (event, ...args) => {
-            let companiesService = require('../repositories/company-repo');
-            let companies = await companiesService.getCompanies();
-            return companies
-        })
+            const companiesService = require('../repositories/company-repo');
+            return await companiesService.getCompanies();
+        });
 
         ipc.handle('setCards', async (event, ...args) => {
-            let cardsService = require('../repositories/card-repo');
+            const cardsService = require('../repositories/card-repo');
             await cardsService.setCards(args[0]);
-        })
+        });
 
         ipc.handle('getCards', async (event, ...args) => {
-            let cardsService = require('../repositories/card-repo');
-            let cards = await cardsService.getCards();
-            return cards
-        })
-        ipc.handle('getItemsByCategory', async (event, ...args) => {
-            let itemsService = require('../repositories/item-repo');
-            let items = await itemsService.getItemsByCategory(args);
-            return items
-        })
-        // ipc.handle('getItems', async (event, ...args) => {
-        //     let itemsService = require('../repositories/item-repo');
-        //     let items = await itemsService.getItems( parentId, limit, offset);
-        //     return items
-        // })
+            const cardsService = require('../repositories/card-repo');
+            return await cardsService.getCards();
+        });
 
-        // this.getItemsByCategory = async function (parentId, limit, offset) {
-        //     const items = ipc.invoke('getItems', parentId, limit, offset);
-        //     return items
-        // }
+        ipc.handle('getItemsByCategory', async (event, ...args) => {
+            const itemsService = require('../repositories/item-repo');
+            return await itemsService.getItemsByCategory(args);
+        });
 
         ipc.handle('saveSale', async (event, ...args) => {
-            let saleService = require('../repositories/sale-repo');
-            let saveStatus = await saleService.saveSale(args);
-            return saveStatus;
+            const saleService = require('../repositories/sale-repo');
+            await saleService.saveSale(args);
         });
 
         ipc.handle('getSales', async (event, ...args) => {
-            let saleService = require('../repositories/sale-repo');
-            let sales = await saleService.getSales(args);
-            return sales;
-        })
+            const saleService = require('../repositories/sale-repo');
+            return await saleService.getSales(args);
+        });
+
         ipc.handle('getFailedSales', async (event, ...args) => {
             const saleTable = require('../repositories/sale-repo');
-            const sales = await saleTable.getFailedSales();
-            return sales;
+            return await saleTable.getFailedSales();
         });
+
         ipc.handle('deleteSalesInvoice', async (event, ...args) => {
             const saleTable = require('../repositories/sale-repo');
             await saleTable.deleteSalesInvoice();
+        });
 
-        })
         ipc.handle('updateSaleInvoice', async (event, ...args) => {
             const saleTable = require('../repositories/sale-repo');
             await saleTable.updateSaleInvoice(args[0], args[1]);
-
-        })
+        });
     }
 }
 
-// if (DbStore.caller != DbStore.getInstance) {
-//     throw new Error("This object cannot be instanciated");
-// }
-
 
 DbStore.instance = null;
-
 DbStore.getInstance = function () {
     if (DbStore.instance === null) {
         DbStore.instance = new DbStore();
@@ -250,37 +169,3 @@ DbStore.getInstance = function () {
 }
 
 module.exports = DbStore.getInstance();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

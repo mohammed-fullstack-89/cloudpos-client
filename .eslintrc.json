@@ -2,11 +2,15 @@
     "env": {
         "browser": true,
         "commonjs": true,
-        "es2021": true
+        "es2021": true,
+        "es6": true
     },
     "parserOptions": {
-        "ecmaVersion":12
+        "ecmaVersion": 12,
+        "ecmaFeatures": {
+            "arrowFunctions": true,
+            "spread": true
+        }
     },
-    "rules": {
-    }
+    "rules": {}
 }

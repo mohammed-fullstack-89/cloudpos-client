@@ -20,7 +20,7 @@ function init() {
     getPrinters();
 }
 
-showContentRelated = (element, contentToShow) => {
+function showContentRelated(element, contentToShow) {
     if (activeMenuItemElement != element) {
 
         activeMenuItemElement.classList.remove('active');
@@ -81,7 +81,7 @@ function getPrinters() {
     setSelectedPrinters();
 }
 
-save = () => {
+function save() {
     console.log("saving");
     savePreferances();
     ipcRenderer.send('closeSettingsWindow');
