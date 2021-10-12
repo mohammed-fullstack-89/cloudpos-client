@@ -326,6 +326,7 @@ class ItemService {
                     await brandTable.destroy({ truncate: true })
                     await colorTable.destroy({ truncate: true })
                 }
+
                 try {
                     for (let i = itemsInfo.length - 1; i >= 0; i--) {
                         await variantTable.destroy({ where: { id: itemsInfo[i].id }, force: true });
@@ -335,8 +336,6 @@ class ItemService {
                 }
 
                 try {
-
-
                     if (scaleBarcodeList != [] && scaleBarcodeList != undefined) {
                         await scaleTable.bulkCreate(scaleBarcodeList, { updateOnDuplicate: [...Object.keys(scaleTable.rawAttributes)] });
                     }
@@ -351,6 +350,7 @@ class ItemService {
                 } catch (error) {
                     console.log("itemsUnitsList error : " + error);
                 }
+
                 try {
                     if (itemsSizesList != [] && itemsSizesList != undefined) {
                         await sizeTable.bulkCreate(itemsSizesList, { updateOnDuplicate: [...Object.keys(sizeTable.rawAttributes)] });
@@ -358,6 +358,7 @@ class ItemService {
                 } catch (error) {
                     console.log("itemsSizesList error : " + error);
                 }
+
                 try {
                     if (itemsColorsList != [] && itemsColorsList != undefined) {
                         await colorTable.bulkCreate(itemsColorsList, { updateOnDuplicate: [...Object.keys(colorTable.rawAttributes)] });
@@ -365,6 +366,7 @@ class ItemService {
                 } catch (error) {
                     console.log("itemsColorsList error : " + error);
                 }
+
                 try {
                     if (itemsBrandsList != [] && itemsBrandsList != undefined) {
                         await brandTable.bulkCreate(itemsBrandsList, { updateOnDuplicate: [...Object.keys(brandTable.rawAttributes)] });
@@ -372,9 +374,9 @@ class ItemService {
                 } catch (error) {
                     console.log("itemsBrandsList error : " + error);
                 }
+
                 try {
                     if (itemsInfo != [] && itemsInfo != undefined) {
-
                         await variantTable.bulkCreate(itemsInfo, { updateOnDuplicate: [...Object.keys(variantTable.rawAttributes)] });
                     }
                 } catch (error) {
@@ -388,14 +390,15 @@ class ItemService {
                 } catch (error) {
                     console.log("taxesList error : " + error);
                 }
+
                 try {
                     if (suppliersList != [] && suppliersList != undefined) {
                         await supplierTable.bulkCreate(suppliersList, { updateOnDuplicate: [...Object.keys(supplierTable.rawAttributes)] });
-
                     }
                 } catch (error) {
                     console.log("suppliersList error : " + error);
                 }
+
                 try {
                     if (segmantsList != [] && segmantsList != undefined) {
                         await segmentTable.bulkCreate(segmantsList, { updateOnDuplicate: [...Object.keys(segmentTable.rawAttributes)] });
@@ -403,6 +406,7 @@ class ItemService {
                 } catch (error) {
                     console.log("segmantsList error :" + error);
                 }
+
                 try {
                     if (serialsList != [] && serialsList != undefined) {
                         await serialTable.bulkCreate(serialsList, { updateOnDuplicate: [...Object.keys(serialTable.rawAttributes)] });
@@ -410,6 +414,7 @@ class ItemService {
                 } catch (error) {
                     console.log("serialsList error: " + error);
                 }
+
                 try {
                     if (pricesList != [] && pricesList != undefined) {
                         await priceTable.bulkCreate(pricesList, { updateOnDuplicate: [...Object.keys(priceTable.rawAttributes)] });
@@ -417,6 +422,7 @@ class ItemService {
                 } catch (error) {
                     console.log("pricesList error: " + error);
                 }
+
                 try {
                     if (itemAlternativesRel != [] && itemAlternativesRel != undefined) {
                         await itemAlternativeTable.bulkCreate(itemAlternativesRel, { updateOnDuplicate: [...Object.keys(itemAlternativeTable.rawAttributes)] });
@@ -424,29 +430,31 @@ class ItemService {
                 } catch (error) {
                     console.log("itemAlternativesRel error : " + error);
                 }
+
                 try {
                     if (itemCategoriesRel != [] && itemCategoriesRel != undefined) {
-                        await itemCategoriesTable.bulkCreate(itemCategoriesRel, { updateOnDuplicate: [...Object.keys(itemCategoriesTable.rawAttributes)] });
+                        await itemCategoriesTable.bulkCreate(itemCategoriesRel, { updateOnDuplicate: [...Object.keys(itemCategoriesTable.rawAttributes)], validate: true });
                     }
                 } catch (error) {
                     console.log("itemCategoriesRel error : " + error);
                 }
+
                 try {
                     if (suppliersItemsRelation != [] && suppliersItemsRelation != undefined) {
-
                         await itemSupplierTable.bulkCreate(suppliersItemsRelation, { updateOnDuplicate: [...Object.keys(itemSupplierTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("suppliersItemsRelation error :" + error);
                 }
+
                 try {
                     if (taxesItemsRelation != [] && taxesItemsRelation != undefined) {
-
                         await itemTaxesTable.bulkCreate(taxesItemsRelation, { updateOnDuplicate: [...Object.keys(itemTaxesTable.rawAttributes)] });
                     }
                 } catch (error) {
                     console.log("taxesItemsRelation error :" + error);
                 }
+
                 try {
                     if (itemStockslist != [] && itemStockslist != undefined) {
                         await stockTable.bulkCreate(itemStockslist, { updateOnDuplicate: [...Object.keys(stockTable.rawAttributes)] });
@@ -454,6 +462,7 @@ class ItemService {
                 } catch (error) {
                     console.log("stockTable error :" + error);
                 }
+
                 try {
                     if (itemManufacturingList != [] && itemManufacturingList != undefined) {
                         await itemManufacturingTable.bulkCreate(itemManufacturingList, { updateOnDuplicate: [...Object.keys(itemManufacturingTable.rawAttributes)] });
@@ -462,13 +471,9 @@ class ItemService {
                     console.log("itemManufacturingList error : " + error);
                 }
 
-
-
             } catch (error) {
                 console.log("error " + error);
-            } finally { }
-
-
+            }
         } catch (error) {
             console.log("error" + error);
         }
