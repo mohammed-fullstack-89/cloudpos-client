@@ -25,7 +25,7 @@ class UtilityService {
 
     playSound(type) {
         const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/${type}.mp3`;
-        BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`new Audio('${dir}').play();`);
+        BrowserWindow.getAllWindows()[0].webContents.executeJavaScript(`new Audio('${dir}').play();`);
     }
 
     async barcode(event, input) {
@@ -56,7 +56,7 @@ class UtilityService {
                         this.code = "";
                     }
                 } else {
-                    this.code += input.key
+                    this.code += input.key;
                 }
             }
             this.lastKeyTime = currentTime;
