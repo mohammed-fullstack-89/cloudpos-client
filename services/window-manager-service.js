@@ -167,8 +167,7 @@ class InitializerService {
                 submenu: [
                     {
                         label: 'Remote Assistance',
-                        click: () =>
-                            shell.openExternal('https://download.anydesk.com/AnyDesk.exe')
+                        click: () => shell.openExternal('https://download.anydesk.com/AnyDesk.exe')
                     }
                 ]
             }
