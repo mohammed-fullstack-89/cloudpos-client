@@ -1,109 +1,84 @@
-'use strict';
+"use strict";
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     static associate(models) {
-
       this.belongsTo(models.color, {
         as: 'variant_color',
-        foreignKey: {
-          field: 'colorId',
-          name: 'color_id'
-        }
-      })
+        foreignKey: { field: 'colorId', name: 'color_id' }
+      });
 
       this.belongsTo(models.brand, {
         as: 'variant_brand',
-        foreignKey: {
-          field: 'brandId',
-          name: 'brand_id'
-        }
-      })
+        foreignKey: { field: 'brandId', name: 'brand_id' }
+      });
 
       this.belongsTo(models.unit, {
         as: 'variant_unit',
-        foreignKey: {
-          field: 'unitId',
-          name: 'unit_id'
-        }
-      })
+        foreignKey: { field: 'unitId', name: 'unit_id' }
+      });
 
       this.belongsTo(models.size, {
         as: 'variant_size',
-        foreignKey: {
-          field: 'sizeId',
-          name: 'size_id'
-        }
-      })
+        foreignKey: { field: 'sizeId', name: 'size_id' }
+      });
 
       this.belongsToMany(models.supplier, {
         as: 'item_suppliers',
         through: models.variant_suppliers,
         foreignKey: 'item_id',
-        otherKey: { name: 'supplier_id', field: 'supplier_id' },
-      })
+        otherKey: { name: 'supplier_id', field: 'supplier_id' }
+      });
 
       this.belongsToMany(models.tax, {
         as: 'variant_tax',
         through: models.variant_taxes,
         foreignKey: 'item_id',
-        foreignKey: 'item_id',
-        otherKey: { name: 'tax_id', field: 'tax_id' },
-      })
+        otherKey: { name: 'tax_id', field: 'tax_id' }
+      });
 
       this.belongsToMany(models.variant, {
         as: 'items',
         through: models.variant_alternatives,
         foreignKey: 'alternative_id',
-        otherKey: { name: 'item_id', field: 'item_id' },
-      })
+        otherKey: { name: 'item_id', field: 'item_id' }
+      });
 
       this.belongsToMany(models.variant, {
         as: 'alternatives',
         through: models.variant_alternatives,
         foreignKey: 'item_id',
-        otherKey: { name: 'alternative_id', field: 'alternative_id' },
-      })
+        otherKey: { name: 'alternative_id', field: 'alternative_id' }
+      });
 
       this.belongsToMany(models.category, {
         as: 'variant_category',
         through: models.variant_categories,
         foreignKey: 'item_id',
-        otherKey: { name: 'category_id', field: 'category_id' },
-      })
+        otherKey: { name: 'category_id', field: 'category_id' }
+      });
 
       this.belongsTo(models.scale, {
         as: 'variant_scale_barcode',
-        foreignKey: {
-          field: 'scale_barcode_id', name: 'scaleId',
-        }
-      })
+        foreignKey: { field: 'scale_barcode_id', name: 'scaleId' }
+      });
 
       this.hasMany(models.stock, {
         as: 'stock',
-        foreignKey: {
-          field: 'variant_id',
-          name: 'variant_id'
-        }
+        foreignKey: { field: 'variant_id', name: 'variant_id' }
       });
 
       this.hasMany(models.segment, {
         as: 'variant_segment',
-        foreignKey: {
-          field: 'variant_id',
-          name: 'variantId'
-        }
-      })
+        foreignKey: { field: 'variant_id', name: 'variantId' }
+      });
 
       this.hasMany(models.serial, {
         as: 'variant_serial',
-        foreignKey: {
-          field: 'variant_id',
-          name: 'variantId'
-        }
-      })
+        foreignKey: { field: 'variant_id', name: 'variantId' }
+      });
     }
-  };
+  }
 
   Item.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
@@ -162,59 +137,58 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'variant',
       indexes: [{
         name: 'items_name_ar_foreign',
-        fields: [`name_ar`]
+        fields: ['name_ar']
       },
       {
         name: 'items_name_en_foreign',
-        fields: [`name_en`]
+        fields: ['name_en']
       }, {
         name: 'items_trade_name_ar_foreign',
-        fields: [`trade_name_ar`]
+        fields: ['trade_name_ar']
       }, {
         name: 'items_trade_name_en_foreign',
-        fields: [`trade_name_ar`]
+        fields: ['trade_name_ar']
       },
       {
         name: 'items_scientific_name_ar_foreign',
-        fields: [`scientific_name_ar`]
+        fields: ['scientific_name_ar']
       },
       {
         name: 'items_scientific_name_en_foreign',
-        fields: [`scientific_name_en`]
+        fields: ['scientific_name_en']
       },
-
       {
         name: 'items_show_in_sale_screen_foreign',
-        fields: [`show_in_sale_screen`]
+        fields: ['show_in_sale_screen']
       },
       {
         name: 'variants_nick_name_ar_foreign',
-        fields: [`nick_name_ar`]
+        fields: ['nick_name_ar']
       },
       {
         name: 'variants_nick_name_en_foreign',
-        fields: [`nick_name_en`]
+        fields: ['nick_name_en']
       },
       {
         name: 'variants_barcode_foreign',
-        fields: [`barcode`]
-      }, {
+        fields: ['barcode']
+      },
+      {
         name: 'variants_code_foreign',
-        fields: [`code`]
-      }, {
+        fields: ['code']
+      },
+      {
         name: 'variants_unit_id_foreign',
-        fields: [`unit_id`]
+        fields: ['unit_id']
       },
       {
         name: 'variants_brand_id_foreign',
-        fields: [`brand_id`]
+        fields: ['brand_id']
       },
       {
         name: 'variants_is_manufacturing_foreign',
-        fields: [`is_manufacturing`]
-      }
-
-      ]
+        fields: ['is_manufacturing']
+      }]
     });
   return Item;
 };

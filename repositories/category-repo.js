@@ -1,15 +1,7 @@
-
-// const remote = require('electron').remote;
-
-// const db = remote.getGlobal('db');
-var db = require('../models/index')
-    , Seq = db.Seq();
+var db = require('../models/index'), Seq = db.Seq();
 
 class CategoriesService {
-
-
     async getCategories(parentId) {
-
         let categoryTable = db.model('category');
         let categories = [];
         categories = await categoryTable.findAll({
@@ -23,14 +15,11 @@ class CategoriesService {
 
     async setCategories(categoriesList, force) {
         let categoryTable = db.model("category");
-
         if (force) {
             await categoryTable.destroy({ truncate: true });
         }
         categoryTable.bulkCreate(JSON.parse(categoriesList), { updateOnDuplicate: [...Object.keys(categoryTable.rawAttributes)] });
     }
-
-
 }
 
 CategoriesService.instance = null;
@@ -39,6 +28,6 @@ CategoriesService.getInstance = function () {
         CategoriesService.instance = new CategoriesService();
     }
     return CategoriesService.instance;
-}
+};
 
 module.exports = CategoriesService.getInstance();

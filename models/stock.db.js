@@ -1,8 +1,5 @@
-'use strict';
-const {
-    Model
-} = require('sequelize');
-
+"use strict";
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Stock extends Model {
         static associate(models) {
@@ -13,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
                     name: 'variant_id'
                 }
             });
-            this.hasMany(models.itemManufacturing, { as: 'item_manufacturing' })
 
             this.belongsTo(models.price, {
                 as: 'variant_price',
@@ -24,31 +20,26 @@ module.exports = (sequelize, DataTypes) => {
             });
 
             this.belongsTo(models.segment, {
-
                 foreignKey: {
                     field: 'segment_id',
-                    name: 'segment_id',
-
+                    name: 'segment_id'
                 }
             });
         }
-    };
-
-
+    }
 
     Stock.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         qty: { type: DataTypes.BIGINT, allowNull: false, defaultValue: 0 },
         manufacture_type: { type: DataTypes.ENUM('one', 'multiple', 'none'), allowNull: true },
-        status: { type: DataTypes.TINYINT(1), defualtValue: 1, allowNull: false, },
-        qty_in: { type: DataTypes.ENUM('branch', 'store'), defaultValue: 'branch', allowNull: false },
-    },
-        {
-            sequelize,
-            modelName: 'stock',
-        });
+        status: { type: DataTypes.TINYINT(1), defualtValue: 1, allowNull: false },
+        qty_in: { type: DataTypes.ENUM('branch', 'store'), defaultValue: 'branch', allowNull: false }
+    }, {
+        sequelize,
+        modelName: 'stock'
+    });
     return Stock;
-}
+};
 
 
 

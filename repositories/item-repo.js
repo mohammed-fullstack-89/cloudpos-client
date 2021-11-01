@@ -10,6 +10,7 @@ class ItemService {
         });
         return JSON.stringify(newStock.qty);
     }
+
     async getItemsByCategory(args) {
         let variantTable = db.model('variant');
         let items = [];
@@ -69,28 +70,20 @@ class ItemService {
     async searchBarcode(args) {
         try {
             const code = args[0];
-
             let item = [];
             if (code == '' || code == null || code == undefined) {
                 item = [];
                 return item;
-            }
-            else {
-
+            } else {
                 let variantTable = db.model('variant');
-
                 item = await variantTable.findAll({
                     where: {
-
-                        // show_in_sale_screen: 1
                         [db.Seq().Op.or]: {
                             barcode: code,
                             '$variant_segment.barcode$': code,
-                            '$variant_serial.serial$': code,
-
+                            '$variant_serial.serial$': code
                         }
                     },
-
                     include: [
                         {
                             model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
@@ -102,20 +95,15 @@ class ItemService {
                         { model: db.model('unit'), as: 'variant_unit' },
                         { model: db.model('size'), as: 'variant_size' },
                         { model: db.model('brand'), as: 'variant_brand' },
-
                         {
                             model: db.model('segment'), as: 'variant_segment', include: [{
                                 model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
-                            }
-                            ]
+                            }]
                         },
                         { model: db.model('serial'), as: 'variant_serial' },
                         { model: db.model('tax'), as: 'variant_tax' },
-                        {
-                            model: db.model('category'), as: 'variant_category'
-                        },
-                        { model: db.model('supplier'), as: 'item_suppliers' },
-
+                        { model: db.model('category'), as: 'variant_category' },
+                        { model: db.model('supplier'), as: 'item_suppliers' }
                     ],
                 });
                 item = JSON.stringify(item);
@@ -166,14 +154,12 @@ class ItemService {
                     };
                     break;
             }
-
             items = await variantTable.findAll({
                 include: [
                     {
                         model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
                             { model: db.model('price'), as: 'variant_price' },
-                            { model: db.model('itemManufacturing'), as: 'item_manufacturing' }
-                        ]
+                            { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
                     },
                     { model: db.model('scale'), as: 'variant_scale_barcode' },
                     { model: db.model('color'), as: 'variant_color' },
@@ -229,7 +215,7 @@ class ItemService {
     async getScaleFromBarcode(args) {
         let scaleIdentifier = args;
         const scaleTable = db.model('scale');
-        const scale = await scaleTable.findOne({
+        var scale = await scaleTable.findOne({
             where: { start: scaleIdentifier },
             limit: 1
         });
@@ -252,10 +238,8 @@ class ItemService {
                     model: db.model('stock'), as: 'stock', where: { status: 1 }, include: [
                         { model: db.model('price'), as: 'variant_price', },
                         { model: db.model('itemManufacturing'), as: 'item_manufacturing' }]
-
                 },
                 { model: db.model('scale'), as: 'variant_scale_barcode' },
-
                 { model: db.model('color'), as: 'variant_color' },
                 { model: db.model('unit'), as: 'variant_unit' },
                 { model: db.model('size'), as: 'variant_size' },
@@ -263,20 +247,14 @@ class ItemService {
                 {
                     model: db.model('segment'), as: 'variant_segment', include: [{
                         model: db.model('stock'), where: { status: 1 }, required: false, as: 'stock'
-                    }
-                    ]
-
+                    }]
                 },
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
-                {
-                    model: db.model('category'), as: 'variant_category'
-                },
-                { model: db.model('supplier'), as: 'item_suppliers' },
-
+                { model: db.model('category'), as: 'variant_category' },
+                { model: db.model('supplier'), as: 'item_suppliers' }
             ],
             limit: 1
-
         });
         return JSON.stringify(items);
     }
@@ -486,6 +464,6 @@ ItemService.getInstance = function () {
         ItemService.instance = new ItemService();
     }
     return ItemService.instance;
-}
+};
 
 module.exports = ItemService.getInstance();

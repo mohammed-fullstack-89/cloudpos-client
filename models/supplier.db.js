@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Supplier extends Model {
@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'item_suppliers',
         through: models.variant_suppliers,
         foreignKey: 'supplier_id',
-        otherKey: { name: 'item_id', field: 'item_id' },
-      })
+        otherKey: { name: 'item_id', field: 'item_id' }
+      });
     }
-  };
+  }
+
   Supplier.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name_ar: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
@@ -27,30 +28,28 @@ module.exports = (sequelize, DataTypes) => {
     note: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     lat: { type: DataTypes.DOUBLE, defualtValue: 0.0, allowNull: true },
     long: { type: DataTypes.DOUBLE, defualtValue: 0.0, allowNull: true }
-
   }, {
     sequelize,
     underscored: true,
     modelName: 'supplier',
     indexes: [{
       name: 'suppliers_name_ar_foreign',
-      fields: [`name_ar`]
-    },
-    {
+      fields: ['name_ar']
+    }, {
       name: 'suppliers_name_en_foreign',
-      fields: [`name_en`]
+      fields: ['name_en']
     }, {
       name: 'suppliers_mobile_foreign',
-      fields: [`mobile_1`]
+      fields: ['mobile_1']
     }, {
       name: 'suppliers_mobile2_foreign',
-      fields: [`mobile_2`]
+      fields: ['mobile_2']
     }, {
       name: 'suppliers_email_foreign',
-      fields: [`email`]
+      fields: ['email']
     }, {
       name: 'suppliers_address_foreign',
-      fields: [`address`]
+      fields: ['address']
     }]
   });
   return Supplier;

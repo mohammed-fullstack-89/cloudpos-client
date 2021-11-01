@@ -1,10 +1,7 @@
-
-
 const db = require('../models/index');
 const ORDERTYPE = require('../models/order_status');
 
 class SaleService {
-
     async saveSale(args) {
         try {
             let saleObject = JSON.parse(args[0]);
@@ -20,8 +17,7 @@ class SaleService {
                 });
                 if (!result) {
                     await saleTable.create(saleObject);
-                }
-                else {
+                } else {
                     await saleTable.update(saleObject, {
                         where: {
                             order_number: result.order_number,
@@ -40,17 +36,14 @@ class SaleService {
     }
 
     async getSales(filterObject) {
-        const filter = SaleFilter();
+        let filter = SaleFilter();
         filter = JSON.parse(filterObject);
         const saleTable = db.model("sale");
-
         const result = await saleTable.findAll({
-            where: {
-                filter
-            },
+            where: { filter },
             attributes: ['data'],
             limit: 20
-        })
+        });
         const sales = JSON.stringify(result);
         return sales;
     }
@@ -69,12 +62,14 @@ class SaleService {
         const sales = JSON.stringify(result);
         return sales;
     }
+
     async deleteSalesInvoice() {
         const saleTable = db.model("sale");
         const result = await saleTable.destroy({
             truncate: true
         });
     }
+
     async updateSaleInvoice(invoice_number, status) {
         const saleTable = db.model("sale");
         await saleTable.update({ invoice_number: invoice_number, status: status }, {
@@ -83,7 +78,6 @@ class SaleService {
             }
         });
     }
-
 }
 
 
@@ -93,6 +87,6 @@ SaleService.getInstance = function () {
         SaleService.instance = new SaleService();
     }
     return SaleService.instance;
-}
+};
 
 module.exports = SaleService.getInstance();

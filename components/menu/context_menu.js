@@ -1,7 +1,5 @@
-const electron = require('electron')
-
-const MenuItem = electron.MenuItem
-
+const electron = require('electron');
+const MenuItem = electron.MenuItem;
 const context_menu_template = [
     new MenuItem({
         label: "Copy",
@@ -22,7 +20,6 @@ const context_menu_template = [
     new MenuItem({
         label: "Cut",
         role: "cut"
-    }),
-
-]
-module.exports = context_menu_template
+    })
+];
+module.exports = context_menu_template;

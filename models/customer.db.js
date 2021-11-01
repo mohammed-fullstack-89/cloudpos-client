@@ -1,31 +1,30 @@
-'use strict';
+"use strict";
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
-
     static associate(models) {
       this.belongsTo(models.tier, {
         foreignKey: {
           field: 'tier_id',
-          name: 'tierId',
+          name: 'tierId'
         },
         as: 'customer_tier'
       });
 
       this.hasMany(models.address, {
         foreignKey: 'customer_id',
-        as: 'customer_addresses',
+        as: 'customer_addresses'
       });
+
       this.belongsToMany(models.entity, {
         as: 'customer_entities',
         through: models.customer_entity,
         foreignKey: 'customer_id',
-        otherKey: { name: 'entity_id', field: 'entity_id' },
-
+        otherKey: { name: 'entity_id', field: 'entity_id' }
       });
-
     }
-  };
+  }
+
   Customer.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
@@ -52,22 +51,19 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     underscored: true,
     modelName: 'customer',
-
     indexes: [{
       name: 'customers_name_foreign',
-      fields: [`name`]
+      fields: ['name']
     }, {
       name: 'customers_phone_number_1_foreign',
-      fields: [`mobile_1`]
+      fields: ['mobile_1']
     }, {
       name: 'customers_phone_number_2_foreign',
-      fields: [`mobile_2`]
-    },
-    {
+      fields: ['mobile_2']
+    }, {
       name: 'customers_tier_id_foreign',
-      fields: [`tier_id`]
-    }
-    ]
+      fields: ['tier_id']
+    }]
   });
   return Customer;
 };

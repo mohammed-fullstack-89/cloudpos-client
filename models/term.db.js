@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Term extends Model {
@@ -10,23 +10,23 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'company_id'
       });
     }
-  };
+  }
+
   Term.init({
     id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
     name_en: { type: DataTypes.STRING, defualtValue: true, allowNull: true },
-    name_ar: { type: DataTypes.STRING, defualtValue: true, allowNull: true },
+    name_ar: { type: DataTypes.STRING, defualtValue: true, allowNull: true }
   }, {
     sequelize,
     underscored: true,
     modelName: 'term',
-
     indexes: [{
       name: 'terms_name_ar_foreign',
-      fields: [`name_ar`]
+      fields: ['name_ar']
     },
     {
       name: 'terms_name_en_foreign',
-      fields: [`name_en`]
+      fields: ['name_en']
     }]
   });
   return Term;

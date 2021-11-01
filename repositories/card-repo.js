@@ -1,10 +1,7 @@
 
 
 let db = require('../models/index');
-
 class CardService {
-
-
     async getCards() {
         let cardTable = db.model('card');
         let cards = [];
@@ -12,16 +9,10 @@ class CardService {
         return cards;
     }
 
-
     setCards(cardsList) {
         let cardTable = db.model('card');
         cardTable.bulkCreate(JSON.parse(cardsList), { updateOnDuplicate: Object.keys(cardTable.rawAttributes) });
     }
-
-    //     if(cardService.caller != cardService.getInstance) {
-    //     throw new Error("This object cannot be instanciated");
-    // }
-
 }
 
 CardService.instance = null;
@@ -30,6 +21,6 @@ CardService.getInstance = function () {
         CardService.instance = new CardService();
     }
     return CardService.instance;
-}
+};
 
 module.exports = CardService.getInstance();
