@@ -156,6 +156,11 @@ class DbStore {
             const saleTable = require('../repositories/sale-repo');
             await saleTable.updateSaleInvoice(args[0], args[1]);
         });
+
+        ipc.handle('getVariantStock', async (event, ...args) => {
+            const stockTable = require('../repositories/stock-repo');
+            await stockTable.getStocks(args[0]);
+        });
     }
 }
 

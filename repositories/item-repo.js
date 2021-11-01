@@ -1,4 +1,3 @@
-
 let db = require('../models/index');
 class ItemService {
 
@@ -24,11 +23,11 @@ class ItemService {
                 show_in_sale_screen: 1
             },
             include: [
+                { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
                 {
                     model: db.model('stock'), as: 'stock', where: { status: 1 },
                     include: [
-                        { model: db.model('price'), as: 'variant_price' },
-                        { model: db.model('itemManufacturing'), as: 'item_manufacturing' }
+                        { model: db.model('price'), as: 'variant_price' }
                     ]
                 },
                 { model: db.model('scale'), as: 'variant_scale_barcode' },

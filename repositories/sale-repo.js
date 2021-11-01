@@ -1,6 +1,5 @@
 const db = require('../models/index');
 const ORDERTYPE = require('../models/order_status');
-
 class SaleService {
     async saveSale(args) {
         try {

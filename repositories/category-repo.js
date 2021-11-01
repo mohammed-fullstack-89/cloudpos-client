@@ -1,5 +1,4 @@
-var db = require('../models/index'), Seq = db.Seq();
-
+let db = require('../models/index');
 class CategoriesService {
     async getCategories(parentId) {
         let categoryTable = db.model('category');

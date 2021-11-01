@@ -1,24 +1,22 @@
-
 "use strict";
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class ItemManufacturing extends Model {
         static associate(models) {
-            this.belongsTo(models.stock, {
-                foreignKey: {
-                    field: 'stockId',
-                    name: 'stock_id'
-                }
+            this.belongsTo(models.variant, {
+                as: 'manufactruing_item',
+                foreignKey: { field: 'variant_id', name: 'variant_id' }
             });
         }
     }
 
     ItemManufacturing.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        discounted_qty: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
-        location_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-        lost_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
-        old_stock_id: { type: DataTypes.BIGINT, allowNull: false }
+        item_id: { type: DataTypes.BIGINT, defaultValue: 0 },
+        available_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
+        discounted_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
+        lost_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
+        total_qty: { type: DataTypes.DOUBLE, defaultValue: 0, allowNull: false }
     }, {
         sequelize,
         modelName: 'itemManufacturing',

@@ -1,5 +1,4 @@
 let db = require('../models/index'), Seq = db.Seq();
-
 class CustomerService {
 
     async getCustomers() {

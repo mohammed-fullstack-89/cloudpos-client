@@ -1,5 +1,4 @@
 const db = require('../models/index');
-
 class UserService {
 
     async saveUsers(userArray) {
