@@ -84,6 +84,10 @@ class CommunicatorMiddleware {
         return await ipc.invoke('updateSaleInvoice', invoice_number, status);
     }
 
+    async getVariantStock(variant_id) {
+        return await ipc.invoke('getVariantStock', variant_id);
+    }
+
     connectToLogger(identifier) { ipc.invoke('connectToLogger', identifier); }
 }
 

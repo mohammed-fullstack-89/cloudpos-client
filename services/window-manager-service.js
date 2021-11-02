@@ -77,18 +77,6 @@ class InitializerService {
                                     this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("window.location.reload()");
-                                    // fs.unlinkSync(getAppPath, () => {
-                                    //     fs.rmdir(getAppPath, {
-                                    //         recursive: true,
-                                    //     }, (error) => {
-                                    //         if (error) {
-                                    //             console.log(error);
-                                    //         }
-                                    //         else {
-                                    //             console.log("Non Recursive: Directories Deleted!");
-                                    //         }
-                                    //     });
-                                    // });
                                 }
                             });
                         }

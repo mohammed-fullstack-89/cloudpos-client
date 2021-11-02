@@ -1,9 +1,14 @@
 const db = require('../models/index');
 class StockService {
 
-    async getStocks(variantId) {
+    async getStocksByVariantId(variantId) {
         try {
-            console.log('test', variantId);
+            const stocks = await db.model('stock').findAll({
+                where: {
+                    variant_id: variantId
+                }
+            });
+            return JSON.stringify(stocks);
         } catch (error) {
             console.log("error : " + error);
         }

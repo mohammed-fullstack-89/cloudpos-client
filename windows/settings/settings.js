@@ -6,7 +6,6 @@ let activeMenuItemElement = null;
 let activeContentContainerElement = null;
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("ready");
     init();
 });
 

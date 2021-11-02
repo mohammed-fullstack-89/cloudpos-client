@@ -159,7 +159,7 @@ class DbStore {
 
         ipc.handle('getVariantStock', async (event, ...args) => {
             const stockTable = require('../repositories/stock-repo');
-            await stockTable.getStocks(args[0]);
+            return await stockTable.getStocksByVariantId(args[0]);
         });
     }
 }

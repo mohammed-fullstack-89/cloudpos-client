@@ -5,14 +5,14 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             this.belongsTo(models.variant, {
                 as: 'manufactruing_item',
-                foreignKey: { field: 'variant_id', name: 'variant_id' }
+                foreignKey: { field: 'item_id', name: 'item_id' }
             });
         }
     }
 
     ItemManufacturing.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        item_id: { type: DataTypes.BIGINT, defaultValue: 0 },
+        variant_id: { type: DataTypes.BIGINT, defaultValue: 0 },
         available_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
         discounted_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
         lost_qty: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: false },
