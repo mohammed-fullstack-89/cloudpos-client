@@ -54,6 +54,7 @@ Thumbs.db
 .jpg
 .png
 .txt
+.package-lock.json
 
 # Netbeans IDE
 nbproject/*

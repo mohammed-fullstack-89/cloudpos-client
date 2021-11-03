@@ -86,6 +86,6 @@
     "logrocket": "2.1.1",
     "node-gyp": "3.8.0",
     "sequelize": "6.9.0",
-    "sqlite3": "5.0.2"
+    "sqlite3": "5.0.0"
   }
 }

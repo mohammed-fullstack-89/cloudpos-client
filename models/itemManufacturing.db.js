@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class ItemManufacturing extends Model {
         static associate(models) {
             this.belongsTo(models.variant, {
-                as: 'manufactruing_item',
+                as: 'manufacturing_item',
                 foreignKey: { field: 'item_id', name: 'item_id' }
             });
         }
