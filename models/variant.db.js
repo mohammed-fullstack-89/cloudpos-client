@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.hasMany(models.itemManufacturing, {
-        as: 'manufactruing_item',
+        as: 'manufacturing_item',
         foreignKey: { field: 'item_id', name: 'item_id' }
       });
 

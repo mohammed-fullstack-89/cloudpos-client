@@ -116,9 +116,9 @@ class InitializerService {
                     {
                         role: 'reload'
                     },
-                    // {
-                    //     role: 'toggledevtools'
-                    // },
+                    {
+                        role: 'toggledevtools'
+                    },
                     {
                         type: 'separator'
                     },
@@ -176,7 +176,7 @@ class InitializerService {
         });
 
         this.mainWindow.webContents.on("did-finish-load", () => { });
-        this.mainWindow.loadURL(enviroment.stagging.url);
+        this.mainWindow.loadURL(enviroment.development.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
