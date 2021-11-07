@@ -6,17 +6,13 @@ const { app, BrowserWindow } = require('electron');
 const { APPNAME } = require('./commons');
 const logRocket = require('logrocket');
 
-let tray = null;
 app.disableHardwareAcceleration();
-app.whenReady().then(() => {
-   require('./services/index');
-});
+app.whenReady().then(() => require('./services/index'));
 
 logRocket.init('windows/poswindows');
 
 app.on('ready', async () => {
    app.setAppUserModelId(APPNAME);
-   // tray = new Tray(__dirname + '/assets/icons/app.ico')
    windowManager.showSplash();
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
    await db.setup().then(() => {
@@ -26,7 +22,7 @@ app.on('ready', async () => {
       notificationService.showNotification('App is ready', 'app has successfully initiated');
    }).catch((error) => {
       notificationService.showNotification('Error', 'Something went wrong initiating,please contact the support team. ');
-      console.log(`error : ${error}`);
+      console.log(`error: ${error}`);
    });
 });
 
