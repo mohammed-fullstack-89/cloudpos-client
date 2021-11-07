@@ -4,6 +4,7 @@ const enviroment = require('../enviroment');
 const customContextMenu = require('../components/menu/context_menu');
 const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const utility = require('./utility-service');
+
 class InitializerService {
 
     constructor() {
@@ -44,7 +45,7 @@ class InitializerService {
         ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('StaggingPos');
+        tray.setToolTip('CloudPOS');
         tray.setContextMenu(contextMenu);
     }
 
@@ -72,23 +73,10 @@ class InitializerService {
                                 message: 'Clear Data',
                                 detail: clearAppDataMessage
                             }).then((dialogRes) => {
-                                const getAppPath = path.join(app.getPath('appData'), app.getName());
                                 if (dialogRes.response === 0) {
                                     this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("window.location.reload()");
-                                    // fs.unlinkSync(getAppPath, () => {
-                                    //     fs.rmdir(getAppPath, {
-                                    //         recursive: true,
-                                    //     }, (error) => {
-                                    //         if (error) {
-                                    //             console.log(error);
-                                    //         }
-                                    //         else {
-                                    //             console.log("Non Recursive: Directories Deleted!");
-                                    //         }
-                                    //     });
-                                    // });
                                 }
                             });
                         }
@@ -188,11 +176,7 @@ class InitializerService {
             callback(true);
         });
 
-        this.mainWindow.webContents.on("did-finish-load", () => {
-            // const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/.mp3`;
-            // BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`var audioManager=new Audio('${dir}').play();`);
-        });
-        this.mainWindow.loadURL(enviroment.maestroPos.url);
+        this.mainWindow.loadURL(enviroment.CloudPos.url);
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
@@ -215,7 +199,7 @@ class InitializerService {
             title: "Settings",
             webPreferences: {
                 devTools: true,
-                nodeIntegration: true,
+                nodeIntegration: true
             }
         });
 
@@ -241,7 +225,7 @@ class InitializerService {
                 paintWhenInitiallyHidden: true,
                 webPreferences: {
                     nodeIntegration: false,
-                    devTools: false,
+                    devTools: true
                 }
             }
         );

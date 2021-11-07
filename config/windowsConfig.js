@@ -23,7 +23,7 @@ module.exports = {
             safeDialogs: false,
             javascript: true,
             devTools: true,
-            // sandbox: true,
+            sandbox: false,
             webgl: true,
             webSecurity: false,
             nodeIntegrationInWorker: true,

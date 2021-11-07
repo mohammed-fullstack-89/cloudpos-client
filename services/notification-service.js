@@ -8,13 +8,11 @@ class NotificationService {
         const notificationPayload = {
             title: messageTitle,
             body: messageBody,
-            icon: __dirname + '/../assets/icons/maestro.ico',
+            icon: __dirname + '/../assets/icons/app.ico',
             subtitle: 'app notification'
-        }
+        };
         app.whenReady().then(() => new Notification(notificationPayload).show());
-
     }
-
 
 }
 
@@ -24,5 +22,5 @@ NotificationService.getInstance = () => {
         NotificationService._instance = new NotificationService();
     }
     return NotificationService._instance;
-}
+};
 module.exports = NotificationService.getInstance();

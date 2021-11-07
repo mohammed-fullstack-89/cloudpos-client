@@ -104,8 +104,7 @@ class PrintHelper {
                     webPreferences: {
                         javascript: false,
                         contextIsolation: true,
-                        devTools: false
-
+                        devTools: true
                     },
                     parent: BrowserWindow.getFocusedWindow(),
                     modal: false,

@@ -1,5 +1,4 @@
 const electron = require("electron");
-const logRocket = require('logrocket');
 const { ipcMain, BrowserWindow } = electron;
 const path = require('path');
 
@@ -16,10 +15,9 @@ class UtilityService {
     connectToLogger(args) {
         const identifier = JSON.parse(args);
         if (identifier && identifier.code) {
-            const os = require('os');
-            const computerName = os.hostname();
-            const userInfo = os.userInfo();
-            logRocket.identify(identifier.code, { ...identifier, computerName, ...userInfo });
+            // const os = require('os');
+            // const computerName = os.hostname();
+            // const userInfo = os.userInfo();
         }
     }
 
@@ -56,7 +54,7 @@ class UtilityService {
                         this.code = "";
                     }
                 } else {
-                    this.code += input.key
+                    this.code += input.key;
                 }
             }
             this.lastKeyTime = currentTime;
@@ -71,5 +69,5 @@ UtilityService.getInstance = () => {
         UtilityService._instance = new UtilityService();
     }
     return UtilityService._instance;
-}
+};
 module.exports = UtilityService.getInstance();
