@@ -1,4 +1,3 @@
-require('./services/index');
 const db = require('./models/index');
 const windowManager = require('./services/window-manager-service')
 const notificationService = require('./services/notification-service');
