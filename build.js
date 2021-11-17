@@ -11,12 +11,12 @@ packager({
     asar: true,
     platform: 'win32',
     arch: 'ia32',
-    icon: 'assets/icons/app.ico',
+    icon: 'assets/icons/maestro.ico',
     prune: true,
-    appVersion: "1.1.11",
+    appVersion: "1.1.12",
     win32metadata: {
         CompanyName: "Rubikomm",
-        ProductName: "CloudPOS",
+        ProductName: "MaestroPOS",
     },
     afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
         rebuild.rebuild({ buildPath, electronVersion, arch })
