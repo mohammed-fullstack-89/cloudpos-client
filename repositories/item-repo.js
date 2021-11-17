@@ -38,7 +38,7 @@ class ItemService {
                 { model: db.model('tax'), as: 'variant_tax' },
                 { model: db.model('category'), as: 'variant_category', where: filter },
                 { model: db.model('supplier'), as: 'item_suppliers' },
-                { model: db.model('itemManufacturing'), as: 'manufacturing_item' }
+                { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
             ],
             offset: offset,
             limit: limit
@@ -96,7 +96,7 @@ class ItemService {
                         { model: db.model('tax'), as: 'variant_tax' },
                         { model: db.model('category'), as: 'variant_category' },
                         { model: db.model('supplier'), as: 'item_suppliers' },
-                        { model: db.model('itemManufacturing'), as: 'manufacturing_item' }
+                        { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
                     ]
                 });
                 item = JSON.stringify(item);
@@ -167,7 +167,7 @@ class ItemService {
                     { model: db.model('tax'), as: 'variant_tax' },
                     { model: db.model('category'), as: 'variant_category' },
                     { model: db.model('supplier'), as: 'item_suppliers' },
-                    { model: db.model('itemManufacturing'), as: 'manufacturing_item' }
+                    { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
                 ],
                 where: filter,
                 subQuery: false, //top level where with limit bug in sequelize (solution)
@@ -245,7 +245,7 @@ class ItemService {
                 { model: db.model('tax'), as: 'variant_tax' },
                 { model: db.model('category'), as: 'variant_category' },
                 { model: db.model('supplier'), as: 'item_suppliers' },
-                { model: db.model('itemManufacturing'), as: 'manufacturing_item' }
+                { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
             ],
             limit: 1
         });
