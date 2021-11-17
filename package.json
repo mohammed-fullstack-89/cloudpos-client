@@ -1,7 +1,7 @@
 {
   "name": "cloud-pos",
   "productName": "CloudPos",
-  "version": "1.1.12",
+  "version": "1.1.12.1",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -36,7 +36,7 @@
     },
     "win": {
       "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
-      "icon": "assets/icons/maestro.ico",
+      "icon": "assets/icons/app.ico",
       "target": [
         {
           "target": "nsis",
