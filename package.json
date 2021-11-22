@@ -36,7 +36,7 @@
     },
     "win": {
       "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
-      "icon": "assets/icons/maestro.ico",
+      "icon": "assets/icons/app.ico",
       "target": [
         {
           "target": "nsis",

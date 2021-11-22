@@ -179,7 +179,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.maestroPOS.url);
+        this.mainWindow.loadURL(enviroment.cloudPOS_SA.url);
         this.hideSplash();
     }
 
