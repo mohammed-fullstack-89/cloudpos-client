@@ -1,7 +1,7 @@
 {
   "name": "cloud-pos",
   "productName": "CloudPos",
-  "version": "1.1.12.1",
+  "version": "1.1.12",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -10,10 +10,10 @@
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",
-    "package:mac": "electron-builder electron-builder -m",
-    "package:linux": "electron-builder electron-builder -l",
-    "package:win": "electron-builder electron-builder --win --x64 portable",
-    "package": "electron-builder electron-builder -ml && yarn run package:win"
+    "package:mac": "electron-builder build -m",
+    "package:linux": "electron-builder build -l",
+    "package:win": "electron-builder build --win --x64 portable",
+    "package": "electron-builder build -ml && yarn run package:win"
   },
   "build": {
     "electronVersion": "8.5.3",
@@ -25,8 +25,10 @@
     "mac": {
       "artifactName": "${name}-${version}-${os}.${ext}",
       "category": "com.rubikomm.cloudpos",
+      "icon": "assets/icons/apple.ico",
+      "type": "distribution",
       "target": [
-        "zip"
+        "dmg"
       ]
     },
     "nsis": {
@@ -70,10 +72,10 @@
   "devDependencies": {
     "devtron": "1.4.0",
     "electron": "8.5.3",
-    "electron-builder": "20.0.4",
-    "electron-packager": "15.1.0",
-    "electron-rebuild": "2.2.0",
-    "eslint": "7.14.0",
+    "electron-builder": "^22.14.5",
+    "electron-packager": "^15.4.0",
+    "electron-rebuild": "^3.2.5",
+    "eslint": "^8.3.0",
     "sequelize-cli": "6.2.0"
   },
   "dependencies": {
