@@ -28,11 +28,14 @@ class InitializerService {
                         defaultId: 0,
                         message: 'Clear data',
                         detail: clearAppDataMessage
-                    }).then((dialogRes) => {
+                    }).then(dialogRes => {
                         if (dialogRes.response === 0) {
-                            this.this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
-                            this.this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
-                            this.this.mainWindow.webContents.executeJavaScript("window.location.reload()");
+                            this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
+                            this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
+                            this.mainWindow.webContents.session.clearCache().then(() => {
+                                app.relaunch();
+                                app.exit();
+                            });
                         }
                     });
                 }
@@ -40,11 +43,11 @@ class InitializerService {
             {
                 label: 'Quit',
                 click: () => app.quit()
-            },
+            }
         ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('StaggingPos');
+        tray.setToolTip('CloudPOS');
         tray.setContextMenu(contextMenu);
     }
 
@@ -71,12 +74,14 @@ class InitializerService {
                                 defaultId: 0,
                                 message: 'Clear Data',
                                 detail: clearAppDataMessage
-                            }).then((dialogRes) => {
-                                const getAppPath = path.join(app.getPath('appData'), app.getName());
+                            }).then(dialogRes => {
                                 if (dialogRes.response === 0) {
                                     this.mainWindow.webContents.executeJavaScript("localStorage.clear();");
                                     this.mainWindow.webContents.executeJavaScript("sessionStorage.clear();");
-                                    this.mainWindow.webContents.executeJavaScript("window.location.reload()");
+                                    this.mainWindow.webContents.session.clearCache().then(() => {
+                                        app.relaunch();
+                                        app.exit();
+                                    });
                                 }
                             });
                         }
@@ -84,7 +89,7 @@ class InitializerService {
                     {
                         label: 'Quit',
                         click: () => app.quit()
-                    },
+                    }
                 ]
             },
             {
@@ -113,12 +118,6 @@ class InitializerService {
             {
                 label: 'View',
                 submenu: [
-                    {
-                        role: 'reload'
-                    },
-                    {
-                        role: 'toggledevtools'
-                    },
                     {
                         type: 'separator'
                     },
@@ -151,7 +150,7 @@ class InitializerService {
                 ]
             },
             {
-                role: 'help',
+                label: 'help',
                 submenu: [
                     {
                         label: 'Remote Assistance',
