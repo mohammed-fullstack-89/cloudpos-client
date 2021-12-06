@@ -4,10 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     static associate(models) {
       this.belongsTo(models.tier, {
-        foreignKey: {
-          field: 'tier_id',
-          name: 'tierId'
-        },
+        foreignKey: { field: 'tier_id', name: 'tierId' },
         as: 'customer_tier'
       });
 
@@ -45,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     allow_tax_exemption: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },
     tax_exemption_number: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },
     tier_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-    file: { type: DataTypes.BLOB, defualtValue: null, allowNull: true },
+    file: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     note: { type: DataTypes.TEXT, defualtValue: null, allowNull: true }
   }, {
     sequelize,
