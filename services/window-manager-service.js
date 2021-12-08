@@ -19,7 +19,7 @@ class InitializerService {
                 click: () => this.createSettingsWindow()
             },
             {
-                label: 'Clear data',
+                label: 'Clear local data',
                 click: () => {
                     const clearAppDataMessage = 'Are you sure ?';
                     dialog.showMessageBox({
@@ -65,7 +65,7 @@ class InitializerService {
                         click: () => this.createSettingsWindow()
                     },
                     {
-                        label: 'Clear data',
+                        label: 'Clear local data',
                         click: () => {
                             const clearAppDataMessage = 'Are you sure ?';
                             dialog.showMessageBox({
@@ -178,7 +178,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.cloudPOS_SA.url);
+        this.mainWindow.loadURL(enviroment.stagging.url);
         this.hideSplash();
     }
 
