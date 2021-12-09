@@ -58,13 +58,13 @@ class CustomerService {
             try {
                 await addressesTable.destroy({ where: { customer_id: customerId } });
             } catch (error) {
-                console.log("error" + error);
+                console.log("error destroy addressesTable" + error);
             }
 
             try {
                 await customerEntitesRelTable.destroy({ where: { customer_id: customerId } });
             } catch (error) {
-                console.log("error" + error);
+                console.log("error destroy customerEntitesRelTable" + error);
             }
         }
 
@@ -73,7 +73,7 @@ class CustomerService {
                 await customerTable.upsert(customer);
             }
         } catch (error) {
-            console.log("error" + error);
+            console.log("error upsert customerTable" + error);
         }
 
         try {
@@ -81,7 +81,7 @@ class CustomerService {
                 await addressesTable.bulkCreate(addressesList);
             }
         } catch (error) {
-            console.log("error" + error);
+            console.log("error bulkCreate addressesTable" + error);
         }
 
         try {
@@ -89,7 +89,7 @@ class CustomerService {
                 await customerEntitesRelTable.bulkCreate(customerEntitiesRel);
             }
         } catch (error) {
-            console.log("error" + error);
+            console.log("error bulkCreate customerEntitesRelTable" + error);
         }
         return true;
     }
@@ -113,7 +113,7 @@ class CustomerService {
                     await tiersTable.bulkCreate(tiers_list);
                 }
             } catch (error) {
-                console.log("error " + error);
+                console.log("error destroy/bulkCreate tiersTable" + error);
             }
 
             try {
@@ -122,7 +122,7 @@ class CustomerService {
                     await customerTable.bulkCreate(customersList);
                 }
             } catch (error) {
-                console.log("error" + error);
+                console.log("error destroy/bulkCreate customerTable" + error);
             }
 
             try {
@@ -131,7 +131,7 @@ class CustomerService {
                     await addressesTable.bulkCreate(addresss_list);
                 }
             } catch (error) {
-                console.log("error" + error);
+                console.log("error destroy/bulkCreate addressesTable" + error);
             }
 
             try {
@@ -140,7 +140,7 @@ class CustomerService {
                     await entitesTable.bulkCreate(entites_list);
                 }
             } catch (error) {
-                console.log("error" + error);
+                console.log("error destroy/bulkCreate entitesTable" + error);
             }
 
             try {
@@ -149,10 +149,10 @@ class CustomerService {
                     await customerEntitesRelTable.bulkCreate(entity_rel_list);
                 }
             } catch (error) {
-                console.log("error" + error);
+                console.log("error destroy/bulkCreate customerEntitesRelTable" + error);
             }
         } catch (error) {
-            console.log("error: " + error);
+            console.log("error setCustomers: " + error);
         }
 
     }

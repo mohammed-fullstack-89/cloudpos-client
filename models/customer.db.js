@@ -35,15 +35,16 @@ module.exports = (sequelize, DataTypes) => {
     debtor: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
     creditor: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: 0, allowNull: true },
-    allow_discount: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },
     ref_number: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     ban_customer: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },
     ban_customer_reasons: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    allow_tax_exemption: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },
     tax_exemption_number: { type: DataTypes.BIGINT, defualtValue: 0, allowNull: true },
     tier_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     file: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    note: { type: DataTypes.TEXT, defualtValue: null, allowNull: true }
+    note: { type: DataTypes.TEXT, defualtValue: null, allowNull: true },
+    anniversary: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    dob: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    gender: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
   }, {
     sequelize,
     underscored: true,
@@ -57,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     }, {
       name: 'customers_phone_number_2_foreign',
       fields: ['mobile_2']
+    }, {
+      name: 'customers_nick_name_foreign',
+      fields: ['nick_name']
     }, {
       name: 'customers_tier_id_foreign',
       fields: ['tier_id']

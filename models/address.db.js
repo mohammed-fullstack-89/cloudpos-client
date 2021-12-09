@@ -21,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
     floor: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     lat: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     long: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    customer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true }
+    customer_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    delivery_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    address_des: { type: DataTypes.STRING, defaultValue: '', allowNull: true },
+    status: { type: DataTypes.ENUM('active', 'inactive'), defualtValue: null, allowNull: false }
   }, {
     sequelize,
     underscored: true,
