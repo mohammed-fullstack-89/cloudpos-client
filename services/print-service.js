@@ -27,21 +27,20 @@ class PrintHelper {
             }
 
             PosPrinter.print(
-                [
-                    {
-                        type: 'text',
-                        value: html,
-                        style: 'direction:rtl;'
-                    }
-                ],
+                [{
+                    type: 'text',
+                    value: html,
+                    style: 'direction:rtl;'
+                }],
                 {
-                    preview: false,
+                    preview: false,               // Preview in window or print
                     silent: true,
                     width: '100%',
-                    margin: '0 0 0 0',
-                    copies: copies,
-                    printerName: mainPrinter,
-                    timeOutPerLine: 200
+                    margin: '0 0 0 0',            // margin of content body
+                    copies: copies,                    // Number of copies to print
+                    printerName: mainPrinter,        // printerName: string, check with webContent.getPrinters()
+                    timeOutPerLine: 400000,
+                    pageSize: { height: 301000, width: 71000 } 
                 }
             ).then(data => notificationService.showNotification('Printing', `using ${mainPrinter}`)).catch(error => console.error(error));
         } catch (error) {
