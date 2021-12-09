@@ -38,8 +38,7 @@
         }
       ],
       "legalTrademarks": "Rubikomm",
-      "publisherName": "Rubikomm",
-      "requestedExecutionLevel": "requireAdministrator"
+      "publisherName": "Rubikomm"
     },
     "asar": true,
     "asarUnpack": [
