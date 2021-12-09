@@ -12,7 +12,7 @@
     "migrate": "sequelize-cli db:migrate",
     "package:mac": "electron-builder build -m",
     "package:linux": "electron-builder build -l",
-    "package:win": "electron-builder build --win --x64 portable",
+    "package:win": "electron-builder build -w --x64",
     "package": "electron-builder build -ml && yarn run package:win"
   },
   "build": {
