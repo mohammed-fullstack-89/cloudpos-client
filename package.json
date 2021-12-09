@@ -12,8 +12,7 @@
     "migrate": "sequelize-cli db:migrate",
     "package:mac": "electron-builder build -m",
     "package:linux": "electron-builder build -l",
-    "package:win": "electron-builder build -w --x64",
-    "package": "electron-builder build -ml && yarn run package:win"
+    "package:win": "electron-builder build -w"
   },
   "build": {
     "electronVersion": "8.5.3",
@@ -32,12 +31,13 @@
       ]
     },
     "nsis": {
+      "artifactName": "${productName}-setup-${version}-${arch}.${ext}",
       "perMachine": true,
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
     "win": {
-      "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+      "artifactName": "${productName}-setup-${version}-${arch}.${ext}",
       "icon": "assets/icons/app.ico",
       "target": [
         {
@@ -48,13 +48,23 @@
           ]
         },
         {
-          "target": "zip",
+          "target": "msi",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
           "arch": [
             "x64",
             "ia32"
           ]
         }
-      ]
+      ],
+      "legalTrademarks": "Rubikomm",
+      "publisherName": "Rubikomm",
+      "requestedExecutionLevel": "requireAdministrator"
     },
     "asar": true,
     "asarUnpack": [
