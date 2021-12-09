@@ -1,5 +1,4 @@
 const electron = require("electron");
-const logRocket = require('logrocket');
 const { ipcMain, BrowserWindow } = electron;
 const path = require('path');
 
@@ -19,7 +18,6 @@ class UtilityService {
             const os = require('os');
             const computerName = os.hostname();
             const userInfo = os.userInfo();
-            logRocket.identify(identifier.code, { ...identifier, computerName, ...userInfo });
         }
     }
 

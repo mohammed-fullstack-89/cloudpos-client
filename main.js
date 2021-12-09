@@ -3,12 +3,9 @@ const windowManager = require('./services/window-manager-service')
 const notificationService = require('./services/notification-service');
 const { app, BrowserWindow } = require('electron');
 const { APPNAME } = require('./commons');
-const logRocket = require('logrocket');
 
 app.disableHardwareAcceleration();
 app.whenReady().then(() => require('./services/index'));
-
-logRocket.init('windows/poswindows');
 
 app.on('ready', async () => {
    app.setAppUserModelId(APPNAME);

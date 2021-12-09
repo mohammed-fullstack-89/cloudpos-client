@@ -10,9 +10,7 @@
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",
-    "package:mac": "electron-builder build -m",
-    "package:linux": "electron-builder build -l",
-    "package:win": "electron-builder build -w"
+    "package:win": "electron-builder electron-builder --win --x64 portable"
   },
   "build": {
     "electronVersion": "8.5.3",
@@ -20,15 +18,6 @@
     "directories": {
       "buildResources": "resources",
       "output": "packages"
-    },
-    "mac": {
-      "artifactName": "${name}-${version}-${os}.${ext}",
-      "category": "com.rubikomm.cloudpos",
-      "icon": "assets/icons/apple.ico",
-      "type": "distribution",
-      "target": [
-        "dmg"
-      ]
     },
     "nsis": {
       "artifactName": "${productName}-setup-${version}-${arch}.${ext}",
@@ -68,22 +57,21 @@
   "devDependencies": {
     "devtron": "1.4.0",
     "electron": "8.5.3",
-    "electron-builder": "^22.14.5",
-    "electron-packager": "^15.4.0",
-    "electron-rebuild": "^3.2.5",
-    "eslint": "^8.3.0",
+    "electron-builder": "20.0.4",
+    "electron-packager": "15.1.0",
+    "electron-rebuild": "2.2.0",
+    "eslint": "7.14.0",
     "sequelize-cli": "6.2.0"
   },
   "dependencies": {
-    "@thiagoelg/node-printer": "0.5.3",
+    "@thiagoelg/node-printer": "^0.5.3",
     "bufferutil": "4.0.3",
     "electron-pos-printer": "1.2.4",
     "electron-root-path": "1.0.16",
     "jimp": "0.16.1",
-    "lodash": "^4.17.21",
-    "logrocket": "2.1.1",
+    "lodash": "^4.17.20",
     "node-gyp": "3.8.0",
-    "sequelize": "6.9.0",
+    "sequelize": "6.11.0",
     "sqlite3": "5.0.0"
   }
 }
