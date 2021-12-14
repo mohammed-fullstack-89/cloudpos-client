@@ -1,17 +1,16 @@
 const electron = require('electron');
-const { ipcMain } = electron;
+const { ipcMain, BrowserWindow } = electron;
 const appStore = require('./store-service');
 const windowManager = require('./window-manager-service');
 const notificationService = require('./notification-service');
 const printer = require('@thiagoelg/node-printer');
-const { PosPrinter } = require('electron-pos-printer');
 
 class PrintHelper {
 
     constructor() {
         ipcMain.on('printHtmlDocument', (event, ...args) => this.printReceiptHtml(args[0], args[1]));
 
-        ipcMain.on('getPrinters', (event, ...args) => event.returnValue = electron.webContents.getFocusedWebContents().getPrinters());
+        ipcMain.on('getPrinters', (event, ...args) => event.returnValue = printer.getPrinters());
 
         ipcMain.on('openPrintersSettings', (event, ...args) => windowManager.createSettingsWindow());
 
@@ -19,34 +18,59 @@ class PrintHelper {
     }
 
     printReceiptHtml(html, copies) {
-        try {
-            const mainPrinter = appStore.getValue("mainPrinter");
+        const mainPrinter = appStore.getValue("mainPrinter");
 
-            if (mainPrinter === '--choose Printer--') {
-                return;
-            }
-
-            PosPrinter.print(
-                [{
-                    type: 'text',
-                    value: html,
-                    style: 'direction:rtl;'
-                }],
-                {
-                    preview: false,               // Preview in window or print
-                    silent: true,
-                    width: '100%',
-                    margin: '0 0 0 0',            // margin of content body
-                    copies: copies,                    // Number of copies to print
-                    printerName: mainPrinter,        // printerName: string, check with webContent.getPrinters()
-                    timeOutPerLine: 400000,
-                    pageSize: { height: 301000, width: 71000 } 
-                }
-            ).then(data => notificationService.showNotification('Printing', `using ${mainPrinter}`)).catch(error => console.error(error));
-        } catch (error) {
-            console.log(`error : ${err}`);
+        if (mainPrinter === "--choose Printer--") {
+            return;
         }
+
+        let printWindow = new BrowserWindow({
+            autoHideMenuBar: true,
+            center: true,
+            closable: true,
+            enableLargerThanScreen: true,
+            focusable: false,
+            fullscreen: true,
+            fullscreenable: true,
+            hasShadow: false,
+            kiosk: true,
+            maximizable: false,
+            minimizable: false,
+            modal: true,
+            movable: false,
+            opacity: 1.0,
+            resizable: false,
+            show: false,
+            simpleFullscreen: true,
+            frame: false,
+            thickFrame: false,
+            zoomToPageWidth: false
+        });
+        printWindow.loadURL("data:text/html;charset=utf-8," + html);
+
+        printWindow.webContents.on("did-finish-load", () => {
+            try {
+                printWindow.webContents.print({
+                    collate: false,
+                    silent: true,
+                    deviceName: mainPrinter,
+                    copies: copies,
+                    show: false,
+                    margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 },
+                    dpi: { horizontal: 1, vertical: 1 }
+                }, (success, errorType) => {
+                    if (!success) {
+                        notificationService.showNotification('Printing Error: ', errorType);
+                    } else {
+                        console.log(success);
+                    }
+                });
+            } catch (error) {
+                console.log(`Error :  ${error}`);
+            }
+        });
     }
+
 
     openDrawer() {
         console.log('opening cash drawer ...');
