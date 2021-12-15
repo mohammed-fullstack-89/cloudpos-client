@@ -40,7 +40,7 @@ class PrintHelper {
             movable: false,
             opacity: 1.0,
             resizable: false,
-            show: false,
+            show: true,
             simpleFullscreen: true,
             frame: false,
             thickFrame: false,
@@ -57,10 +57,11 @@ class PrintHelper {
                     copies: copies,
                     show: false,
                     margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 },
-                    dpi: { horizontal: 1, vertical: 1 }
-                }, (success, errorType) => {
+                    duplexMode:'simplex'
+                }, (success, failureReason) => {
                     if (!success) {
-                        notificationService.showNotification('Printing Error: ', errorType);
+                        notificationService.showNotification('Printing Error: ', failureReason);
+                        console.log(failureReason);
                     } else {
                         console.log(success);
                     }
