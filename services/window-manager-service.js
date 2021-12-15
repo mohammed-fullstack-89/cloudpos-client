@@ -52,7 +52,7 @@ class InitializerService {
         ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('CloudPOS');
+        tray.setToolTip('MaestroPOS');
         tray.setContextMenu(contextMenu);
     }
 
@@ -186,7 +186,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.development.url);
+        this.mainWindow.loadURL(enviroment.maestroPOS.url);
         this.hideSplash();
     }
 
@@ -213,8 +213,8 @@ class InitializerService {
         this.settingsWindow.menu = null;
         this.settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
 
-        this.settingsWindow.on('close',() => this.settingsWindow = null);
-        this.settingsWindow.on('closed',() => this.settingsWindow = null);
+        this.settingsWindow.on('close', () => this.settingsWindow = null);
+        this.settingsWindow.on('closed', () => this.settingsWindow = null);
     }
 
     closeSettingsWindow() {
