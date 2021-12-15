@@ -11,15 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function init() {
     activeMenuItemElement = document.getElementsByClassName('active')[0];
-    Array.prototype.forEach.call(document.getElementsByClassName('container'), element => element.style.display = 'none');
-    activeContentContainerElement = document.getElementsByClassName('container')[0];
-    activeContentContainerElement.style.display = 'flex';
     getPrinters();
 }
 
 function showContentRelated(element, contentToShow) {
     if (activeMenuItemElement != element) {
-
         activeMenuItemElement.classList.remove('active');
         element.classList.add('active');
         activeMenuItemElement = element;
@@ -28,23 +24,25 @@ function showContentRelated(element, contentToShow) {
         const active_content = document.getElementsByClassName(contentToShow)[0];
         active_content.style.display = 'flex';
         activeContentContainerElement = active_content;
-
     }
 }
 
 function savePreferances() {
     const localSettings = ipcRenderer.sendSync("getlocalSettings");
-    localSettings.mainPrinter = (document.getElementById('main') == null || document.getElementById('main').value == null || document.getElementById('main').value == undefined || document.getElementById('main').value == 'undefined' || document.getElementById('main').value == '' ? '--choose Printer--' : document.getElementById('main').value);
+    localSettings.mainPrinter = (document.getElementById('main-printer') == null || document.getElementById('main-printer').value == null || document.getElementById('main-printer').value == undefined || document.getElementById('main-printer').value == 'undefined' || document.getElementById('main-printer').value == '' ? '--choose Printer--' : document.getElementById('main-printer').value);
+    localSettings.paperType = document.getElementById('paper-type').value;
     Object.keys(localSettings).forEach(setting => ipcRenderer.send('setlocalSettings', setting, localSettings[setting]));
+    alert(JSON.stringify(localSettings));
 }
 
-function setSelectedPrinters() {
+function loadSelectedSettings() {
     const localSettings = ipcRenderer.sendSync("getlocalSettings");
-    document.getElementById('main').value = localSettings.mainPrinter;
+    document.getElementById('main-printer').value = localSettings.mainPrinter;
+    document.getElementById('paper-type').value = localSettings.paperType;
 }
 
 function getPrinters() {
-    const sel = document.getElementById('main');
+    const sel = document.getElementById('main-printer');
     const defaultopt = document.createElement('option');
     defaultopt.appendChild(document.createTextNode("--choose Printer--"));
     defaultopt.value = "--choose Printer--";
@@ -55,7 +53,7 @@ function getPrinters() {
         opt.value = p.name;
         sel.appendChild(opt);
     });
-    setSelectedPrinters();
+    loadSelectedSettings();
 }
 
 function save() {

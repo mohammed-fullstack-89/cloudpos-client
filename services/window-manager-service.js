@@ -2,15 +2,20 @@ const windowsConfig = require('../config/windowsConfig');
 const path = require('path');
 const enviroment = require('../enviroment');
 const customContextMenu = require('../components/menu/context_menu');
-const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
+const { app, BrowserWindow, Menu, dialog, shell, ipcMain } = require('electron');
 const utility = require('./utility-service');
 class InitializerService {
 
     constructor() {
         this.splash = null;
         this.mainWindow = null;
+        this.settingsWindow = null;
         app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
+        ipcMain.on('closeSettingsWindow', (event, ...args) => this.closeSettingsWindow());
     }
+
+
 
     initTray(tray) {
         const trayMenu = [
@@ -186,12 +191,11 @@ class InitializerService {
     }
 
     createSettingsWindow() {
-        let settingsWindow = null;
-        if (settingsWindow !== null) {
-            settingsWindow.close();
-            settingsWindow = null;
+        if (this.settingsWindow !== null) {
+            this.settingsWindow.close();
         }
-        settingsWindow = new BrowserWindow({
+
+        this.settingsWindow = new BrowserWindow({
             alwaysOnTop: true,
             resizable: false,
             maxHeight: 200,
@@ -205,10 +209,15 @@ class InitializerService {
             }
         });
 
-        settingsWindow.removeMenu();
-        settingsWindow.menu = null;
-        settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
-        return settingsWindow;
+        this.settingsWindow.removeMenu();
+        this.settingsWindow.menu = null;
+        this.settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
+    }
+
+    closeSettingsWindow() {
+        if (this.settingsWindow !== null) {
+            this.settingsWindow.close();
+        }
     }
 
     hideSplash() {
@@ -244,5 +253,4 @@ InitializerService.getInstance = () => {
     }
     return InitializerService._instance;
 };
-
 module.exports = InitializerService.getInstance();

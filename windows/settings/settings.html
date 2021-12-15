@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8">
-  <script src="./settings.js"></script>
   <link href="./settings.css" rel="stylesheet" type="text/css">
   <title>Settings</title>
 </head>
@@ -18,22 +17,38 @@
       </div>
     </div>
     <div class="content">
-      <div class="main-container">
-        <div class="printer-container container">
-          <div id="printer-name">
-            Main printer
+      <div class="content-container">
+        <label>
+          Main printer:
+        </label>
+        <div class="printer-selection">
+          <div class="printer-select">
+            <select id="main-printer"></select>
           </div>
-          <div class="printer-selection">
-            <div class="printer-select">
-              <select id='main'></select>
-            </div>
+        </div>
+      </div>
+      <div class="content-container">
+        <label>
+          Paper Type:
+        </label>
+        <div class="printer-selection">
+          <div class="printer-select">
+            <select id="paper-type">
+              <option value="receipt" selected>80/58 mm</option>
+              <option value="normal">A4</option>
+            </select>
           </div>
         </div>
       </div>
     </div>
-    <div class="buttons-container">
-      <button onClick="save()">Save</button>
-    </div>
+  </div>
+  </div>
+
+  <div class="buttons-container">
+    <button type="button" onClick="save()">Save</button>
+  </div>
+
+  <script src="./settings.js"></script>
 </body>
 
 </html>

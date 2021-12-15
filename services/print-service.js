@@ -1,29 +1,40 @@
 const electron = require('electron');
 const { ipcMain, BrowserWindow } = electron;
 const appStore = require('./store-service');
-const windowManager = require('./window-manager-service');
 const notificationService = require('./notification-service');
 const printer = require('@thiagoelg/node-printer');
+const { PosPrinter } = require('electron-pos-printer');
 
 class PrintHelper {
 
     constructor() {
-        ipcMain.on('printHtmlDocument', (event, ...args) => this.printReceiptHtml(args[0], args[1]));
+        ipcMain.on('printHtmlDocument', (event, ...args) => this.printHtmlDocument(args[0], args[1]));
 
         ipcMain.on('getPrinters', (event, ...args) => event.returnValue = printer.getPrinters());
-
-        ipcMain.on('openPrintersSettings', (event, ...args) => windowManager.createSettingsWindow());
 
         ipcMain.on('openDrawer', (event, ...args) => this.openDrawer());
     }
 
-    printReceiptHtml(html, copies) {
+    printHtmlDocument(html, copies) {
         const mainPrinter = appStore.getValue("mainPrinter");
+        const paperType = appStore.getValue("paperType");
 
         if (mainPrinter === "--choose Printer--") {
+            notificationService.showNotification('Main printer not set yet !!!', 'main printer not selected, please make sure you set the main printer from settings window.')
             return;
         }
 
+        if (paperType === 'receipt') {
+            this.printPOSReceipt(html, copies, mainPrinter);
+        } else if (paperType === 'normal') {
+            this.printNormalPage(html, copies, mainPrinter);
+        } else {
+            notificationService.showNotification('Paper size not set yet !!!', 'paper size not selected, please make sure you set the paper size from settings window.');
+        }
+    }
+
+
+    printPOSReceipt(html, copies, printerName) {
         let printWindow = new BrowserWindow({
             autoHideMenuBar: true,
             center: true,
@@ -53,28 +64,55 @@ class PrintHelper {
                 printWindow.webContents.print({
                     collate: false,
                     silent: true,
-                    deviceName: mainPrinter,
+                    deviceName: printerName,
                     copies: copies,
                     show: false,
                     margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 },
-                    duplexMode:'simplex'
+                    duplexMode: 'simplex'
                 }, (success, failureReason) => {
                     if (!success) {
-                        notificationService.showNotification('Printing Error: ', failureReason);
-                        console.log(failureReason);
+                        notificationService.showNotification('Printing Error:', failureReason);
                     } else {
-                        console.log(success);
+                        notificationService.showNotification('Printing:', success);
                     }
                 });
             } catch (error) {
-                console.log(`Error :  ${error}`);
+                console.log(`printPOSReceipt Error :  ${error}`);
             }
         });
     }
 
+    printNormalPage(html, copies, printerName) {
+        try {
+
+            const posPrinterData = {
+                type: 'text',
+                value: html,
+                fontsize: 13
+            };
+
+            const posPrinterOptions = {
+                copies: copies,
+                printerName: printerName,
+                margin: '0',
+                preview: false,
+                silent: true,
+                width: '100%',
+                timeOutPerLine: 2000
+            };
+
+            PosPrinter.print(
+                [posPrinterData],
+                posPrinterOptions
+            ).then(result => notificationService.showNotification('Printing:', result)
+            ).catch(error => notificationService.showNotification('Printing Error:', error));
+        } catch (error) {
+            console.log(`printNormalPage Error :  ${error}`);
+        }
+    }
+
 
     openDrawer() {
-        console.log('opening cash drawer ...');
         const mainPrinter = appStore.getValue("mainPrinter");
 
         if (mainPrinter === '--choose Printer--') {
@@ -89,11 +127,9 @@ class PrintHelper {
                 console.log("sent to printer with ID: " + jobID);
             },
             error: function (err) {
-                notificationService.showNotification('cash drawer', 'Failed opening cash drawer . please check if the cash drawer is connected to the printer .');
-                console.log(err);
+                notificationService.showNotification('Cash drawer', 'Failed opening cash drawer. please check if the cash drawer is connected to the printer.');
             }
         });
-
     }
 }
 
