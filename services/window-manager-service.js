@@ -191,12 +191,12 @@ class InitializerService {
     }
 
     createSettingsWindow() {
-        if (this.settingsWindow !== null) {
-            this.settingsWindow.close();
+        if (this.settingsWindow) {
+            this.settingsWindow.show();
         }
 
         this.settingsWindow = new BrowserWindow({
-            alwaysOnTop: true,
+            alwaysOnTop: false,
             resizable: false,
             maxHeight: 200,
             maxWidth: 200,
@@ -212,10 +212,13 @@ class InitializerService {
         this.settingsWindow.removeMenu();
         this.settingsWindow.menu = null;
         this.settingsWindow.loadFile(path.dirname(__dirname) + '/windows/settings/settings.html');
+
+        this.settingsWindow.on('close',() => this.settingsWindow = null);
+        this.settingsWindow.on('closed',() => this.settingsWindow = null);
     }
 
     closeSettingsWindow() {
-        if (this.settingsWindow !== null) {
+        if (this.settingsWindow) {
             this.settingsWindow.close();
         }
     }

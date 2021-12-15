@@ -51,7 +51,7 @@ class PrintHelper {
             movable: false,
             opacity: 1.0,
             resizable: false,
-            show: true,
+            show: false,
             simpleFullscreen: true,
             frame: false,
             thickFrame: false,
@@ -87,18 +87,17 @@ class PrintHelper {
 
             const posPrinterData = {
                 type: 'text',
-                value: html,
-                fontsize: 13
+                value: html
             };
 
             const posPrinterOptions = {
                 copies: copies,
                 printerName: printerName,
-                margin: '0',
+                margin: '0 0 0 0',
                 preview: false,
                 silent: true,
                 width: '100%',
-                timeOutPerLine: 2000
+                timeOutPerLine: 400
             };
 
             PosPrinter.print(

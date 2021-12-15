@@ -32,7 +32,6 @@ function savePreferances() {
     localSettings.mainPrinter = (document.getElementById('main-printer') == null || document.getElementById('main-printer').value == null || document.getElementById('main-printer').value == undefined || document.getElementById('main-printer').value == 'undefined' || document.getElementById('main-printer').value == '' ? '--choose Printer--' : document.getElementById('main-printer').value);
     localSettings.paperType = document.getElementById('paper-type').value;
     Object.keys(localSettings).forEach(setting => ipcRenderer.send('setlocalSettings', setting, localSettings[setting]));
-    alert(JSON.stringify(localSettings));
 }
 
 function loadSelectedSettings() {
