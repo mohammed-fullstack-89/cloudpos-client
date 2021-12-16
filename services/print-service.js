@@ -97,7 +97,7 @@ class PrintHelper {
                 preview: false,
                 silent: true,
                 width: '100%',
-                timeOutPerLine: 400
+                timeOutPerLine: 400000
             };
 
             PosPrinter.print(
