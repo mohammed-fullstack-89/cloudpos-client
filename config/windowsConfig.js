@@ -22,7 +22,7 @@ module.exports = {
             nodeIntegration: true,
             safeDialogs: false,
             javascript: true,
-            devTools: true,
+            devTools: false,
             webgl: true,
             webSecurity: false,
             nodeIntegrationInWorker: true,
