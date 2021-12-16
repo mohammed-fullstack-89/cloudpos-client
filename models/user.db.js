@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         name: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         code: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-        user_settings: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
+        user_type_approvals: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
     }, {
         sequelize,
         modelName: 'user',
@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
             name: 'user_code_foreign',
             fields: ['code']
         }, {
-            name: 'user_settings_foreign',
-            fields: ['user_settings']
+            name: 'user_type_approvals_foreign',
+            fields: ['user_type_approvals']
         }]
     });
     return User;
