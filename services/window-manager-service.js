@@ -52,7 +52,7 @@ class InitializerService {
         ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('IisalPOS');
+        tray.setToolTip('MaestroPOS');
         tray.setContextMenu(contextMenu);
     }
 
@@ -183,7 +183,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.IisalPOS_SA.url);
+        this.mainWindow.loadURL(enviroment.maestroPOS.url);
         this.hideSplash();
     }
 
