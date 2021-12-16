@@ -15,13 +15,10 @@ class PrintMiddleware {
 }
 
 PrintMiddleware.instance = null;
-
 PrintMiddleware.getInstance = function () {
     if (PrintMiddleware.instance === null) {
         PrintMiddleware.instance = new PrintMiddleware();
     }
     return PrintMiddleware.instance;
 };
-
-
 module.exports = PrintMiddleware.getInstance();
