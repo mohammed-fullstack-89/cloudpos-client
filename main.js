@@ -1,9 +1,10 @@
 const db = require('./models/index');
-const windowManager = require('./services/window-manager-service')
+const windowManager = require('./services/window-manager-service');
 const notificationService = require('./services/notification-service');
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Tray } = require('electron');
 const { APPNAME } = require('./commons');
 
+let tray = null;
 app.disableHardwareAcceleration();
 app.whenReady().then(() => require('./services/index'));
 
@@ -12,9 +13,8 @@ app.on('ready', async () => {
    windowManager.showSplash();
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
    await db.setup().then(() => {
-      // autoUpdater.checkForUpdates();
       windowManager.createAppWindow();
-      // windowManager.initTray(tray);
+      windowManager.initTray(tray);
       notificationService.showNotification('App is ready', 'app has successfully initiated');
    }).catch((error) => {
       notificationService.showNotification('Error', 'Something went wrong initiating,please contact the support team. ');
