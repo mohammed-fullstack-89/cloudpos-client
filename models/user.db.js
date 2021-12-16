@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         name: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
         code: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-        user_type_approvals: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
+        user_type_approvals: { type: DataTypes.JSONB, defualtValue: null, allowNull: true }
     }, {
         sequelize,
         modelName: 'user',

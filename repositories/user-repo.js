@@ -5,7 +5,7 @@ class UserService {
         try {
             if (userArray && userArray != []) {
                 const userTable = db.model('user');
-                await userTable.destroy({ truncate: false, where: {} });
+                await userTable.destroy({ truncate: true });
                 await userTable.bulkCreate(userArray);
             }
         } catch (error) {
