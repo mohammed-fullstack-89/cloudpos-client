@@ -52,7 +52,7 @@
     }
   ],
   "author": "Rubikomm",
-  "license": "Licensed",
+  "license": "MIT",
   "devDependencies": {
     "devtron": "1.4.0",
     "electron": "8.5.3",
