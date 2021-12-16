@@ -10,7 +10,7 @@ class PrintHelper {
     constructor() {
         ipcMain.on('printHtmlDocument', (event, ...args) => this.printHtmlDocument(args[0], args[1]));
 
-        ipcMain.on('getPrinters', (event, ...args) => event.returnValue = printer.getPrinters());
+        ipcMain.on('getPrinters', (event, ...args) => event.returnValue = electron.webContents.getFocusedWebContents().getPrinters());
 
         ipcMain.on('openDrawer', (event, ...args) => this.openDrawer());
     }
