@@ -14,7 +14,7 @@ module.exports = {
         hostname: '167.71.72.20',
         pathname: '/staff/#/login'
     },
-    cloudPos: {
+    cloudPOS: {
         production: true,
         url: "https://rpos.live/staff/#/login",
         protocol: 'https',
@@ -35,7 +35,7 @@ module.exports = {
         hostname: '188.166.8.54',
         pathname: '/staff/#/login'
     },
-    cloudPOS_SA: {
+    IisalPOS_SA: {
         production: true,
         url: "https://188.166.63.221/staff/#/login",
         protocol: 'https',

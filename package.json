@@ -1,6 +1,6 @@
 {
   "name": "cloud-pos",
-  "productName": "MaestroPos",
+  "productName": "IisalPos",
   "version": "1.1.13",
   "main": "main.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "build": {
     "electronVersion": "8.5.3",
-    "appId": "com.rubikomm.maestropos",
+    "appId": "com.rubikomm.iisalpos",
     "directories": {
       "buildResources": "resources",
       "output": "packages"
@@ -27,7 +27,7 @@
     },
     "win": {
       "artifactName": "${productName}-setup-${version}-${arch}.${ext}",
-      "icon": "assets/icons/maestro.ico",
+      "icon": "assets/icons/iisal_logo.ico",
       "target": [
         {
           "target": "nsis",
