@@ -13,7 +13,7 @@ packager({
     arch: 'ia32',
     icon: 'assets/icons/maestro.ico',
     prune: true,
-    appVersion: "1.1.13",
+    appVersion: "1.1.13.1",
     win32metadata: {
         CompanyName: "Rubikomm",
         ProductName: "MaestroPOS"
