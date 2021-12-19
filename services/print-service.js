@@ -1,9 +1,9 @@
 const electron = require('electron');
 const { ipcMain, BrowserWindow } = electron;
 const appStore = require('./store-service');
+const windowManager = require('./window-manager-service');
 const notificationService = require('./notification-service');
 const printer = require('@thiagoelg/node-printer');
-const { PosPrinter } = require('electron-pos-printer');
 
 class PrintHelper {
 
@@ -13,6 +13,10 @@ class PrintHelper {
         ipcMain.on('getPrinters', (event, ...args) => event.returnValue = electron.webContents.getFocusedWebContents().getPrinters());
 
         ipcMain.on('openDrawer', (event, ...args) => this.openDrawer());
+
+        ipcMain.on('openPrintersSettings', (event, ...args) => {
+            return windowManager.createSettingsWindow();
+        });
     }
 
     printHtmlDocument(html, copies) {

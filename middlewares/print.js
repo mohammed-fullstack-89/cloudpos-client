@@ -12,6 +12,10 @@ class PrintMiddleware {
     openDrawer() {
         ipc.send("openDrawer");
     }
+
+    printersSettings() {
+        ipc.send("openPrintersSettings");
+    }
 }
 
 PrintMiddleware.instance = null;
