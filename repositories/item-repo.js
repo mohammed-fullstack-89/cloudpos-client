@@ -458,5 +458,4 @@ ItemService.getInstance = function () {
     }
     return ItemService.instance;
 };
-
 module.exports = ItemService.getInstance();
