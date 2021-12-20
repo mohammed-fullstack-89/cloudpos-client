@@ -86,87 +86,87 @@ class PrintHelper {
         });
     }
 
-    printNormalPage(html, copies, printerName) {
-        let printWindow = new BrowserWindow({
-            autoHideMenuBar: true,
-            center: true,
-            closable: true,
-            enableLargerThanScreen: true,
-            focusable: false,
-            fullscreen: true,
-            fullscreenable: true,
-            hasShadow: false,
-            kiosk: true,
-            maximizable: false,
-            minimizable: false,
-            modal: true,
-            movable: false,
-            opacity: 1.0,
-            resizable: false,
-            show: false,
-            simpleFullscreen: true,
-            frame: false,
-            thickFrame: false,
-            zoomToPageWidth: false,
-            webPreferences: {
-                nodeIntegration: true
-            }
-        });
-        printWindow.loadURL("data:text/html;charset=utf-8," + html);
-
-        printWindow.webContents.on("did-finish-load", () => {
-            try {
-                printWindow.webContents.print({
-                    silent: false,
-                    printBackground: true,
-                    color: false,
-                    margin: {
-                        marginType: 'printableArea'
-                    },
-                    landscape: false,
-                    pagesPerSheet: 1,
-                    collate: false,
-                    copies: copies
-                }, (success, failureReason) => {
-                    if (!success) {
-                        notificationService.showNotification('Printing Error:', failureReason);
-                    } else {
-                        notificationService.showNotification('Printing:', success);
-                    }
-                });
-            } catch (error) {
-                console.log(`prinNormalPage Error :  ${error}`);
-            }
-        });
-    }
-
     // printNormalPage(html, copies, printerName) {
-    //     try {
+    //     let printWindow = new BrowserWindow({
+    //         autoHideMenuBar: true,
+    //         center: true,
+    //         closable: true,
+    //         enableLargerThanScreen: true,
+    //         focusable: false,
+    //         fullscreen: true,
+    //         fullscreenable: true,
+    //         hasShadow: false,
+    //         kiosk: true,
+    //         maximizable: false,
+    //         minimizable: false,
+    //         modal: true,
+    //         movable: false,
+    //         opacity: 1.0,
+    //         resizable: false,
+    //         show: false,
+    //         simpleFullscreen: true,
+    //         frame: false,
+    //         thickFrame: false,
+    //         zoomToPageWidth: false,
+    //         webPreferences: {
+    //             nodeIntegration: true
+    //         }
+    //     });
+    //     printWindow.loadURL("data:text/html;charset=utf-8," + html);
 
-    //         const posPrinterData = {
-    //             type: 'text',
-    //             value: html
-    //         };
-
-    //         const posPrinterOptions = {
-    //             copies: copies,
-    //             printerName: printerName,
-    //             margin: '0 0 0 0',
-    //             preview: false,
-    //             silent: true,
-    //             width: '100%',
-    //             timeOutPerLine: 400000
-    //         };
-
-    //         PosPrinter.print(
-    //             [posPrinterData],
-    //             posPrinterOptions
-    //         ).then(result => notificationService.showNotification('Printing:', result)
-    //         ).catch(error => notificationService.showNotification('Printing Error:', error));
-    //     } catch (error) {
-    //         console.log(`printNormalPage Error :  ${error}`);
-    //     }
+    //     printWindow.webContents.on("did-finish-load", () => {
+    //         try {
+    //             printWindow.webContents.print({
+    //                 silent: false,
+    //                 printBackground: true,
+    //                 color: false,
+    //                 margin: {
+    //                     marginType: 'printableArea'
+    //                 },
+    //                 landscape: false,
+    //                 pagesPerSheet: 1,
+    //                 collate: false,
+    //                 copies: copies
+    //             }, (success, failureReason) => {
+    //                 if (!success) {
+    //                     notificationService.showNotification('Printing Error:', failureReason);
+    //                 } else {
+    //                     notificationService.showNotification('Printing:', success);
+    //                 }
+    //             });
+    //         } catch (error) {
+    //             console.log(`prinNormalPage Error :  ${error}`);
+    //         }
+    //     });
     // }
+
+    printNormalPage(html, copies, printerName) {
+        try {
+
+            const posPrinterData = {
+                type: 'text',
+                value: html
+            };
+
+            const posPrinterOptions = {
+                copies: copies,
+                printerName: printerName,
+                margin: '0 0 0 0',
+                preview: false,
+                silent: true,
+                width: '100%',
+                timeOutPerLine: 400000
+            };
+
+            PosPrinter.print(
+                [posPrinterData],
+                posPrinterOptions
+            ).then(result => notificationService.showNotification('Printing:', result)
+            ).catch(error => notificationService.showNotification('Printing Error:', error));
+        } catch (error) {
+            console.log(`printNormalPage Error :  ${error}`);
+        }
+    }
 
 
     openDrawer() {
