@@ -183,7 +183,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.IisalPOS_SA.url);
+        this.mainWindow.loadURL(enviroment.development.url);
         this.hideSplash();
     }
 

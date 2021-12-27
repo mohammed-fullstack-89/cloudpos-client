@@ -2,7 +2,7 @@
 module.exports = {
     development: {
         production: false,
-        url: "http://192.168.1.6:4200/#/login",
+        url: "http://localhost:4200/#/login",
         protocol: 'http',
         hostname: 'localhost',
         pathname: '/#/login'
