@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { app, ipcMain } = require('electron');
+
 class appStore {
     constructor(opts) {
         this.opts = opts;
@@ -40,15 +41,17 @@ class appStore {
 appStore.instance = null;
 appStore.getInstance = () => {
     if (appStore.instance == null) {
+        const selectLabel = '--choose printer--';
         const configObject = {
             configName: 'user-preferences',
             defaults: {
-                mainPrinter: '--choose Printer--',
-                KitchenPrinter1: '--choose Printer--',
-                KitchenPrinter2: '--choose Printer--',
-                KitchenPrinter3: '--choose Printer--',
-                KitchenPrinter4: '--choose Printer--',
-                InnerPrinter: '--choose Printer--',
+                mainPrinter: selectLabel,
+                orderPrinter1: selectLabel,
+                orderPrinter2: selectLabel,
+                orderPrinter3: selectLabel,
+                orderPrinter4: selectLabel,
+                orderPrinter5: selectLabel,
+                orderPrinter6: selectLabel,
                 paperType: 'receipt'
             }
         };

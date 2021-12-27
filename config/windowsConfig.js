@@ -1,9 +1,7 @@
-const path = require('path');
-
 module.exports = {
     mainWindowConfig: {
         focusable: true,
-        fullscreenWindowTitle: true,
+        fullscreenWindowTitle: false,
         fullscreenable: true,
         maximizable: true,
         minimizable: true,
@@ -22,7 +20,7 @@ module.exports = {
             nodeIntegration: true,
             safeDialogs: false,
             javascript: true,
-            devTools: false,
+            devTools: true,
             webgl: true,
             webSecurity: false,
             nodeIntegrationInWorker: true,

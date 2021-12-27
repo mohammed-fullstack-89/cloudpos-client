@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'category_id',
         otherKey: { name: 'item_id', field: 'item_id' }
       });
+
+      this.hasMany(models.variant, {
+        as: 'main_category',
+        foreignKey: 'category_id'
+      });
     }
   }
 
@@ -21,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     discount_type: { type: DataTypes.STRING, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
     tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-    parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true }
+    parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
+    printers: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
   }, {
     sequelize,
     underscored: true,

@@ -4,11 +4,14 @@ const appStore = require('./store-service');
 const windowManager = require('./window-manager-service');
 const notificationService = require('./notification-service');
 const printer = require('@thiagoelg/node-printer');
+const { PosPrinter } = require('electron-pos-printer');
 
 class PrintHelper {
 
     constructor() {
         ipcMain.on('printHtmlDocument', (event, ...args) => this.printHtmlDocument(args[0], args[1]));
+
+        ipcMain.on('printOrderReceipt', (event, ...args) => this.printOrderHtml(args[0], args[1], args[2]));
 
         ipcMain.on('getPrinters', (event, ...args) => event.returnValue = electron.webContents.getFocusedWebContents().getPrinters());
 
@@ -23,8 +26,8 @@ class PrintHelper {
         const mainPrinter = appStore.getValue("mainPrinter");
         const paperType = appStore.getValue("paperType");
 
-        if (mainPrinter === "--choose Printer--") {
-            notificationService.showNotification('Main printer not set yet !!!', 'main printer not selected, please make sure you set the main printer from settings window.')
+        if (mainPrinter === "--choose printer--") {
+            notificationService.showNotification('Main printer not set yet !!!', 'main printer not selected, please make sure you set the main printer from settings window.');
             return;
         }
 
@@ -37,6 +40,14 @@ class PrintHelper {
         }
     }
 
+    printOrderHtml(html, printerId, copies) {
+        const orderPrinter = appStore.getValue(`orderPrinter${printerId}`);
+        if (orderPrinter === "--choose printer--") {
+            notificationService.showNotification(`order printer ${printerId} not set yet !!!', 'main printer not selected, please make sure you selected order printer ${printerId} from settings window.`);
+            return;
+        }
+        this.printNormalPage(html, copies, orderPrinter);
+    }
 
     printPOSReceipt(html, copies, printerName) {
         let printWindow = new BrowserWindow({
@@ -77,7 +88,7 @@ class PrintHelper {
                     if (!success) {
                         notificationService.showNotification('Printing Error:', failureReason);
                     } else {
-                        notificationService.showNotification('Printing:', success);
+                        notificationService.showNotification('Printing', success);
                     }
                 });
             } catch (error) {
@@ -85,60 +96,6 @@ class PrintHelper {
             }
         });
     }
-
-    // printNormalPage(html, copies, printerName) {
-    //     let printWindow = new BrowserWindow({
-    //         autoHideMenuBar: true,
-    //         center: true,
-    //         closable: true,
-    //         enableLargerThanScreen: true,
-    //         focusable: false,
-    //         fullscreen: true,
-    //         fullscreenable: true,
-    //         hasShadow: false,
-    //         kiosk: true,
-    //         maximizable: false,
-    //         minimizable: false,
-    //         modal: true,
-    //         movable: false,
-    //         opacity: 1.0,
-    //         resizable: false,
-    //         show: false,
-    //         simpleFullscreen: true,
-    //         frame: false,
-    //         thickFrame: false,
-    //         zoomToPageWidth: false,
-    //         webPreferences: {
-    //             nodeIntegration: true
-    //         }
-    //     });
-    //     printWindow.loadURL("data:text/html;charset=utf-8," + html);
-
-    //     printWindow.webContents.on("did-finish-load", () => {
-    //         try {
-    //             printWindow.webContents.print({
-    //                 silent: false,
-    //                 printBackground: true,
-    //                 color: false,
-    //                 margin: {
-    //                     marginType: 'printableArea'
-    //                 },
-    //                 landscape: false,
-    //                 pagesPerSheet: 1,
-    //                 collate: false,
-    //                 copies: copies
-    //             }, (success, failureReason) => {
-    //                 if (!success) {
-    //                     notificationService.showNotification('Printing Error:', failureReason);
-    //                 } else {
-    //                     notificationService.showNotification('Printing:', success);
-    //                 }
-    //             });
-    //         } catch (error) {
-    //             console.log(`prinNormalPage Error :  ${error}`);
-    //         }
-    //     });
-    // }
 
     printNormalPage(html, copies, printerName) {
         try {
@@ -167,7 +124,6 @@ class PrintHelper {
             console.log(`printNormalPage Error :  ${error}`);
         }
     }
-
 
     openDrawer() {
         const mainPrinter = appStore.getValue("mainPrinter");

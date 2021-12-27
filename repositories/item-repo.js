@@ -37,12 +37,16 @@ class ItemService {
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
                 { model: db.model('category'), as: 'variant_category', where: filter },
+                { model: db.model('category'), as: 'main_category', where: filter },
                 { model: db.model('supplier'), as: 'item_suppliers' },
                 { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
             ],
             offset: offset,
             limit: limit
         });
+
+        console.log(JSON.stringify(items[0]));
+
         items = JSON.stringify(items);
         return items;
     }

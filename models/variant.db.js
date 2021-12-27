@@ -58,6 +58,11 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: { name: 'category_id', field: 'category_id' }
       });
 
+      this.belongsTo(models.category, {
+        as: 'main_category',
+        foreignKey: 'category_id'
+      });
+
       this.belongsTo(models.scale, {
         as: 'variant_scale_barcode',
         foreignKey: { field: 'scale_barcode_id', name: 'scaleId' }
@@ -143,8 +148,7 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [{
         name: 'items_name_ar_foreign',
         fields: ['name_ar']
-      },
-      {
+      }, {
         name: 'items_name_en_foreign',
         fields: ['name_en']
       }, {
@@ -153,44 +157,34 @@ module.exports = (sequelize, DataTypes) => {
       }, {
         name: 'items_trade_name_en_foreign',
         fields: ['trade_name_ar']
-      },
-      {
+      }, {
         name: 'items_scientific_name_ar_foreign',
         fields: ['scientific_name_ar']
-      },
-      {
+      }, {
         name: 'items_scientific_name_en_foreign',
         fields: ['scientific_name_en']
-      },
-      {
+      }, {
         name: 'items_show_in_sale_screen_foreign',
         fields: ['show_in_sale_screen']
-      },
-      {
+      }, {
         name: 'variants_nick_name_ar_foreign',
         fields: ['nick_name_ar']
-      },
-      {
+      }, {
         name: 'variants_nick_name_en_foreign',
         fields: ['nick_name_en']
-      },
-      {
+      }, {
         name: 'variants_barcode_foreign',
         fields: ['barcode']
-      },
-      {
+      }, {
         name: 'variants_code_foreign',
         fields: ['code']
-      },
-      {
+      }, {
         name: 'variants_unit_id_foreign',
         fields: ['unit_id']
-      },
-      {
+      }, {
         name: 'variants_brand_id_foreign',
         fields: ['brand_id']
-      },
-      {
+      }, {
         name: 'variants_is_manufacturing_foreign',
         fields: ['is_manufacturing']
       }]

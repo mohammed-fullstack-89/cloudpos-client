@@ -2,11 +2,13 @@ const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
 class PrintMiddleware {
-    constructor() {
-    }
 
     printHtmlDocument(html, copies) {
         ipc.send("printHtmlDocument", html, copies);
+    }
+
+    printKitchenReceipt(html, json, printer_id, copies) {
+        ipc.send("printOrderReceipt", html, printer_id, copies);
     }
 
     openDrawer() {

@@ -26,6 +26,8 @@ body {
 }
 
 .content {
+    overflow-y: auto;
+    overflow-x: hidden;
     grid-area: content;
     font-size: medium;
     margin: 5px;
