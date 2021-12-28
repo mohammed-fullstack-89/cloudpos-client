@@ -233,8 +233,8 @@ class InitializerService {
     showSplash() {
         this.splash = new BrowserWindow(
             {
-                height: 300,
-                width: 300,
+                height: 350,
+                width: 350,
                 frame: false,
                 paintWhenInitiallyHidden: true,
                 webPreferences: {

@@ -126,8 +126,7 @@ class PrintHelper {
                 {
                     type: 'text',
                     value: html,
-                    css: { "font-weight": "900", "font-size": "15px" },
-                    position: 'right'
+                    css: { "font-weight": "normal", "font-size": "13px", "padding": "0", "margin": "0" }       
                 }
             ];
 
