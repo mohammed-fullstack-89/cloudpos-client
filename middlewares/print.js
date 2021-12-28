@@ -7,8 +7,8 @@ class PrintMiddleware {
         ipc.send("printHtmlDocument", html, copies);
     }
 
-    printKitchenReceipt(html, json, printer_id, copies) {
-        ipc.send("printOrderReceipt", html, printer_id, copies);
+    printKitchenReceipt(html, json_str, printer_id, copies) {
+        ipc.send("printOrderReceipt", html, json_str, printer_id, copies);
     }
 
     openDrawer() {

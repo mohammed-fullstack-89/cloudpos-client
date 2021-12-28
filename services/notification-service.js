@@ -6,7 +6,7 @@ class NotificationService {
         const notificationPayload = {
             title: messageTitle,
             body: messageBody,
-            icon: __dirname + '/../assets/icons/iisal.ico'
+            icon: __dirname + '/../assets/icons/stagging.ico'
         };
         app.whenReady().then(() => new Notification(notificationPayload).show());
     }

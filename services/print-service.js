@@ -11,7 +11,7 @@ class PrintHelper {
     constructor() {
         ipcMain.on('printHtmlDocument', (event, ...args) => this.printHtmlDocument(args[0], args[1]));
 
-        ipcMain.on('printOrderReceipt', (event, ...args) => this.printOrderHtml(args[0], args[1], args[2]));
+        ipcMain.on('printOrderReceipt', (event, ...args) => this.printOrderHtml(args[0], args[1], args[2], args[3]));
 
         ipcMain.on('getPrinters', (event, ...args) => event.returnValue = electron.webContents.getFocusedWebContents().getPrinters());
 
@@ -32,25 +32,25 @@ class PrintHelper {
         }
 
         if (paperType === 'receipt') {
-            this.printPOSReceipt(html, copies, mainPrinter);
+            this.printWebContentHTML(html, copies, mainPrinter);
         } else if (paperType === 'normal') {
-            this.printNormalPage(html, copies, mainPrinter);
+            this.printPosPrinterHTML(html, copies, mainPrinter);
         } else {
             notificationService.showNotification('Paper size not set yet !!!', 'paper size not selected, please make sure you set the paper size from settings window.');
         }
     }
 
-    printOrderHtml(html, printerId, copies) {
+    printOrderHtml(html, json_str, printerId, copies) {
         const orderPrinter = appStore.getValue(`orderPrinter${printerId}`);
         if (orderPrinter === "--choose printer--") {
             notificationService.showNotification(`order printer not set yet !!!', 'order printer not selected, please make sure you selected order printer from settings window.`);
             return;
         }
-        this.printNormalPage(html, copies, orderPrinter);
+        this.printPosPrinter(html, json_str, copies, orderPrinter);
     }
 
-    printPOSReceipt(html, copies, printerName) {
-        let printWindow = new BrowserWindow({
+    printWebContentHTML(html, copies, printerName) {
+        const printWindow = new BrowserWindow({
             autoHideMenuBar: true,
             center: true,
             closable: true,
@@ -82,27 +82,25 @@ class PrintHelper {
                     deviceName: printerName,
                     copies: copies,
                     show: false,
-                    margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 },
-                    duplexMode: 'simplex'
+                    margins: { marginType: 'custom', top: 0, right: 0, left: 0, bottom: 0 }
                 }, (success, failureReason) => {
                     if (!success) {
-                        notificationService.showNotification('Printing Error:', failureReason);
+                        notificationService.showNotification('printWebContentHTML error :', failureReason);
                     } else {
-                        notificationService.showNotification('Printing', success);
+                        notificationService.showNotification('printWebContentHTML printing :', success);
                     }
                 });
             } catch (error) {
-                console.log(`printPOSReceipt Error :  ${error}`);
+                console.log(`printWebContentHTML error:  ${error}`);
             }
         });
     }
 
-    printNormalPage(html, copies, printerName) {
+    printPosPrinterHTML(html, copies, printerName) {
         try {
             const posPrinterData = {
                 type: 'text',
-                value: html,
-                position: 'center'
+                value: html
             };
 
             const posPrinterOptions = {
@@ -115,10 +113,38 @@ class PrintHelper {
                 timeOutPerLine: 400000
             };
 
-            PosPrinter.print([posPrinterData], posPrinterOptions).then(result => notificationService.showNotification('Printing:', result)
-            ).catch(error => notificationService.showNotification('Printing Error:', error));
+            PosPrinter.print([posPrinterData], posPrinterOptions).then(result => notificationService.showNotification('printPosPrinterHTML printing:', result)
+            ).catch(error => notificationService.showNotification('printPosPrinterHTML error:', error));
         } catch (error) {
-            console.log(`printNormalPage Error :  ${error}`);
+            console.log(`printPosPrinterHTML error:  ${error}`);
+        }
+    }
+
+    printPosPrinter(html, json_str, copies, printerName) {
+        try {
+            const posPrinterData = [
+                {
+                    type: 'text',
+                    value: html,
+                    css: { "font-weight": "900", "font-size": "15px" },
+                    position: 'right'
+                }
+            ];
+
+            const posPrinterOptions = {
+                copies: copies,
+                printerName: printerName,
+                margin: '0 0 0 0',
+                preview: false,
+                silent: true,
+                width: '100%',
+                timeOutPerLine: 400000
+            };
+
+            PosPrinter.print(posPrinterData, posPrinterOptions).then(result => notificationService.showNotification('printPosPrinter printing:', result)
+            ).catch(error => notificationService.showNotification('printPosPrinter error:', error));
+        } catch (error) {
+            console.log(`printPosPrinter error:  ${error}`);
         }
     }
 
