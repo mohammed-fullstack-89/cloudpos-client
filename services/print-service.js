@@ -43,7 +43,7 @@ class PrintHelper {
     printOrderHtml(html, printerId, copies) {
         const orderPrinter = appStore.getValue(`orderPrinter${printerId}`);
         if (orderPrinter === "--choose printer--") {
-            notificationService.showNotification(`order printer ${printerId} not set yet !!!', 'main printer not selected, please make sure you selected order printer ${printerId} from settings window.`);
+            notificationService.showNotification(`order printer not set yet !!!', 'order printer not selected, please make sure you selected order printer from settings window.`);
             return;
         }
         this.printNormalPage(html, copies, orderPrinter);
@@ -99,10 +99,10 @@ class PrintHelper {
 
     printNormalPage(html, copies, printerName) {
         try {
-
             const posPrinterData = {
                 type: 'text',
-                value: html
+                value: html,
+                position: 'center'
             };
 
             const posPrinterOptions = {
@@ -115,10 +115,7 @@ class PrintHelper {
                 timeOutPerLine: 400000
             };
 
-            PosPrinter.print(
-                [posPrinterData],
-                posPrinterOptions
-            ).then(result => notificationService.showNotification('Printing:', result)
+            PosPrinter.print([posPrinterData], posPrinterOptions).then(result => notificationService.showNotification('Printing:', result)
             ).catch(error => notificationService.showNotification('Printing Error:', error));
         } catch (error) {
             console.log(`printNormalPage Error :  ${error}`);

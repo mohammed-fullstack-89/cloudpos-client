@@ -45,8 +45,6 @@ class ItemService {
             limit: limit
         });
 
-        console.log(JSON.stringify(items[0]));
-
         items = JSON.stringify(items);
         return items;
     }
