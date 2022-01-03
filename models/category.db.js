@@ -25,17 +25,14 @@ module.exports = (sequelize, DataTypes) => {
     image: { type: DataTypes.STRING, allowNull: true },
     discount_type: { type: DataTypes.STRING, allowNull: true },
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
-    tax_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-    printers: { type: DataTypes.STRING, defualtValue: null, allowNull: true }
+    printers: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
+    show_category_in_staff: { type: DataTypes.TINYINT, defualtValue: 0, allowNull: false }
   }, {
     sequelize,
     underscored: true,
     modelName: 'category',
     indexes: [{
-      name: 'categories_tax_id_foreign',
-      fields: ['tax_id']
-    }, {
       name: 'categories_parent_foreign',
       fields: ['parent']
     }]
