@@ -5,7 +5,7 @@ packager({
     buildPath: __dirname,
     electronVersion: '10.1.3',
     version: '1.1.0',
-    buildVersion: '13',
+    buildVersion: '14',
     dir: __dirname,
     overwrite: true,
     asar: true,
@@ -13,7 +13,7 @@ packager({
     arch: 'ia32',
     icon: 'assets/icons/stagging.ico',
     prune: true,
-    appVersion: "1.1.13.2",
+    appVersion: "1.1.14",
     win32metadata: {
         CompanyName: "Rubikomm",
         ProductName: "StaggingPOS"
