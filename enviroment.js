@@ -2,44 +2,44 @@
 module.exports = {
     development: {
         production: false,
-        url: "http://localhost:4200/#/login",
+        url: "http://localhost:4200",
         protocol: 'http',
         hostname: 'localhost',
-        pathname: '/#/login'
+        pathname: '/'
     },
     stagging: {
         production: false,
-        url: "http://167.71.72.20/staff/#/login",
+        url: "http://167.71.72.20/staff",
         protocol: 'http',
         hostname: '167.71.72.20',
-        pathname: '/staff/#/login'
+        pathname: '/staff'
     },
     cloudPOS: {
         production: true,
-        url: "https://rpos.live/staff/#/login",
+        url: "https://rpos.live/staff",
         protocol: 'https',
         hostname: 'rpos.live',
-        pathname: '/staff/#/login'
+        pathname: '/staff'
     },
     maestroPOS: {
         production: true,
-        url: "https://64.227.66.157/staff/#/login",
+        url: "https://64.227.66.157/staff",
         protocol: 'https',
         hostname: '64.227.66.157',
-        pathname: '/staff/#/login'
+        pathname: '/staff'
     },
     cloudPOS_EGY: {
         production: true,
-        url: "https://188.166.8.54/staff/#/login",
+        url: "https://188.166.8.54/staff",
         protocol: 'https',
         hostname: '188.166.8.54',
-        pathname: '/staff/#/login'
+        pathname: '/staff'
     },
     IisalPOS_SA: {
         production: true,
-        url: "https://188.166.63.221/staff/#/login",
+        url: "https://188.166.63.221/staff",
         protocol: 'https',
         hostname: '188.166.63.221',
-        pathname: '/staff/#/login'
+        pathname: '/staff'
     }
 };
