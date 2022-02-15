@@ -1,6 +1,6 @@
 {
   "name": "cloud-pos",
-  "productName": "CloudPos",
+  "productName": "CloudPos(iisal)",
   "version": "1.1.15",
   "main": "main.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "build": {
     "electronVersion": "8.5.3",
-    "appId": "com.rubikomm.cloudpos",
+    "appId": "com.rubikomm.cloudpos_iisal",
     "directories": {
       "buildResources": "resources",
       "output": "packages"
@@ -27,7 +27,7 @@
     },
     "win": {
       "artifactName": "${productName}-setup-${version}-${arch}.${ext}",
-      "icon": "assets/icons/cloudpos.ico",
+      "icon": "assets/icons/iisal.ico",
       "target": [
         {
           "target": "nsis",
