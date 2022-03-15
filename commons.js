@@ -1,3 +1,3 @@
 module.exports = {
-    APPNAME: 'MeastroPOS'
+    APPNAME: 'CloudPOS'
 };
