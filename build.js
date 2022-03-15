@@ -11,12 +11,12 @@ packager({
     asar: true,
     platform: 'win32',
     arch: 'ia32',
-    icon: 'assets/icons/iisal.ico',
+    icon: 'assets/icons/cloudpos.ico',
     prune: true,
     appVersion: "1.1.15",
     win32metadata: {
         CompanyName: "Rubikomm",
-        ProductName: "CloudPOS(iisal)"
+        ProductName: "CloudPOS"
     },
     afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
         rebuild.rebuild({ buildPath, electronVersion, arch })

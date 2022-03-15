@@ -52,7 +52,7 @@ class InitializerService {
         ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('CloudPOS(iisal)');
+        tray.setToolTip('CloudPOS');
         tray.setContextMenu(contextMenu);
     }
 
@@ -186,7 +186,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.IisalPOS_SA.url);
+        this.mainWindow.loadURL(enviroment.stagging.url);
         this.hideSplash();
     }
 
