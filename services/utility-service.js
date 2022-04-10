@@ -23,7 +23,7 @@ class UtilityService {
 
     playSound(type) {
         const dir = `file://${path.dirname(__dirname).replace(/\\/g, "/")}/assets/audio/${type}.mp3`;
-        BrowserWindow.getAllWindows()[0].webContents.executeJavaScript(`new Audio('${dir}').play();`);
+        BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`new Audio('${dir}').play();`);
     }
 
     async barcode(event, input) {
