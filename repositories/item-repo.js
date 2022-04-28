@@ -39,7 +39,8 @@ class ItemService {
                 { model: db.model('category'), as: 'variant_category', where: filter },
                 { model: db.model('category'), as: 'main_category', where: filter },
                 { model: db.model('supplier'), as: 'item_suppliers' },
-                { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
+                { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                { model: db.model('variant_modifier'), as: 'variant_modifiers' }
             ],
             offset: offset,
             limit: limit
@@ -135,14 +136,15 @@ class ItemService {
                             scientific_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
                             brief_name_ar: { [db.Seq().Op.like]: '%' + value + '%' },
                             brief_name_en: { [db.Seq().Op.like]: '%' + value + '%' },
-                            description: { [db.Seq().Op.like]: '%' + value + '%' }
+                            description_ar: { [db.Seq().Op.like]: '%' + value + '%' },
+                            description_en: { [db.Seq().Op.like]: '%' + value + '%' }
                         }
                     };
                     break;
                 case 'barcode+serial':
                     filter = {
                         [db.Seq().Op.or]: {
-                            barcode: value,
+                            barcode: { [db.Seq().Op.like]: '%' + value + '%' },
                             '$variant_serial.serial$': value,
                             '$variant_segment.barcode$': value
                         }
@@ -260,7 +262,8 @@ class ItemService {
                 2: pricesList, 3: segmantsList, 4: suppliersList,
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
-                11: itemStockslist, 12: itemManufacturingList, 13: itemsUnitsList, 14: itemsSizesList, 15: itemsColorsList, 16: itemsBrandsList, 17: force } = args;
+                11: itemStockslist, 12: itemManufacturingList, 13: itemsUnitsList, 14: itemsSizesList,
+                15: itemsColorsList, 16: itemsBrandsList, 17: itemModifiersList, 18: force } = args;
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
@@ -278,6 +281,7 @@ class ItemService {
             const unitTable = db.model("unit");
             const sizeTable = db.model("size");
             const brandTable = db.model("brand");
+            const itemModifiersTable = db.model('variant_modifier');
 
             try {
                 if (force) {
@@ -293,11 +297,12 @@ class ItemService {
                     await itemSupplierTable.destroy({ truncate: true });
                     await itemTaxesTable.destroy({ truncate: true });
                     await stockTable.destroy({ truncate: true });
-                    await itemManufacturingTable.destroy({ truncate: true })
-                    await unitTable.destroy({ truncate: true })
-                    await sizeTable.destroy({ truncate: true })
-                    await brandTable.destroy({ truncate: true })
-                    await colorTable.destroy({ truncate: true })
+                    await itemManufacturingTable.destroy({ truncate: true });
+                    await unitTable.destroy({ truncate: true });
+                    await sizeTable.destroy({ truncate: true });
+                    await brandTable.destroy({ truncate: true });
+                    await colorTable.destroy({ truncate: true });
+                    await itemModifiersTable.destroy({ truncate: true });
                 }
 
                 try {
@@ -442,6 +447,15 @@ class ItemService {
                     }
                 } catch (error) {
                     console.log("itemManufacturingList error : " + error);
+                }
+
+                try {
+                    console.log(itemModifiersList);
+                    if (itemModifiersList != [] && itemModifiersList != undefined) {
+                        await itemModifiersTable.bulkCreate(itemModifiersList, { updateOnDuplicate: [...Object.keys(itemModifiersTable.rawAttributes)] });
+                    }
+                } catch (error) {
+                    console.log("itemModifiersList error : " + error);
                 }
 
             } catch (error) {

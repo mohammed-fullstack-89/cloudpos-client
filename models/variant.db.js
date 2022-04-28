@@ -87,6 +87,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'variant_serial',
         foreignKey: { field: 'variant_id', name: 'variantId' }
       });
+
+      this.hasMany(models.variant_modifier, {
+        as: 'variant_modifiers',
+        foreignKey: { field: 'variant_id', name: 'variant_id' }
+      });
     }
   }
 
@@ -136,11 +141,23 @@ module.exports = (sequelize, DataTypes) => {
     scientific_name_en: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     brief_name_ar: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
     brief_name_en: { type: DataTypes.STRING, allowNull: true, defaultValue: null },
-    description: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
-    has_serial: { type: DataTypes.TINYINT, defualtValue: 0 },
+    description_ar: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
+    description_en: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
+    has_serial: { type: DataTypes.TINYINT, defualtValue: 0, allowNull: true },
     color_box: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
     is_manufacturing: { type: DataTypes.STRING, defaultValue: null, allowNull: true },
-    scale_barcode_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true }
+    scale_barcode_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
+    sale_note: { type: DataTypes.STRING, defaultValue: '', allowNull: true },
+    calory: { type: DataTypes.FLOAT, defaultValue: 0.0, allowNull: true },
+    change_name: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
+    service_variant: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
+    generated: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
+    show_in_order_app: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
+    customer_purchase_history: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
+    is_modifier: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
+    segment_qty: { type: DataTypes.FLOAT, defaultValue: 0.0, allowNull: true },
+    parent: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
+    min_sale_price: { type: DataTypes.STRING, defaultValue: '0.000', allowNull: true }
   },
     {
       sequelize,
