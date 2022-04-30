@@ -40,7 +40,12 @@ class ItemService {
                 { model: db.model('category'), as: 'main_category', where: filter },
                 { model: db.model('supplier'), as: 'item_suppliers' },
                 { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
-                { model: db.model('variant_modifier'), as: 'variant_modifiers' }
+                {
+                    model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
+                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                        include: [{ model: db.model('price'), as: 'variant_price' }]
+                    }]
+                }
             ],
             offset: offset,
             limit: limit
@@ -99,7 +104,13 @@ class ItemService {
                         { model: db.model('tax'), as: 'variant_tax' },
                         { model: db.model('category'), as: 'variant_category' },
                         { model: db.model('supplier'), as: 'item_suppliers' },
-                        { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
+                        { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                        {
+                            model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
+                                model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                                include: [{ model: db.model('price'), as: 'variant_price' }]
+                            }]
+                        }
                     ]
                 });
                 item = JSON.stringify(item);
@@ -171,7 +182,13 @@ class ItemService {
                     { model: db.model('tax'), as: 'variant_tax' },
                     { model: db.model('category'), as: 'variant_category' },
                     { model: db.model('supplier'), as: 'item_suppliers' },
-                    { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
+                    { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                    {
+                        model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                            include: [{ model: db.model('price'), as: 'variant_price' }]
+                        }]
+                    }
                 ],
                 where: filter,
                 subQuery: false, //top level where with limit bug in sequelize (solution)
@@ -201,7 +218,7 @@ class ItemService {
             const stockTable = db.model('stock');
             for (let i = 0; i < args.length; i++) {
                 stockTable.update({ qty: args[i].qty }, {
-                    where: { id: args[i].id }
+                    where: { id: args[i].stock_id }
                 });
             }
         } catch (error) {
@@ -249,7 +266,13 @@ class ItemService {
                 { model: db.model('tax'), as: 'variant_tax' },
                 { model: db.model('category'), as: 'variant_category' },
                 { model: db.model('supplier'), as: 'item_suppliers' },
-                { model: db.model('itemManufacturing'), as: 'manufactruing_item' }
+                { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                {
+                    model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
+                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                        include: [{ model: db.model('price'), as: 'variant_price' }]
+                    }]
+                }
             ],
             limit: 1
         });
@@ -450,7 +473,6 @@ class ItemService {
                 }
 
                 try {
-                    console.log(itemModifiersList);
                     if (itemModifiersList != [] && itemModifiersList != undefined) {
                         await itemModifiersTable.bulkCreate(itemModifiersList, { updateOnDuplicate: [...Object.keys(itemModifiersTable.rawAttributes)] });
                     }

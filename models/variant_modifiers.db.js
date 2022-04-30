@@ -2,20 +2,21 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
+
     class VariantModifier extends Model {
         static associate(models) {
             this.belongsTo(models.variant, { foreignKey: 'variant_id', targetKey: 'id' });
-
             this.hasMany(models.stock, {
                 as: 'stock',
                 foreignKey: { field: 'variant_id', name: 'variant_id' },
-                sourceKey: 'id'
-            });
+                sourceKey: 'modifier_id'
+              });
         }
     }
 
     VariantModifier.init({
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: false },
+        modifier_id: { type: DataTypes.BIGINT, allowNull: true, defaultValue: null },
         nick_name_ar: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
         nick_name_en: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
         sale_price: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0.0 },
