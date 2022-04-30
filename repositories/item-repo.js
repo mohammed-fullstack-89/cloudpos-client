@@ -2,11 +2,7 @@ let db = require('../models/index');
 class ItemService {
 
     async getQtyByStock(stockId) {
-        const priceTable = db.model('stock');
-        const newStock = await priceTable.findOne({
-            attributes: ['qty'],
-            where: { id: stockId }
-        });
+        const newStock = await db.model('stock').findByPk(stockId);
         return JSON.stringify(newStock.qty);
     }
 
@@ -217,7 +213,7 @@ class ItemService {
         try {
             const stockTable = db.model('stock');
             for (let i = 0; i < args.length; i++) {
-                stockTable.update({ qty: args[i].qty }, {
+                stockTable.update({ qty: args[i].new_qty }, {
                     where: { id: args[i].stock_id }
                 });
             }

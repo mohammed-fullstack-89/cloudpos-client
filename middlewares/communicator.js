@@ -59,7 +59,7 @@ class CommunicatorMiddleware {
     async updateStockQty(values) { await ipc.invoke('updateStockQty', JSON.parse(values)); }
 
     async getQtyByStockId(stockId) {
-        return await ipc.invoke('getQtyByStockId', JSON.parse(stockId));
+        return await ipc.invoke('getQtyByStockId', stockId);
     }
 
     async setInsuranceCompany(companies, companiesRatios, companiesTerms, companyRatiosRel, companyTermsRel) {
