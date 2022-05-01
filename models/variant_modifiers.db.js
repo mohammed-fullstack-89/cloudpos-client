@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'stock',
                 foreignKey: { field: 'variant_id', name: 'variant_id' },
                 sourceKey: 'modifier_id'
-              });
+            });
         }
     }
 

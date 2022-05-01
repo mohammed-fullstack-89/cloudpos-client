@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
 
-      this.hasOne(models.stock, {
+      this.hasMany(models.stock, {
         as: 'stock',
         foreignKey: {
           field: 'segment_id',
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     unit_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     parent_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     variant_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
-    location_id: { type: DataTypes.BIGINT, allowNull: false },
+    location_id: { type: DataTypes.BIGINT, allowNull: true },
     item_id: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true }
   }, {
     sequelize,
