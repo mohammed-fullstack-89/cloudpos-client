@@ -89,6 +89,11 @@ class CommunicatorMiddleware {
     }
 
     connectToLogger(identifier) { ipc.invoke('connectToLogger', identifier); }
+
+    async loadOrderTypes() { return await ipc.invoke('loadOrderTypes'); }
+
+    async saveOrderTypes(types) { await ipc.invoke('setOrderTypes', types); }
+
 }
 
 CommunicatorMiddleware.instance = null;

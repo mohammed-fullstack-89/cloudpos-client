@@ -161,6 +161,16 @@ class DbStore {
             const stockTable = require('../repositories/stock-repo');
             return await stockTable.getStocksByVariantId(args[0]);
         });
+
+        ipc.handle('setOrderTypes', async (event, ...args) => {
+            const orderTypesService = require('../repositories/order-types-repo');
+            await orderTypesService.setOrderTypes(args[0]);
+        });
+
+        ipc.handle('loadOrderTypes', async (event, ...args) => {
+            const orderTypesService = require('../repositories/order-types-repo');
+            return await orderTypesService.getOrderTypes();
+        });
     }
 }
 
