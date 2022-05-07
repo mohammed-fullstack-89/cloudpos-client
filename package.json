@@ -1,7 +1,7 @@
 {
   "name": "cloud-pos",
   "productName": "CloudPos",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
