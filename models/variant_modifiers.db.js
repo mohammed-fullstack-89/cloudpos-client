@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: false },
         modifier_id: { type: DataTypes.BIGINT, allowNull: true, defaultValue: null },
         nick_name_ar: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
-        nick_name_en: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
+        nick_name_en: { type: DataTypes.STRING, allowNull: true, defaultValue: '' },
         sale_price: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0.0 },
         measruing_unit: { type: DataTypes.ENUM('unit', 'weight'), allowNull: false, defaultValue: 'unit' },
         light_price: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0.0 },
