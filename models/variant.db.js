@@ -157,7 +157,8 @@ module.exports = (sequelize, DataTypes) => {
     is_modifier: { type: DataTypes.TINYINT, defaultValue: 0, allowNull: false },
     segment_qty: { type: DataTypes.FLOAT, defaultValue: 0.0, allowNull: true },
     parent: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
-    min_sale_price: { type: DataTypes.STRING, defaultValue: '0.000', allowNull: true }
+    min_sale_price: { type: DataTypes.STRING, defaultValue: '0.000', allowNull: true },
+    sequence: { type: DataTypes.BIGINT, defaultValue: 0, allowNull: false }
   },
     {
       sequelize,

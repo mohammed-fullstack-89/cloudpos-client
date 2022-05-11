@@ -43,6 +43,9 @@ class ItemService {
                     }]
                 }
             ],
+            order: [
+                ['sequence', 'ASC']
+            ],
             offset: offset,
             limit: limit
         });
@@ -64,6 +67,7 @@ class ItemService {
             return false;
         }
     }
+
     async searchBarcode(args) {
         try {
             const code = args[0];
