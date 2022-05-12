@@ -41,5 +41,12 @@ module.exports = {
         protocol: 'https',
         hostname: '188.166.63.221',
         pathname: '/staff'
+    },
+    production: {
+        production: true,
+        url: "https://app.rubikommpos.com",
+        protocol: 'https',
+        hostname: 'app.rubikommpos.com',
+        pathname: '/'
     }
 };
