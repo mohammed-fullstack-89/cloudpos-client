@@ -80,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(models.segment, {
         as: 'variant_segment',
-        foreignKey: { field: 'variant_id', name: 'variantId' }
+        foreignKey: { field: 'parent_id', name: 'parent_id' }
       });
 
       this.hasMany(models.serial, {
@@ -91,6 +91,12 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.variant_modifier, {
         as: 'variant_modifiers',
         foreignKey: { field: 'variant_id', name: 'variant_id' }
+      });
+
+      this.hasMany(models.stock, {
+        as: 'parent_stock',
+        foreignKey: { field: 'variant_id', name: 'variant_id' },
+        sourceKey: 'parent'
       });
     }
   }

@@ -26,9 +26,20 @@ class ItemService {
                 { model: db.model('size'), as: 'variant_size' },
                 { model: db.model('brand'), as: 'variant_brand' },
                 {
-                    model: db.model('segment'), as: 'variant_segment', include: [{
-                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
-                    }]
+                    model: db.model('segment'), as: 'variant_segment', include: [
+                        {
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                            include: [{ model: db.model('price'), as: 'variant_price' }]
+                        },
+                        {
+                            model: db.model('variant'), as: 'variant', required: false, include: [
+                                {
+                                    model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                                    include: [{ model: db.model('price'), as: 'variant_price' }]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
@@ -37,11 +48,14 @@ class ItemService {
                 { model: db.model('supplier'), as: 'item_suppliers' },
                 { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
                 {
-                    model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
-                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                        include: [{ model: db.model('price'), as: 'variant_price' }]
-                    }]
-                }
+                    model: db.model('variant_modifier'), as: 'variant_modifiers', include: [
+                        {
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                            include: [{ model: db.model('price'), as: 'variant_price' }]
+                        }
+                    ]
+                },
+                { model: db.model('stock'), as: 'parent_stock', where: { status: 1 }, include: [{ model: db.model('price'), as: 'variant_price' }], required: false }
             ],
             order: [
                 ['sequence', 'ASC']
@@ -216,11 +230,9 @@ class ItemService {
     async updateStock(args) {
         try {
             const stockTable = db.model('stock');
-            for (let i = 0; i < args.length; i++) {
-                stockTable.update({ qty: args[i].new_qty }, {
-                    where: { id: args[i].stock_id }
-                });
-            }
+            args.forEach(element => {
+                stockTable.decrement('qty', { by: element.qty, where: { id: element.stock_id } });
+            });
         } catch (error) {
             console.error("error " + error);
         }

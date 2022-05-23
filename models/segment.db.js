@@ -6,17 +6,24 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.variant, {
         as: 'variant_segment',
         foreignKey: {
-          field: 'variant_id', name: 'variantId'
+          field: 'parent_id', name: 'parent_id'
+        }
+      });
+
+      this.belongsTo(models.variant, {
+        as: 'variant',
+        foreignKey: {
+          field: 'variant_id', name: 'variant_id'
         }
       });
 
       this.hasMany(models.stock, {
         as: 'stock',
         foreignKey: {
-          field: 'segment_id',
-          name: 'segment_id'
+          field: 'segment_id', name: 'segment_id'
         }
       });
+
     }
   }
 
