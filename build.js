@@ -13,7 +13,7 @@ packager({
     arch: 'ia32',
     icon: 'assets/icons/cloudpos.ico',
     prune: true,
-    appVersion: "1.1.19",
+    appVersion: "1.1.20",
     win32metadata: {
         CompanyName: "Rubikomm",
         ProductName: "CloudPOS"
