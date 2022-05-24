@@ -61,13 +61,13 @@
   "author": "Rubikomm",
   "license": "MIT",
   "devDependencies": {
-    "devtron": "~1.4.0",
-    "electron": "~8.5.3",
-    "electron-builder": "~20.0.4",
-    "electron-packager": "~15.1.0",
-    "electron-rebuild": "~2.2.0",
-    "eslint": "~7.14.0",
-    "sequelize-cli": "~6.2.0"
+    "devtron": "^1.4.0",
+    "electron": "^8.5.3",
+    "electron-builder": "^20.0.4",
+    "electron-packager": "^15.1.0",
+    "electron-rebuild": "^2.2.0",
+    "eslint": "^7.14.0",
+    "sequelize-cli": "^6.2.0"
   },
   "dependencies": {
     "@thiagoelg/node-printer": "^0.5.3",
