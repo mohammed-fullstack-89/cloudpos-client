@@ -26,20 +26,10 @@ class ItemService {
                 { model: db.model('size'), as: 'variant_size' },
                 { model: db.model('brand'), as: 'variant_brand' },
                 {
-                    model: db.model('segment'), as: 'variant_segment', include: [
-                        {
-                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                            include: [{ model: db.model('price'), as: 'variant_price' }]
-                        },
-                        {
-                            model: db.model('variant'), as: 'variant', required: false, include: [
-                                {
-                                    model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                                    include: [{ model: db.model('price'), as: 'variant_price' }]
-                                }
-                            ]
-                        }
-                    ]
+                    model: db.model('variant'), as: 'variant_segment', include: [{
+                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                        include: [{ model: db.model('price'), as: 'variant_price' }]
+                    }]
                 },
                 { model: db.model('serial'), as: 'variant_serial' },
                 { model: db.model('tax'), as: 'variant_tax' },
@@ -110,8 +100,9 @@ class ItemService {
                         { model: db.model('size'), as: 'variant_size' },
                         { model: db.model('brand'), as: 'variant_brand' },
                         {
-                            model: db.model('segment'), as: 'variant_segment', include: [{
-                                model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false
+                            model: db.model('variant'), as: 'variant_segment', include: [{
+                                model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                                include: [{ model: db.model('price'), as: 'variant_price' }]
                             }]
                         },
                         { model: db.model('serial'), as: 'variant_serial' },
@@ -188,9 +179,10 @@ class ItemService {
                     { model: db.model('size'), as: 'variant_size' },
                     { model: db.model('brand'), as: 'variant_brand' },
                     {
-                        model: db.model('segment'), as: 'variant_segment', include: [
-                            { model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false }
-                        ]
+                        model: db.model('variant'), as: 'variant_segment', include: [{
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                            include: [{ model: db.model('price'), as: 'variant_price' }]
+                        }]
                     },
                     { model: db.model('serial'), as: 'variant_serial' },
                     { model: db.model('tax'), as: 'variant_tax' },
@@ -270,8 +262,9 @@ class ItemService {
                 { model: db.model('size'), as: 'variant_size' },
                 { model: db.model('brand'), as: 'variant_brand' },
                 {
-                    model: db.model('segment'), as: 'variant_segment', include: [{
-                        model: db.model('stock'), where: { status: 1 }, required: false, as: 'stock'
+                    model: db.model('variant'), as: 'variant_segment', include: [{
+                        model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                        include: [{ model: db.model('price'), as: 'variant_price' }]
                     }]
                 },
                 { model: db.model('serial'), as: 'variant_serial' },
@@ -302,7 +295,6 @@ class ItemService {
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
-            const segmentTable = db.model("segment");
             const serialTable = db.model("serial");
             const priceTable = db.model("price");
             const scaleTable = db.model("scale");
@@ -324,7 +316,6 @@ class ItemService {
                     await variantTable.destroy({ truncate: true });
                     await taxTable.destroy({ truncate: true });
                     await supplierTable.destroy({ truncate: true });
-                    await segmentTable.destroy({ truncate: true });
                     await serialTable.destroy({ truncate: true });
                     await priceTable.destroy({ truncate: true });
                     await itemAlternativeTable.destroy({ truncate: true, });
@@ -410,14 +401,6 @@ class ItemService {
                     }
                 } catch (error) {
                     console.log("suppliersList error : " + error);
-                }
-
-                try {
-                    if (segmantsList != [] && segmantsList != undefined) {
-                        await segmentTable.bulkCreate(segmantsList, { updateOnDuplicate: [...Object.keys(segmentTable.rawAttributes)] });
-                    }
-                } catch (error) {
-                    console.log("segmantsList error :" + error);
                 }
 
                 try {

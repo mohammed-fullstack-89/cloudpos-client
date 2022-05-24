@@ -18,13 +18,6 @@ module.exports = (sequelize, DataTypes) => {
                     field: 'price_id'
                 }
             });
-
-            this.belongsTo(models.segment, {
-                foreignKey: {
-                    field: 'segment_id',
-                    name: 'segment_id'
-                }
-            });
         }
     }
 

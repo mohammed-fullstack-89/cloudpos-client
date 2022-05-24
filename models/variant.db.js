@@ -78,9 +78,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: { field: 'item_id', name: 'item_id' }
       });
 
-      this.hasMany(models.segment, {
+      this.hasMany(models.variant, {
         as: 'variant_segment',
-        foreignKey: { field: 'parent_id', name: 'parent_id' }
+        foreignKey: { field: 'parent', name: 'parent' }
       });
 
       this.hasMany(models.serial, {
