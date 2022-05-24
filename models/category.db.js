@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     discount_value: { type: DataTypes.DOUBLE, defualtValue: null, allowNull: true },
     parent: { type: DataTypes.BIGINT, defualtValue: null, allowNull: true },
     printers: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
-    show_category_in_staff: { type: DataTypes.TINYINT, defualtValue: 0, allowNull: false }
+    show_category_in_staff: { type: DataTypes.TINYINT, defualtValue: 0, allowNull: false },
+    sequence: { type: DataTypes.BIGINT, defaultValue: 0, allowNull: true }
   }, {
     sequelize,
     underscored: true,

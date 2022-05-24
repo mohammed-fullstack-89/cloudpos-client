@@ -1,3 +1,4 @@
+const { orderBy } = require('lodash');
 let db = require('../models/index');
 class CategoriesService {
     async getCategories(parentId) {
@@ -7,7 +8,8 @@ class CategoriesService {
             where: {
                 parent: parentId == undefined || parentId === 0 ? null : parentId,
                 show_category_in_staff: 1
-            }
+            },
+            order: [['sequence', 'ASC']]
         });
         categories = JSON.stringify(categories);
         return categories;
