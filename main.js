@@ -15,7 +15,7 @@ app.on('ready', async _ => {
    windowManager.showSplash();
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
    await db.setup().then(() => {
-      tray = new Tray(path.join(__dirname, 'assets', 'logo', 'cloudpos.png'));
+      tray = new Tray(path.join(__dirname, 'assets', 'logo', 'rubikomm.png'));
       windowManager.initTray(tray);
       windowManager.createAppWindow();
       notificationService.showNotification('App is ready', 'app has successfully initiated');

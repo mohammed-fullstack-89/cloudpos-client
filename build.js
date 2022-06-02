@@ -11,7 +11,7 @@ packager({
     asar: true,
     platform: 'win32',
     arch: 'ia32',
-    icon: 'assets/icons/cloudpos.ico',
+    icon: 'assets/icons/rubikomm.ico',
     prune: true,
     appVersion: "1.1.20",
     win32metadata: {
