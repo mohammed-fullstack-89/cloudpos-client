@@ -9,7 +9,7 @@
 .app-status {
     font-size: large;
     font-family: 'Times New Roman', Times, serif;
-    color: rgb(22, 130, 157);
+    color: #0066b2;
     font-weight: 600;
 }
 
@@ -17,7 +17,7 @@
     margin: auto;
     border: 16px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 16px solid rgb(22, 130, 157);
+    border-top: 16px solid #0066b2;
     width: 50px;
     height: 50px;
     -webkit-animation: spin 2s linear infinite;
