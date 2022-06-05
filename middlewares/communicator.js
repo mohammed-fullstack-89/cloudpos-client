@@ -94,6 +94,10 @@ class CommunicatorMiddleware {
 
     async saveOrderTypes(types) { await ipc.invoke('setOrderTypes', types); }
 
+    async saveNotes(notes) { await ipc.invoke('saveNotes', notes); }
+
+    async getNoteByType(type) { return await ipc.invoke('getNoteByType', type); }
+
 }
 
 CommunicatorMiddleware.instance = null;
