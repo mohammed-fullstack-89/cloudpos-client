@@ -1,6 +1,9 @@
 {
   "name": "rubikomm-pos",
   "productName": "RubikommPOS",
+  "author": "Rubikomm <rubikomm@gmail.com>",
+  "homepage": "https://rubikomm.com",
+  "license": "MIT",
   "version": "1.1.21",
   "main": "main.js",
   "scripts": {
@@ -10,7 +13,8 @@
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",
-    "package:win": "electron-builder electron-builder --win --x64 portable"
+    "package:win": "electron-builder electron-builder --win --x64 portable",
+    "package:linux": "electron-builder electron-builder --linux deb"
   },
   "build": {
     "electronVersion": "8.5.3",
@@ -58,8 +62,6 @@
       "url": "http://server:5080/"
     }
   ],
-  "author": "Rubikomm",
-  "license": "MIT",
   "devDependencies": {
     "devtron": "^1.4.0",
     "electron": "^8.5.3",
