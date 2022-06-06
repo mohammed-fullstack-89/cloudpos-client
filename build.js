@@ -13,10 +13,10 @@ packager({
     arch: 'ia32',
     icon: 'assets/icons/rubikomm.ico',
     prune: true,
-    appVersion: "1.1.20",
+    appVersion: "1.1.21",
     win32metadata: {
         CompanyName: "Rubikomm",
-        ProductName: "CloudPOS"
+        ProductName: "RubikommPOS"
     },
     afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
         rebuild.rebuild({ buildPath, electronVersion, arch })
