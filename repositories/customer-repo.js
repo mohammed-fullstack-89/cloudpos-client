@@ -101,11 +101,13 @@ class CustomerService {
             const addresss_list = args[2];
             const tiers_list = args[3];
             const entity_rel_list = args[4];
+            const price_lists = args[5];
             let customerTable = db.model("customer");
             let addressesTable = db.model("address");
             let tiersTable = db.model("tier");
             let entitesTable = db.model("entity");
             let customerEntitesRelTable = db.model("customer_entity");
+            let priceList = db.model("price_list");
 
             try {
                 if (tiers_list != [] && tiers_list != undefined) {
@@ -150,6 +152,15 @@ class CustomerService {
                 }
             } catch (error) {
                 console.log("error destroy/bulkCreate customerEntitesRelTable" + error);
+            }
+
+            try {
+                if (price_lists != [] && price_lists != undefined) {
+                    await priceList.destroy({ truncate: true });
+                    await priceList.bulkCreate(price_lists);
+                }
+            } catch (error) {
+                console.log("error destroy/bulkCreate priceListTable" + error);
             }
         } catch (error) {
             console.log("error setCustomers: " + error);

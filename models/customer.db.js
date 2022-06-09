@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'customer_addresses'
       });
 
+      this.hasMany(models.price_list, {
+        foreignKey: 'price_list_id',
+        as: 'customer_price_list'
+      });
+
       this.belongsToMany(models.entity, {
         as: 'customer_entities',
         through: models.customer_entity,

@@ -113,7 +113,7 @@ module.exports = (sequelize, DataTypes) => {
     brand_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
     color_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
     size_id: { type: DataTypes.BIGINT, defaultValue: null, allowNull: true },
-    category_id: { type: DataTypes.BIGINT, defaultValue: null },
+    // category_id: { type: DataTypes.BIGINT, defaultValue: null },
     column: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     row: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
     shelf: { type: DataTypes.STRING, defualtValue: null, allowNull: true },
