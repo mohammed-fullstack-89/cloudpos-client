@@ -1,3 +1,5 @@
 module.exports = {
-    APPNAME: 'RubikommPOS'
+    APP_NAME: 'RubikommPOS',
+    APP_VERSION: '1.1.22',
+    APP_ICON_PATH: 'assets/icons/rubikomm.ico'
 };

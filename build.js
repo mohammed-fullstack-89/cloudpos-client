@@ -1,5 +1,6 @@
 const packager = require('electron-packager');
 const rebuild = require('electron-rebuild');
+const app_info = require('./commons');
 
 packager({
     buildPath: __dirname,
@@ -11,12 +12,12 @@ packager({
     asar: true,
     platform: 'win32',
     arch: 'ia32',
-    icon: 'assets/icons/rubikomm.ico',
+    icon: app_info.APP_ICON_PATH,
     prune: true,
-    appVersion: "1.1.21",
+    appVersion: app_info.APP_VERSION,
     win32metadata: {
         CompanyName: "Rubikomm",
-        ProductName: "RubikommPOS"
+        ProductName: app_info.APP_NAME
     },
     afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
         rebuild.rebuild({ buildPath, electronVersion, arch })

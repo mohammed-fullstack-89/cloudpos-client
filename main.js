@@ -2,7 +2,7 @@ const db = require('./models/index');
 const windowManager = require('./services/window-manager-service');
 const notificationService = require('./services/notification-service');
 const { app, BrowserWindow, Tray } = require('electron');
-const { APPNAME } = require('./commons');
+const { APP_NAME } = require('./commons');
 const path = require('path'); // import path module
 
 
@@ -11,7 +11,7 @@ app.disableHardwareAcceleration();
 app.whenReady().then(() => require('./services/index'));
 
 app.on('ready', async _ => {
-   app.setAppUserModelId(APPNAME);
+   app.setAppUserModelId(APP_NAME);
    windowManager.showSplash();
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
    await db.setup().then(() => {

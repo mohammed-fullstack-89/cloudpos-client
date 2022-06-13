@@ -1,12 +1,12 @@
 const { app, Notification } = require('electron');
-const commons = require('../commons');
+const app_info = require('../commons');
 class NotificationService {
 
     showNotification(messageTitle, messageBody) {
         const notificationPayload = {
             title: messageTitle,
             body: messageBody,
-            icon: __dirname + '/../assets/icons/rubikomm.ico'
+            icon: app_info.APP_ICON_PATH
         };
         app.whenReady().then(() => new Notification(notificationPayload).show());
     }

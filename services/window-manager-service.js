@@ -4,6 +4,8 @@ const enviroment = require('../enviroment');
 const customContextMenu = require('../components/menu/context_menu');
 const { app, BrowserWindow, Menu, dialog, shell, ipcMain } = require('electron');
 const utility = require('./utility-service');
+const app_info = require('../commons');
+
 class InitializerService {
 
     constructor() {
@@ -52,7 +54,7 @@ class InitializerService {
         ];
 
         const contextMenu = Menu.buildFromTemplate(trayMenu);
-        tray.setToolTip('RubikommPOS');
+        tray.setToolTip(app_info.APP_NAME);
         tray.setContextMenu(contextMenu);
     }
 
@@ -158,13 +160,19 @@ class InitializerService {
                 ]
             },
             {
-                label: 'help',
+                label: 'Help',
                 submenu: [
                     {
                         label: 'Remote Assistance',
                         click: () => shell.openExternal('https://download.anydesk.com/AnyDesk.exe')
                     }
                 ]
+            },
+            {
+                role: 'about',
+                submenu: [{
+                    label: `${app_info.APP_NAME} v${app_info.APP_VERSION}`
+                }]
             }
         ];
 
@@ -186,7 +194,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.production.url);
+        this.mainWindow.loadURL(enviroment.stagging.url);
         this.hideSplash();
     }
 
