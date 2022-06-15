@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'manufactruing_item',
                 foreignKey: { field: 'item_id', name: 'item_id' }
             });
+
+            this.hasMany(models.stock, {
+                as: 'stock',
+                foreignKey: { field: 'variant_id', name: 'variant_id' }
+            });
         }
     }
 

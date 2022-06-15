@@ -36,7 +36,14 @@ class ItemService {
                 { model: db.model('category'), as: 'variant_category', where: filter },
                 { model: db.model('category'), as: 'main_category', where: filter },
                 { model: db.model('supplier'), as: 'item_suppliers' },
-                { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                {
+                    model: db.model('itemManufacturing'), as: 'manufactruing_item', include: [
+                        {
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                            include: [{ model: db.model('price'), as: 'variant_price' }]
+                        }
+                    ]
+                },
                 {
                     model: db.model('variant_modifier'), as: 'variant_modifiers', include: [
                         {
@@ -109,7 +116,14 @@ class ItemService {
                         { model: db.model('tax'), as: 'variant_tax' },
                         { model: db.model('category'), as: 'variant_category' },
                         { model: db.model('supplier'), as: 'item_suppliers' },
-                        { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                        {
+                            model: db.model('itemManufacturing'), as: 'manufactruing_item', include: [
+                                {
+                                    model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                                    include: [{ model: db.model('price'), as: 'variant_price' }]
+                                }
+                            ]
+                        },
                         {
                             model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
                                 model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
@@ -188,7 +202,14 @@ class ItemService {
                     { model: db.model('tax'), as: 'variant_tax' },
                     { model: db.model('category'), as: 'variant_category' },
                     { model: db.model('supplier'), as: 'item_suppliers' },
-                    { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                    {
+                        model: db.model('itemManufacturing'), as: 'manufactruing_item', include: [
+                            {
+                                model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                                include: [{ model: db.model('price'), as: 'variant_price' }]
+                            }
+                        ]
+                    },
                     {
                         model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
                             model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
@@ -271,7 +292,15 @@ class ItemService {
                 { model: db.model('tax'), as: 'variant_tax' },
                 { model: db.model('category'), as: 'variant_category' },
                 { model: db.model('supplier'), as: 'item_suppliers' },
-                { model: db.model('itemManufacturing'), as: 'manufactruing_item' },
+                {
+                    model: db.model('itemManufacturing'), as: 'manufactruing_item',
+                    include: [
+                        {
+                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                            include: [{ model: db.model('price'), as: 'variant_price' }]
+                        }
+                    ]
+                },
                 {
                     model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
                         model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
