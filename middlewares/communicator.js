@@ -92,7 +92,7 @@ class CommunicatorMiddleware {
 
     async loadOrderTypes() { return await ipc.invoke('loadOrderTypes'); }
 
-    async saveOrderTypes(types) { await ipc.invoke('setOrderTypes', types); }
+    async saveOrderTypes(types, price_list) { await ipc.invoke('setOrderTypes', types, price_list); }
 
     async saveNotes(notes) { await ipc.invoke('saveNotes', notes); }
 
