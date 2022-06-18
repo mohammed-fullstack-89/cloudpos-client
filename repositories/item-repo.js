@@ -37,12 +37,7 @@ class ItemService {
                 { model: db.model('category'), as: 'main_category', where: filter },
                 { model: db.model('supplier'), as: 'item_suppliers' },
                 {
-                    model: db.model('itemManufacturing'), as: 'manufactruing_item', include: [
-                        {
-                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                            include: [{ model: db.model('price'), as: 'variant_price' }]
-                        }
-                    ]
+                    model: db.model('itemManufacturing'), as: 'manufactruing_item'
                 },
                 {
                     model: db.model('variant_modifier'), as: 'variant_modifiers', include: [
@@ -117,12 +112,7 @@ class ItemService {
                         { model: db.model('category'), as: 'variant_category' },
                         { model: db.model('supplier'), as: 'item_suppliers' },
                         {
-                            model: db.model('itemManufacturing'), as: 'manufactruing_item', include: [
-                                {
-                                    model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                                    include: [{ model: db.model('price'), as: 'variant_price' }]
-                                }
-                            ]
+                            model: db.model('itemManufacturing'), as: 'manufactruing_item'
                         },
                         {
                             model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
@@ -203,12 +193,7 @@ class ItemService {
                     { model: db.model('category'), as: 'variant_category' },
                     { model: db.model('supplier'), as: 'item_suppliers' },
                     {
-                        model: db.model('itemManufacturing'), as: 'manufactruing_item', include: [
-                            {
-                                model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                                include: [{ model: db.model('price'), as: 'variant_price' }]
-                            }
-                        ]
+                        model: db.model('itemManufacturing'), as: 'manufactruing_item'
                     },
                     {
                         model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
@@ -293,13 +278,13 @@ class ItemService {
                 { model: db.model('category'), as: 'variant_category' },
                 { model: db.model('supplier'), as: 'item_suppliers' },
                 {
-                    model: db.model('itemManufacturing'), as: 'manufactruing_item',
-                    include: [
-                        {
-                            model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
-                            include: [{ model: db.model('price'), as: 'variant_price' }]
-                        }
-                    ]
+                    model: db.model('itemManufacturing'), as: 'manufactruing_item'
+                    // include: [
+                    //     {
+                    //         model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
+                    //         include: [{ model: db.model('price'), as: 'variant_price' }]
+                    //     }
+                    // ]
                 },
                 {
                     model: db.model('variant_modifier'), as: 'variant_modifiers', include: [{
@@ -485,7 +470,7 @@ class ItemService {
                         await stockTable.bulkCreate(itemStockslist, { updateOnDuplicate: [...Object.keys(stockTable.rawAttributes)] });
                     }
                 } catch (error) {
-                    console.log("stockTable error :" + error);
+                    console.log(error);
                 }
 
                 try {

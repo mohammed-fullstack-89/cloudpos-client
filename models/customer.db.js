@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'customer_addresses'
       });
 
-      this.hasMany(models.price_list, {
-        foreignKey: 'price_list_id',
+      this.hasOne(models.price_list, {
+        foreignKey: 'customer_id',
         as: 'customer_price_list'
       });
 
