@@ -51,6 +51,23 @@
       "legalTrademarks": "Rubikomm",
       "publisherName": "Rubikomm"
     },
+    "linux": {
+      "target": [
+        {
+          "target": "deb",
+          "arch": "x64"
+        },
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "armv7l",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "Internet"
+    },
     "asar": true,
     "asarUnpack": [
       "node_modules/sqlite3/**/*"

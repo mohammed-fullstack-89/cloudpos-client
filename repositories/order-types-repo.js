@@ -3,21 +3,28 @@ let db = require('../models/index');
 class OrderTypesService {
     async getOrderTypes() {
         let typesTable = db.model('order_types');
-        const typesList = await typesTable.findAll({ include: { all: true } });
+        const typesList = await typesTable.findAll({ include: { all: true, nested: true } });
         return JSON.stringify(typesList) ?? [];
     }
 
     async setOrderTypes(typesList, pricesList) {
-        let typesTable = db.model('order_types');
-        await typesTable.bulkCreate(JSON.parse(typesList), { updateOnDuplicate: Object.keys(typesTable.rawAttributes) });
-
         try {
+
+            let typesTable = db.model('order_types');
+            let priceTable = db.model('price_list');
+            let variantPriceListTable = db.model('variant_price_list');
+
+            await priceTable.destroy({ truncate: true });
+            await typesTable.destroy({ truncate: true });
+            await variantPriceListTable.destroy({ truncate: true });
+
+
+            await typesTable.bulkCreate(JSON.parse(typesList));
             if (pricesList != [] && pricesList != undefined) {
-                let priceTable = db.model("price_list");
-                await priceTable.bulkCreate(JSON.parse(pricesList), { updateOnDuplicate: Object.keys(priceTable.rawAttributes) });
+                await priceTable.bulkCreate(JSON.parse(pricesList), { include: 'variant_price_lists' });
             }
         } catch (error) {
-            console.log("error bulkCreate priceListTable" + error);
+            console.log("error bulkCreate setOrdertypes " + error);
         }
     }
 }

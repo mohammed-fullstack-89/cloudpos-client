@@ -154,14 +154,14 @@ class CustomerService {
                 console.log("error destroy/bulkCreate customerEntitesRelTable" + error);
             }
 
-            try {
-                if (price_lists != [] && price_lists != undefined) {
-                    await priceList.destroy({ truncate: true });
-                    await priceList.bulkCreate(price_lists);
-                }
-            } catch (error) {
-                console.log("error destroy/bulkCreate priceListTable" + error);
-            }
+            // try {
+            //     if (price_lists != [] && price_lists != undefined) {
+            //         await priceList.destroy({ truncate: true });
+            //         await priceList.bulkCreate(price_lists);
+            //     }
+            // } catch (error) {
+            //     console.log("error destroy/bulkCreate priceListTable" + error);
+            // }
         } catch (error) {
             console.log("error setCustomers: " + error);
         }

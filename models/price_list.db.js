@@ -5,24 +5,23 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             this.belongsTo(models.customer, {
                 foreignKey: { field: 'customer_id', name: 'customer_id' },
-                as: 'customer_id'
+                as: 'customer_price_list'
             });
 
             this.belongsTo(models.order_types, {
                 foreignKey: { field: 'order_type_id', name: 'order_type_id' },
-                as: 'order_type_id'
+                as: 'order_type_price_list'
             });
 
             this.hasMany(models.variant_price_list, {
                 foreignKey: { field: 'price_list_id', name: 'price_list_id' },
-                as: 'variant_price_list',
-                sourceKey: 'price_list_id'
+                as: 'variant_price_lists'
             });
         }
     }
 
     PriceList.init({
-        id: { type: DataTypes.BIGINT, allowNull: false, primaryKey: true, autoIncrement: false },
+        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         price_list_id: { type: DataTypes.BIGINT, allowNull: false }
     }, {
         sequelize,
