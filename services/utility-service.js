@@ -7,8 +7,8 @@ class UtilityService {
     constructor() {
         this.code = "";
         this.lastKeyTime = Date.now();
-        ipcMain.handle('playSound', (event, args) => this.playSound(args));
-        ipcMain.handle('connectToLogger', (event, args) => this.connectToLogger(args));
+        ipcMain.on('playSound', (event, args) => this.playSound(args));
+        ipcMain.on('connectToLogger', (event, args) => this.connectToLogger(args));
         this.item_service = require('../repositories/item-repo');
     }
 
