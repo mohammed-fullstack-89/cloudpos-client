@@ -24,7 +24,8 @@ module.exports = {
             webgl: true,
             webSecurity: false,
             nodeIntegrationInWorker: true,
-            preload: __dirname + '/../renderer.js'
+            preload: __dirname + '/../renderer.js',
+            contextIsolation: false
         }
     }
-}
+};

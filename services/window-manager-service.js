@@ -13,7 +13,6 @@ class InitializerService {
         this.mainWindow = null;
         this.settingsWindow = null;
         app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
-
         ipcMain.on('closeSettingsWindow', (event, ...args) => this.closeSettingsWindow());
     }
 
@@ -210,10 +209,12 @@ class InitializerService {
             maxWidth: 200,
             modal: true,
             useContentSize: true,
+            center: true,
             title: "Settings",
             webPreferences: {
                 devTools: true,
-                nodeIntegration: true
+                nodeIntegration: true,
+                contextIsolation: false
             }
         });
 

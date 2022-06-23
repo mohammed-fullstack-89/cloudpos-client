@@ -14,7 +14,7 @@ class appStore {
             event.returnValue = this.data;
         });
 
-        ipcMain.on('setlocalSettings', (event, ...args) => {
+        ipcMain.handle('setlocalSettings', (event, ...args) => {
             this.setValue(args[0], args[1]);
         });
     }

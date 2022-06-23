@@ -7,18 +7,8 @@ class UtilityService {
     constructor() {
         this.code = "";
         this.lastKeyTime = Date.now();
-        ipcMain.on('playSound', (event, args) => this.playSound(args));
-        ipcMain.on('connectToLogger', (event, args) => this.connectToLogger(args));
+        ipcMain.handle('playSound', (event, args) => this.playSound(args));
         this.item_service = require('../repositories/item-repo');
-    }
-
-    connectToLogger(args) {
-        const identifier = JSON.parse(args);
-        if (identifier && identifier.code) {
-            const os = require('os');
-            const computerName = os.hostname();
-            const userInfo = os.userInfo();
-        }
     }
 
     playSound(type) {

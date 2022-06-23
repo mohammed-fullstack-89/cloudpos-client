@@ -5,7 +5,7 @@ const ipc = electron.ipcMain;
 class DbStore {
     constructor() {
 
-        ipc.on('setCategories', async (event, args) => {
+        ipc.handle('setCategories', async (event, args) => {
             const categoryService = require('../repositories/category-repo');
             await categoryService.setCategories(args);
             event.returnValue = "Done";

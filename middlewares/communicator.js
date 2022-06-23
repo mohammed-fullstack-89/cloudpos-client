@@ -1,8 +1,8 @@
-const ipc = require('electron').ipcRenderer;
+const { ipcRenderer: ipc } = require('electron');
 
 class CommunicatorMiddleware {
 
-    setCategories(categoriesList, force) { ipc.sendSync('setCategories', categoriesList, force); }
+    setCategories(categoriesList, force) { ipc.invoke('setCategories', categoriesList, force); }
 
     async getCategories(parentId) { return await ipc.invoke('getCategories', parentId); }
 
@@ -20,7 +20,7 @@ class CommunicatorMiddleware {
 
     async getUserByCode(code) { return ipc.invoke('getUserByCode', code); }
 
-    async playSound(type) { await ipc.invoke('playSound', type); }
+    playSound(type) { ipc.invoke('playSound', type); }
 
     async searchCustomers(val, offset, limit) {
         return await ipc.invoke('searchCustomers', val, offset, limit);

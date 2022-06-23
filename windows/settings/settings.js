@@ -1,6 +1,5 @@
 
-const ipcRenderer = require('electron').ipcRenderer;
-const printers = ipcRenderer.sendSync("getPrinters");
+const { ipcRenderer } = require('electron');
 
 let activeMenuItemElement = null;
 let activeContentContainerElement = null;
@@ -35,7 +34,7 @@ function showContentRelated(element, contentToShow) {
 }
 
 function savePreferances() {
-    const localSettings = ipcRenderer.sendSync("getlocalSettings");
+    const localSettings = ipcRenderer.sendSync('getlocalSettings');
     localSettings.mainPrinter = (document.getElementById('main-printer') == null || document.getElementById('main-printer').value == null || document.getElementById('main-printer').value == undefined || document.getElementById('main-printer').value == 'undefined' || document.getElementById('main-printer').value == '' ? '--choose Printer--' : document.getElementById('main-printer').value);
     localSettings.orderPrinter1 = document.getElementById('printer1').value;
     localSettings.orderPrinter2 = document.getElementById('printer2').value;
@@ -44,11 +43,11 @@ function savePreferances() {
     localSettings.orderPrinter5 = document.getElementById('printer5').value;
     localSettings.orderPrinter6 = document.getElementById('printer6').value;
     localSettings.paperType = document.getElementById('paper-type').value;
-    Object.keys(localSettings).forEach(setting => ipcRenderer.send('setlocalSettings', setting, localSettings[setting]));
+    Object.keys(localSettings).forEach(setting => ipcRenderer.invoke('setlocalSettings', setting, localSettings[setting]));
 }
 
 function loadSelectedSettings() {
-    const localSettings = ipcRenderer.sendSync("getlocalSettings");
+    const localSettings = ipcRenderer.sendSync('getlocalSettings');
     document.getElementById('main-printer').value = localSettings.mainPrinter;
     document.getElementById('paper-type').value = localSettings.paperType;
     document.getElementById('printer1').value = localSettings.orderPrinter1;
@@ -60,6 +59,7 @@ function loadSelectedSettings() {
 }
 
 function getPrinters(selectName) {
+    const printers = ipcRenderer.sendSync('getPrinters');
     const sel = document.getElementById(selectName);
     const defaultopt = document.createElement('option');
     defaultopt.appendChild(document.createTextNode("--choose printer--"));

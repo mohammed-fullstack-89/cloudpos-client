@@ -9,15 +9,15 @@ const { PosPrinter } = require('electron-pos-printer');
 class PrintHelper {
 
     constructor() {
-        ipcMain.on('printHtmlDocument', (event, ...args) => this.printHtmlDocument(args[0], args[1]));
+        ipcMain.handle('printHtmlDocument', (event, ...args) => this.printHtmlDocument(args[0], args[1]));
 
-        ipcMain.on('printOrderReceipt', (event, ...args) => this.printOrderHtml(args[0], args[1], args[2], args[3]));
+        ipcMain.handle('printOrderReceipt', (event, ...args) => this.printOrderHtml(args[0], args[1], args[2], args[3]));
 
-        ipcMain.on('getPrinters', (event, ...args) => event.returnValue = electron.webContents.getFocusedWebContents().getPrinters());
+        ipcMain.on('getPrinters', (event, ...args) => electron.webContents.getFocusedWebContents().getPrintersAsync().then(printers => event.returnValue = printers));
 
-        ipcMain.on('openDrawer', (event, ...args) => this.openDrawer());
+        ipcMain.handle('openDrawer', (event, ...args) => this.openDrawer());
 
-        ipcMain.on('openPrintersSettings', (event, ...args) => {
+        ipcMain.handle('openPrintersSettings', (event, ...args) => {
             return windowManager.createSettingsWindow();
         });
     }
@@ -126,7 +126,7 @@ class PrintHelper {
                 {
                     type: 'text',
                     value: html,
-                    css: { "font-weight": "normal", "font-size": "13px", "padding": "0", "margin": "0" }       
+                    css: { "font-weight": "normal", "font-size": "13px", "padding": "0", "margin": "0" }
                 }
             ];
 

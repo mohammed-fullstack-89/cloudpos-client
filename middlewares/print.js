@@ -4,19 +4,19 @@ const ipc = electron.ipcRenderer;
 class PrintMiddleware {
 
     printHtmlDocument(html, copies) {
-        ipc.send("printHtmlDocument", html, copies);
+        ipc.invoke("printHtmlDocument", html, copies);
     }
 
     printKitchenReceipt(html, json_str, printer_id, copies) {
-        ipc.send("printOrderReceipt", html, json_str, printer_id, copies);
+        ipc.invoke("printOrderReceipt", html, json_str, printer_id, copies);
     }
 
     openDrawer() {
-        ipc.send("openDrawer");
+        ipc.invoke("openDrawer");
     }
 
     printersSettings() {
-        ipc.send("openPrintersSettings");
+        ipc.invoke("openPrintersSettings");
     }
 }
 
