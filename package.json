@@ -16,8 +16,8 @@
     "init-sequelize": "sequelize-cli init",
     "reset-db": "sequelize-cli db:migrate:undo:all",
     "migrate": "sequelize-cli db:migrate",
-    "package:win": "electron-builder electron-builder --win --x64 portable",
-    "package:linux": "electron-builder electron-builder --linux deb"
+    "package:win": "electron-builder --win --x64 portable",
+    "package:linux": "electron-builder --linux deb"
   },
   "build": {
     "appId": "com.rubikomm.pos",
