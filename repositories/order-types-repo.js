@@ -21,7 +21,7 @@ class OrderTypesService {
 
             await typesTable.bulkCreate(JSON.parse(typesList));
             if (pricesList != [] && pricesList != undefined) {
-                await priceTable.bulkCreate(JSON.parse(pricesList), { include: 'variant_price_lists', updateOnDuplicate: Object.keys(typesTable.rawAttributes) });
+                await priceTable.bulkCreate(JSON.parse(pricesList), { include: 'variant_price_lists', updateOnDuplicate: Object.keys(priceTable.rawAttributes) });
             }
         } catch (error) {
             console.log("error bulkCreate setOrdertypes " + error);
