@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     VariantPriceList.init({
-        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
+        id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: false },
         variant_id: { type: DataTypes.BIGINT, allowNull: false },
         price: { type: DataTypes.FLOAT, defualtValue: 0, allowNull: false }
     }, {
