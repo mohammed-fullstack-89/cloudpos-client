@@ -6,8 +6,8 @@ class CommunicatorMiddleware {
 
     async getCategories(parentId) { return await ipc.invoke('getCategories', parentId); }
 
-    async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list, prices_list) {
-        await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list), JSON.parse(prices_list));
+    async setCustomers(customersList, entites_list, addresss_list, tiers_list, entity_rel_list, prices_list, variant_price_list) {
+        await ipc.invoke('setCustomers', JSON.parse(customersList), JSON.parse(entites_list), JSON.parse(addresss_list), JSON.parse(tiers_list), JSON.parse(entity_rel_list), JSON.parse(prices_list), JSON.parse(variant_price_list));
     }
 
     async saveCustomer(customer, addressesList, customerEntitiesRel, customerId) {
@@ -92,7 +92,7 @@ class CommunicatorMiddleware {
 
     async loadOrderTypes() { return await ipc.invoke('loadOrderTypes'); }
 
-    async saveOrderTypes(types, price_list) { await ipc.invoke('setOrderTypes', types, price_list); }
+    async saveOrderTypes(types, price_list, variant_price_list) { await ipc.invoke('setOrderTypes', types, price_list, variant_price_list); }
 
     async saveNotes(notes) { await ipc.invoke('saveNotes', notes); }
 

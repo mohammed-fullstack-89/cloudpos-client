@@ -7,7 +7,7 @@ class OrderTypesService {
         return JSON.stringify(typesList) ?? [];
     }
 
-    async setOrderTypes(typesList, pricesList) {
+    async setOrderTypes(typesList, pricesList, variantPriceList) {
         try {
 
             let typesTable = db.model('order_types');
@@ -18,10 +18,11 @@ class OrderTypesService {
             await typesTable.destroy({ truncate: true });
             await variantPriceListTable.destroy({ truncate: true });
 
-
             await typesTable.bulkCreate(JSON.parse(typesList));
-            if (pricesList != [] && pricesList != undefined) {
-                await priceTable.bulkCreate(JSON.parse(pricesList), { include: 'variant_price_lists', updateOnDuplicate: Object.keys(priceTable.rawAttributes) });
+
+            if (pricesList != [] && pricesList != undefined && variantPriceList != [] && variantPriceList != undefined) {
+                await priceTable.bulkCreate(JSON.parse(pricesList), { updateOnDuplicate: Object.keys(priceTable.rawAttributes) });
+                await variantPriceListTable.bulkCreate(JSON.parse(variantPriceList), { updateOnDuplicate: Object.keys(variantPriceListTable.rawAttributes) });
             }
         } catch (error) {
             console.log("error bulkCreate setOrdertypes " + error);

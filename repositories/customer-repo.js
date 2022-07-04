@@ -102,12 +102,14 @@ class CustomerService {
             const tiers_list = args[3];
             const entity_rel_list = args[4];
             const price_lists = args[5];
+            const variant_price_list = args[6];
             let customerTable = db.model("customer");
             let addressesTable = db.model("address");
             let tiersTable = db.model("tier");
             let entitesTable = db.model("entity");
             let customerEntitesRelTable = db.model("customer_entity");
-            let priceList = db.model("price_list");
+            let priceListTable = db.model("price_list");
+            let variantPriceList = db.model("variant_price_list");
 
             try {
                 if (tiers_list != [] && tiers_list != undefined) {
@@ -156,10 +158,18 @@ class CustomerService {
 
             try {
                 if (price_lists != [] && price_lists != undefined) {
-                    await priceList.bulkCreate(price_lists, { include: 'variant_price_lists', updateOnDuplicate: Object.keys(priceTable.rawAttributes) });
+                    await priceListTable.bulkCreate(price_lists, { updateOnDuplicate: Object.keys(priceListTable.rawAttributes) });
                 }
             } catch (error) {
                 console.log("error destroy/bulkCreate priceListTable", error);
+            }
+
+            try {
+                if (variant_price_list != [] && variant_price_list != undefined) {
+                    await variantPriceList.bulkCreate(variant_price_list, { updateOnDuplicate: Object.keys(variantPriceList.rawAttributes) });
+                }
+            } catch (error) {
+                console.log("error destroy/bulkCreate variantPriceListTable", error);
             }
         } catch (error) {
             console.log("error setCustomers: " + error);

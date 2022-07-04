@@ -164,7 +164,7 @@ class DbStore {
 
         ipc.handle('setOrderTypes', async (event, ...args) => {
             const orderTypesService = require('../repositories/order-types-repo');
-            await orderTypesService.setOrderTypes(args[0], args[1]);
+            await orderTypesService.setOrderTypes(args[0], args[1], args[2]);
         });
 
         ipc.handle('loadOrderTypes', async (event, ...args) => {
