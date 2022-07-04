@@ -156,7 +156,7 @@ class CustomerService {
 
             try {
                 if (price_lists != [] && price_lists != undefined) {
-                    await priceList.bulkCreate(price_lists, { include: { all: true, nested: true }, updateOnDuplicate: Object.keys(priceList.rawAttributes) });
+                    await priceList.bulkCreate(price_lists, { include: 'variant_price_lists', updateOnDuplicate: Object.keys(priceTable.rawAttributes) });
                 }
             } catch (error) {
                 console.log("error destroy/bulkCreate priceListTable", error);
