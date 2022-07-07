@@ -53,24 +53,24 @@ class PrintHelper {
         const printWindow = new BrowserWindow({
             autoHideMenuBar: true,
             center: true,
-            closable: true,
+            closable: false,
             enableLargerThanScreen: true,
-            focusable: false,
-            fullscreen: true,
-            fullscreenable: true,
+            focusable: true,
+            fullscreen: false,
+            fullscreenable: false,
             hasShadow: false,
-            kiosk: true,
+            kiosk: false,
             maximizable: false,
             minimizable: false,
-            modal: true,
+            modal: false,
             movable: false,
             opacity: 1.0,
             resizable: false,
             show: false,
-            simpleFullscreen: true,
+            simpleFullscreen: false,
             frame: false,
             thickFrame: false,
-            zoomToPageWidth: false
+            zoomToPageWidth: true
         });
         printWindow.loadURL("data:text/html;charset=utf-8," + html);
 
