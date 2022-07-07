@@ -141,7 +141,7 @@ class PrintHelper {
             };
 
             PosPrinter.print(posPrinterData, posPrinterOptions).then(result => notificationService.showNotification('printPosPrinter printing:', result)
-            ).catch(error => notificationService.showNotification('printPosPrinter error:', error));
+            ).catch(error => notificationService.showNotification(`printPosPrinter error: ${error}`));
         } catch (error) {
             console.log(`printPosPrinter error:  ${error}`);
         }
