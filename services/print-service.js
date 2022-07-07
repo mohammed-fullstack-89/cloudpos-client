@@ -4,7 +4,7 @@ const appStore = require('./store-service');
 const windowManager = require('./window-manager-service');
 const notificationService = require('./notification-service');
 const printer = require('@thiagoelg/node-printer');
-const { PosPrinter } = require('electron-pos-printer');
+const { PosPrinter } = require('modified-electron-pos-printer');
 
 class PrintHelper {
 
