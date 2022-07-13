@@ -46,7 +46,8 @@ class PrintHelper {
             notificationService.showNotification(`order printer not set yet !!!', 'order printer not selected, please make sure you selected order printer from settings window.`);
             return;
         }
-        this.printPosPrinter(html, json_str, copies, orderPrinter);
+        this.printWebContentHTML(html, copies, orderPrinter);
+        // this.printPosPrinter(html, json_str, copies, orderPrinter);
     }
 
     printWebContentHTML(html, copies, printerName) {
