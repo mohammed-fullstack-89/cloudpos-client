@@ -14,8 +14,9 @@ module.exports = (sequelize, DataTypes) => {
             });
 
             this.hasMany(models.variant_price_list, {
-                foreignKey: { field: 'price_list_id', name: 'price_list_id' },
-                as: 'variant_price_lists'
+                foreignKey: { field: 'price_list_id', name: 'price_list_id'},
+                as: 'variant_price_lists',
+                onDelete: 'CASCADE'
             });
         }
     }

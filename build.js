@@ -4,7 +4,7 @@ const app_info = require('./commons');
 
 packager({
     buildPath: __dirname,
-    electronVersion: '17.4.8',
+    electronVersion: '11.5.0',
     version: '1.1.0',
     buildVersion: '16',
     dir: __dirname,

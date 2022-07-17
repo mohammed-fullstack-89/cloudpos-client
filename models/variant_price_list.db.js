@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             this.belongsTo(models.price_list, {
                 foreignKey: { field: 'price_list_id', name: 'price_list_id' },
-                as: 'variant_price_lists'
+                as: 'variant_price_lists',
+                onDelete: 'CASCADE'
             });
         }
     }

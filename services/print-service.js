@@ -4,7 +4,7 @@ const appStore = require('./store-service');
 const windowManager = require('./window-manager-service');
 const notificationService = require('./notification-service');
 const printer = require('@thiagoelg/node-printer');
-const { PosPrinter } = require('modified-electron-pos-printer');
+const { PosPrinter } = require('electron-pos-printer');
 
 class PrintHelper {
 
@@ -46,8 +46,7 @@ class PrintHelper {
             notificationService.showNotification(`order printer not set yet !!!', 'order printer not selected, please make sure you selected order printer from settings window.`);
             return;
         }
-        this.printWebContentHTML(html, copies, orderPrinter);
-        // this.printPosPrinter(html, json_str, copies, orderPrinter);
+        this.printPosPrinter(html, json_str, copies, orderPrinter);
     }
 
     printWebContentHTML(html, copies, printerName) {
