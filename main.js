@@ -85,9 +85,20 @@ app.on('ready', async _ => {
 
 });
 
-app.on('window-all-closed', () => {
+app.on('closed', () => {
    db.close();
    app.quit();
+});
+
+app.on('window-all-closed', () => {
+   app.quit();
+});
+
+app.on('window-all-closed', () => {
+   if (process.platform !== 'darwin') {
+      db.close();
+      app.quit();
+   }
 });
 
 app.on('activate', () => {
