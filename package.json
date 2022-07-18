@@ -75,12 +75,6 @@
       "node_modules/sqlite3/**/*"
     ]
   },
-  "publish": [
-    {
-      "provider": "generic",
-      "url": "http://server:5080/"
-    }
-  ],
   "devDependencies": {
     "devtron": "^1.4.0",
     "electron": "^11.5.0",
@@ -95,6 +89,7 @@
     "bufferutil": "^4.0.6",
     "electron-pos-printer": "^1.2.4",
     "electron-root-path": "^1.0.16",
+    "fetch": "^1.1.0",
     "jimp": "^0.16.1",
     "lodash": "^4.17.21",
     "sequelize": "^6.21.3",

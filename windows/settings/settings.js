@@ -1,5 +1,6 @@
 
 const { ipcRenderer } = require('electron');
+const printers = ipcRenderer.sendSync('getPrinters');
 
 let activeMenuItemElement = null;
 let activeContentContainerElement = null;
@@ -59,7 +60,6 @@ function loadSelectedSettings() {
 }
 
 function getPrinters(selectName) {
-    const printers = ipcRenderer.sendSync('getPrinters');
     const sel = document.getElementById(selectName);
     const defaultopt = document.createElement('option');
     defaultopt.appendChild(document.createTextNode("--choose printer--"));

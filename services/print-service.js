@@ -13,7 +13,8 @@ class PrintHelper {
 
         ipcMain.handle('printOrderReceipt', (event, ...args) => this.printOrderHtml(args[0], args[1], args[2], args[3]));
 
-        ipcMain.on('getPrinters', (event, ...args) => electron.webContents.getFocusedWebContents().getPrintersAsync().then(printers => event.returnValue = printers));
+        ipcMain.on('getPrinters', (event, ...args) => { event.returnValue = electron.webContents.getFocusedWebContents().getPrinters();}); 
+        //Async().then(printers => event.returnValue = printers));
 
         ipcMain.handle('openDrawer', (event, ...args) => this.openDrawer());
 

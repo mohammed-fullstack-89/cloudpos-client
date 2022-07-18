@@ -193,7 +193,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.stagging.url);
+        this.mainWindow.loadURL(enviroment.development.url);
         this.hideSplash();
     }
 
@@ -233,7 +233,7 @@ class InitializerService {
     }
 
     hideSplash() {
-        if (this.splash != null && this.splash.isVisible()) {
+        if (this.splash && this.splash != null && this.splash.isVisible()) {
             this.splash.close();
             this.splash = null;
         }
@@ -248,13 +248,18 @@ class InitializerService {
                 paintWhenInitiallyHidden: true,
                 webPreferences: {
                     nodeIntegration: false,
-                    devTools: true
+                    devTools: true,
+                    contextIsolation: false
                 }
             }
         );
         this.splash.removeMenu();
         this.splash.menu = null;
         this.splash.loadFile(path.dirname(__dirname) + '/windows/loading/loading.html');
+    }
+
+    showUpdater() {
+        this.splash.loadFile(path.dirname(__dirname) + '/windows/updating/updating.html');
     }
 }
 

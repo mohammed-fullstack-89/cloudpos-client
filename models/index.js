@@ -52,7 +52,7 @@ class DbManager {
 
   Seq() { return this.db.Sequelize; }
 
-  close() { this.db.sequelize.close(); }
+  close() { if(this.db.sequelize) this.db.sequelize.close(); }
 }
 
 DbManager.instance = null;
