@@ -63,14 +63,14 @@ app.on('ready', async _ => {
 
    notificationService.showNotification('Check for update', 'Checkking for new update.....');
 
-   // const updateAvailable = await checkForUpdate();
+   const updateAvailable = await checkForUpdate();
 
-   // if (updateAvailable) {
-   //    windowManager.showUpdater();
-   //    notificationService.showNotification('New update available', 'downloading new update.....');
-   //    await downloadFile(updateAvailable, './update.exe');
-   //    app.quit();
-   // }
+   if (updateAvailable) {
+      windowManager.showUpdater();
+      notificationService.showNotification('New update available', 'downloading new update.....');
+      await downloadFile(updateAvailable, app.getAppPath() + '/update.exe');
+      app.quit();
+   }
 
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
    db.setup().then(() => {
