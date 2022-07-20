@@ -7,6 +7,7 @@ const path = require('path'); // import path module
 const { fetchUrl } = require('fetch');
 const fs = require('fs');
 const http = require('http');
+const enviroment = require('./enviroment');
 
 
 let tray;
@@ -18,7 +19,7 @@ app.whenReady().then(() => require('./services/index'));
 const checkForUpdate = async () => {
    return new Promise((resolve, reject) => {
       try {
-         fetchUrl("http://167.71.72.20/superadmin/public/checkFileUpdate/exe", (error, meta, body) => {
+         fetchUrl(enviroment.stagging.update_url, (error, meta, body) => {
             const response = JSON.parse(body.toString());
             if (response.name > APP_VERSION) {
                resolve(response.url);
@@ -68,7 +69,7 @@ app.on('ready', async _ => {
    if (updateAvailable) {
       windowManager.showUpdater();
       notificationService.showNotification('New update available', 'downloading new update.....');
-      await downloadFile(updateAvailable, app.getAppPath() + '/update.exe');
+      await downloadFile(updateAvailable, 'update.exe');
       app.quit();
    }
 
