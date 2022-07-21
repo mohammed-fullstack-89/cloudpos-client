@@ -69,7 +69,7 @@ app.on('ready', async _ => {
    if (updateAvailable) {
       windowManager.showUpdater();
       notificationService.showNotification('New update available', 'downloading new update.....');
-      await downloadFile(updateAvailable,path.join(app.getPath("downloads"),  'update.exe'));
+      await downloadFile(updateAvailable,'update.exe');
       app.hideSplash();
    }
 
