@@ -70,7 +70,7 @@ app.on('ready', async _ => {
       windowManager.showUpdater();
       notificationService.showNotification('New update available', 'downloading new update.....');
       await downloadFile(updateAvailable,path.join(app.getPath("downloads"),  'update.exe'));
-      app.quit();
+      app.hideSplash();
    }
 
    notificationService.showNotification('App Initiating', 'app is loading important data ...');
