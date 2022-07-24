@@ -19,7 +19,7 @@ app.whenReady().then(() => require('./services/index'));
 const checkForUpdate = async () => {
    return new Promise((resolve, reject) => {
       try {
-         fetchUrl(enviroment.stagging.update_url, (error, meta, body) => {
+         fetchUrl(enviroment.production.update_url, (error, meta, body) => {
             const response = JSON.parse(body.toString());
             if (response.name > APP_VERSION) {
                resolve(response.url);
