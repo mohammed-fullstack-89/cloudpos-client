@@ -141,9 +141,6 @@ class InitializerService {
                     },
                     {
                         role: 'togglefullscreen'
-                    },
-                    {
-                        role: 'toggledevtools'
                     }
                 ]
             },
@@ -193,7 +190,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.stagging.url);
+        this.mainWindow.loadURL(enviroment.production.url);
         this.hideSplash();
     }
 
@@ -212,7 +209,7 @@ class InitializerService {
             center: true,
             title: "Settings",
             webPreferences: {
-                devTools: true,
+                devTools: false,
                 nodeIntegration: true,
                 contextIsolation: false
             }
@@ -248,7 +245,7 @@ class InitializerService {
                 paintWhenInitiallyHidden: true,
                 webPreferences: {
                     nodeIntegration: false,
-                    devTools: true,
+                    devTools: false,
                     contextIsolation: false
                 }
             }
