@@ -38,7 +38,7 @@ class UtilityService {
                             const trimmedCode = codeWithoutStart.slice(0, codeWithoutStart.length - end);
                             BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.getItemFromScale(${JSON.stringify(scale)}, ${JSON.stringify(trimmedCode)}).then((item) => { barcode(item, ${JSON.stringify(this.code)}) }); `);
                         } else {
-                            BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchItems('barcode+serial', ${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems,${JSON.stringify(this.code)}) }); `);
+                            BrowserWindow.getFocusedWindow().webContents.executeJavaScript(`obj.searchBarcode(${JSON.stringify(this.code)}).then((searchedItems) => { barcode(searchedItems,${JSON.stringify(this.code)}) }); `);
                         }
                         this.code = "";
                     }

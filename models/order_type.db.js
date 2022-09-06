@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         name_ar: { type: DataTypes.STRING, allowNull: true, defaultValue: '' },
         name_en: { type: DataTypes.STRING, allowNull: true, defaultValue: '' },
-        is_order: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false }
+        is_order: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+        service_percentage: { type: DataTypes.INT, allowNull: false, defaultValue: 0 }
     }, {
         sequelize,
         modelName: 'order_types',
