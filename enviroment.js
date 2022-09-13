@@ -10,11 +10,11 @@ module.exports = {
     },
     stagging: {
         production: false,
-        url: "https://167.71.72.20/staff",
+        url: "http://167.71.72.20/staff",
         protocol: 'http',
         hostname: '167.71.72.20',
         pathname: '/staff',
-        update_url: 'https://167.71.72.20/superadmin/public/checkFileUpdate/exe'
+        update_url: 'http://167.71.72.20/superadmin/public/checkFileUpdate/exe'
     },
     production: {
         production: true,
