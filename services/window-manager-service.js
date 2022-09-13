@@ -140,6 +140,9 @@ class InitializerService {
                         type: 'separator'
                     },
                     {
+                        role: 'toggledevtools'
+                    },
+                    {
                         role: 'togglefullscreen'
                     }
                 ]
