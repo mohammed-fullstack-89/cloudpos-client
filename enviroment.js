@@ -2,11 +2,11 @@
 module.exports = {
     development: {
         production: false,
-        url: "http://localhost:4200",
+        url: "http://192.168.6.215:4200",
         protocol: 'http',
-        hostname: 'localhost',
+        hostname: '192.168.6.215',
         pathname: '/',
-        update_url: 'http://167.71.72.20/superadmin/public/checkFileUpdate/exe'
+        update_url: 'http://192.168.6.215/superadmin/public/checkFileUpdate/exe'
     },
     stagging: {
         production: false,
