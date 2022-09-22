@@ -181,6 +181,16 @@ class DbStore {
             const notesService = require('../repositories/notes-repo');
             return await notesService.getNoteByType(args[0]);
         });
+
+        ipc.handle('getOffersByType', async (event, ...args) => {
+            const offersService = require('../repositories/offers-repo');
+            return await offersService.getOffersByType(args[0]);
+        });
+
+        ipc.handle('saveOffers', async (event, ...args) => {
+            const offersService = require('../repositories/offers-repo');
+            return await offersService.saveOffers(args[0]);
+        });
     }
 }
 
