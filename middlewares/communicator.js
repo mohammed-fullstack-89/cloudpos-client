@@ -98,7 +98,7 @@ class CommunicatorMiddleware {
 
     async getNoteByType(type) { return await ipc.invoke('getNoteByType', type); }
 
-    async getOffersByType(type) { return await ipc.invoke('getOffersByType', type); }
+    async getOffers(type) { return await ipc.invoke('getOffersByType', type); }
 
     async saveOffers(offersList) { return await ipc.invoke('saveOffers', offersList); }
 

@@ -8,8 +8,9 @@ class OffersService {
         return offers;
     }
 
-    saveOffers(offersList) {
+   async saveOffers(offersList) {
         let offersTable = db.model('offers');
+        await offersTable.destroy({ truncate: true });
         offersTable.bulkCreate(JSON.parse(offersList), { updateOnDuplicate: Object.keys(offersTable.rawAttributes) });
     }
 }
@@ -17,7 +18,7 @@ class OffersService {
 OffersService.instance = null;
 OffersService.getInstance = function () {
     if (OffersService.instance === null) {
-        OffersService.instance = new CompanyService();
+        OffersService.instance = new OffersService();
     }
     return OffersService.instance;
 };
