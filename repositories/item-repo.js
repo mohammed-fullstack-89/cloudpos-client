@@ -325,7 +325,7 @@ class ItemService {
                 5: taxesList, 6: taxesItemsRelation, 7: suppliersItemsRelation,
                 8: itemAlternativesRel, 9: itemCategoriesRel, 10: scaleBarcodeList,
                 11: itemStockslist, 12: itemManufacturingList, 13: itemsUnitsList, 14: itemsSizesList,
-                15: itemsColorsList, 16: itemsBrandsList, 17: itemModifiersList, 18: force } = args;
+                15: itemsColorsList, 16: itemsBrandsList, 17: itemModifiersList, 18: barcodesList, 19: force } = args;
             const variantTable = db.model('variant');
             const taxTable = db.model("tax");
             const supplierTable = db.model("supplier");
@@ -343,6 +343,8 @@ class ItemService {
             const sizeTable = db.model("size");
             const brandTable = db.model("brand");
             const itemModifiersTable = db.model('variant_modifier');
+            const barcodesTable = db.model('barcodes');
+
 
             try {
                 if (force) {
@@ -363,6 +365,7 @@ class ItemService {
                     await brandTable.destroy({ truncate: true });
                     await colorTable.destroy({ truncate: true });
                     await itemModifiersTable.destroy({ truncate: true });
+                    await barcodesTable.destroy({ truncate: true });
                 }
 
                 try {
@@ -507,6 +510,14 @@ class ItemService {
                     }
                 } catch (error) {
                     console.log("itemModifiersList error : " + error);
+                }
+
+                try {
+                    if (barcodesList != [] && barcodesList != undefined) {
+                        await barcodesTable.bulkCreate(barcodesList, { updateOnDuplicate: [...Object.keys(barcodesTable.rawAttributes)] });
+                    }
+                } catch (error) {
+                    console.log("barcodesList error : " + error);
                 }
 
             } catch (error) {
