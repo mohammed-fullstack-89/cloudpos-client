@@ -5,10 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             this.belongsTo(models.variant, {
                 as: 'barcodes',
-                foreignKey: {
-                    field: 'variant_id',
-                    name: 'variant_id'
-                }
+                foreignKey: 'variant_id'
             });
         }
     }

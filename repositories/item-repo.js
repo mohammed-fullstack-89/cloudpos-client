@@ -52,7 +52,8 @@ class ItemService {
                         include: [{ model: db.model('price'), as: 'variant_price' }]
                     }]
                 },
-                { model: db.model('stock'), as: 'parent_stock', where: { status: 1 }, include: [{ model: db.model('price'), as: 'variant_price' }], required: false }
+                { model: db.model('stock'), as: 'parent_stock', where: { status: 1 }, include: [{ model: db.model('price'), as: 'variant_price' }], required: false },
+                { model: db.model('barcodes'), as: 'barcodes' }
             ],
             order: [
                 ['sequence', 'ASC']
@@ -92,6 +93,7 @@ class ItemService {
                     where: {
                         [db.Seq().Op.or]: {
                             barcode: code,
+                            '$barcodes.barcode$': code,
                             '$variant_segment.barcode$': code,
                             '$variant_serial.serial$': code
                         }
@@ -131,8 +133,11 @@ class ItemService {
                                 model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
                                 include: [{ model: db.model('price'), as: 'variant_price' }]
                             }]
+                        },
+                        {
+                            model: db.model('barcodes'), as: 'barcodes'
                         }
-                    ]
+                    ],
                 });
                 item = JSON.stringify(item);
                 return item;
@@ -177,6 +182,7 @@ class ItemService {
                     filter = {
                         [db.Seq().Op.or]: {
                             barcode: { [db.Seq().Op.like]: '%' + value + '%' },
+                            '$barcodes.barcode$': { [db.Seq().Op.like]: '%' + value + '%' },
                             '$variant_serial.serial$': value,
                             '$variant_segment.barcode$': value
                         }
@@ -219,6 +225,9 @@ class ItemService {
                             model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
                             include: [{ model: db.model('price'), as: 'variant_price' }]
                         }]
+                    },
+                    {
+                        model: db.model('barcodes'), as: 'barcodes'
                     }
                 ],
                 where: filter,
@@ -274,6 +283,7 @@ class ItemService {
         const items = await itemTable.findAll({
             where: {
                 barcode: barcode,
+                '$barcodes.barcode$': barcode,
                 scale_barcode_id: scale.id
             },
             include: [
@@ -311,6 +321,9 @@ class ItemService {
                         model: db.model('stock'), as: 'stock', where: { status: 1 }, required: false,
                         include: [{ model: db.model('price'), as: 'variant_price' }]
                     }]
+                },
+                {
+                    model: db.model('barcodes'), as: 'barcodes'
                 }
             ],
             limit: 1
