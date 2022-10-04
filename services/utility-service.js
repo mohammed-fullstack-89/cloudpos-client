@@ -23,7 +23,7 @@ class UtilityService {
             if (currentTime - this.lastKeyTime > 500) {
                 this.code = "";
             }
-            if (input.code == "ShiftLeft" || input.code == "ShiftRight") {
+            if (input.code == "ShiftLeft" || input.code == "ShiftRight" || input.code == "Tab" || input.code == "CapsLock" || input.code == "ControlLeft" || input.code == "ControlRight" || input.code == "AltRight" || input.code == "AltLeft" || input.code == "Backspace" || input.code == "Space") {
 
             } else {
                 if ((input.code == "Enter" || input.code == "NumpadEnter") && (cal <= 30)) {
