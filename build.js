@@ -6,7 +6,7 @@ packager({
     buildPath: __dirname,
     electronVersion: '11.5.0',
     version: '1.1.0',
-    buildVersion: '27',
+    buildVersion: '28',
     dir: __dirname,
     overwrite: true,
     asar: true,
