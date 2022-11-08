@@ -142,9 +142,9 @@ class InitializerService {
                     {
                         role: 'togglefullscreen'
                     },
-                    {
-                        role: 'toggledevtools'
-                    }
+                    // {
+                    //     role: 'toggledevtools'
+                    // }
                 ]
             },
             {
@@ -193,7 +193,7 @@ class InitializerService {
         this.mainWindow.webContents.on("before-input-event", async (event, input) => {
             utility.barcode(event, input);
         });
-        this.mainWindow.loadURL(enviroment.stagging.url);
+        this.mainWindow.loadURL(enviroment.production.url);
         this.hideSplash();
     }
 
