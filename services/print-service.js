@@ -154,17 +154,14 @@ class PrintHelper {
             return;
         }
 
-        printer.printDirect({
-            data: '\x10\x14\x01\x00\x05',
-            printer: mainPrinter, // printer name, if missing then will print to default printer
-            type: 'RAW', // type: RAW, TEXT, PDF, JPEG, .. depends on platform
-            success: function (jobID) {
-                console.log("sent to printer with ID: " + jobID);
-            },
-            error: function (err) {
-                notificationService.showNotification('Cash drawer', 'Failed opening cash drawer. please check if the cash drawer is connected to the printer.');
-            }
-        });
+        const data = { type: 'RAW', width: 0, height: 0, position: 'center', value: Buffer.from(`${this.chr(27)}\x70\x30${this.chr(25)}${this.chr(25)}\r`), displayValue: false };
+        const options = { printerName: mainPrinter, copies: 0, silent: true, preview: false };
+
+        PosPrinter.print([data], options).then(result => console.log(result)).catch(err => console.log(err));
+    }
+
+    chr(i) {
+        return String.fromCharCode(i);
     }
 }
 
